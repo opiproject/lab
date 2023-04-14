@@ -122,6 +122,8 @@ another table probably needed to include the actual deployment info:
 | provenience                     | must be a genuine device                                                                                              |
 | vendor / mfg                    | both vendor and product manufacturer must have a good past history                                                    |
 | price                           | best price that meets the above criterias                                                                             |
+| DPU host vendor                 | strive for vendor heterogeniety (multiple vendors)                                                                            |
+| DPU host compatibility          | DPU host must be on DPU vendor's compatibility list (if possible)                                                           |
 
 ## Server details
 
