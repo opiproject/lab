@@ -1,6 +1,6 @@
 # OPI test frmework
 
-will be using pytest
+will be using [pytest](https://github.com/opiproject/pydpu)
 
 ## to run the test cases
 
