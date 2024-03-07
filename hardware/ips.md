@@ -12,6 +12,7 @@ Proposal is to use 172.22.0.0/16 network for all ip addresing in the lab, and ha
 | 172.22.3.0/24       | All DPUs                                                    |
 | 172.22.4.0/24       | All BMC of the DPU                                          |
 | 172.22.222.0/24     | dhcp allocated to any unknown device                        |
+| 172.22.254.0/24     | VPN Lease Pool -- IPs dynamically assigned to VPN clients   |
 
 ## Per Device IP allocation
 
@@ -22,6 +23,9 @@ Proposal is to use 172.22.0.0/16 network for all ip addresing in the lab, and ha
 | 172.22.0.10                   |          | Network PDU      |
 | 172.22.0.20                   |          | KVM              |
 | 172.22.0.30                   |          | TS               |
+| 172.22.0.226                  |          | F5 VPN Floating  |
+| 172.22.0.227                  |          | F5 BIG-IP-01     |
+| 172.22.0.228                  |          | F5 VPN Floating  |
 |                               |          |                  |
 | 172.22.1.1                    |          | DPU Host 1       |
 | 172.22.2.1                    |          | DH1 iDRAC        |
