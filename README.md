@@ -19,6 +19,14 @@
   - [Server Software Setup](server-setup.md)
 - [Running the Test Cases](running-the-tests.md)
 
+## Access the LAB
+
+- ask in slack for initial user/password
+- log into http://vpn.opiproject-lab.org/ via web browser and change first time password
+- install [F5 Access](./images/f5-vpn-msft-app.png) app from https://www.microsoft.com/store/productId/9WZDNCRDSFN0
+- create new OPI [VPN connection](./images/add-vpn-windows.png)
+- test it by going to https://172.22.4.2/redfish/v1/
+
 ## Rack diagram
 
 ![lab cabling diagram](./images/opi-lab-cabling.drawio.svg)
