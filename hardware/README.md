@@ -9,4 +9,4 @@
 
 ## OPI Rack
 
-![lab cabling diagram](./images/opi-lab-cabling.drawio.svg)
+![lab cabling diagram](../images/opi-lab-cabling.drawio.svg)
