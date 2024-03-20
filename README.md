@@ -3,6 +3,7 @@
 - [Goals and Requirments](goals-and-requirements.md)
 - Setup
   - [LAB IPs allocation](./ips.md)
+  - [Server Software Setup](server-setup.md)
   - [Bill of Materials](bom.md)
   - [Physical Testbed Setup](physical-testbed.md)
     - [ToR - Arista DCS-7280TR-48C6-R](./hardware/ToR/README.md)
@@ -16,7 +17,6 @@
     - [A100G - 100G Switch - Arista DCS-7280CR](./hardware/A100G/README.md)
     - [TGEN1 - Traffic Generator 1 - Supermicro](./hardware/tgen1/README.md)
     - [Cables/Fibers/transceivers](./hardware/cables.md)
-  - [Server Software Setup](server-setup.md)
 - [Running the Test Cases](running-the-tests.md)
 
 ## Access the LAB
