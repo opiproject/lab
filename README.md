@@ -23,8 +23,11 @@
 
 - ask in slack for initial user/password
 - log into http://vpn.opiproject-lab.org/ via web browser and change first time password
-- install [F5 Access](./images/f5-vpn-msft-app.png) app from https://www.microsoft.com/store/productId/9WZDNCRDSFN0
-- create new OPI [VPN connection](./images/add-vpn-windows.png)
+- either allow the browser based Network Access application to be installed and the VPN will be launched
+- or if your company restricts browser-based installs you can:
+  - If on Windows, install [F5 Access](./images/f5-vpn-msft-app.png) app from https://www.microsoft.com/store/productId/9WZDNCRDSFN0
+    - create new OPI [VPN connection](./images/add-vpn-windows.png)
+  - If on Mac, install the F5 Access app from the Mac App store from https://apps.apple.com/us/app/f5access/id1243219105?mt=12
 - test it by going to https://172.22.4.2/redfish/v1/
 
 ## Rack diagram
