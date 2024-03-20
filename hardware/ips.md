@@ -38,6 +38,7 @@ Proposal is to use 172.22.0.0/16 network for all ip addresing in the lab, and ha
 |                               |          |                  |
 | 172.22.1.3                    |          | DPU Host 3       |
 | 172.22.2.3                    |          | DH3 iLO          |
+| 172.22.3.3                    |          | Marvell CN106    |
 |                               |          |                  |
 | 172.22.1.100                  |          | Tgen1            |
 | 172.22.2.100                  |          | Tgen1 bmc        |
