@@ -19,6 +19,10 @@
     - [Cables/Fibers/transceivers](./hardware/cables.md)
 - [Running the Test Cases](running-the-tests.md)
 
+## Passwords
+
+We manage all passwords in <https://opi-team.1password.com>
+
 ## Access the LAB
 
 - ask in slack for initial user/password
