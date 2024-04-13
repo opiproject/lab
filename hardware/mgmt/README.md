@@ -14,4 +14,3 @@ as of now this is merged with dh1 until new server arives
 ## BIOS settings
 
 - change power to always on
-
