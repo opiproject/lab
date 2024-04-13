@@ -29,13 +29,13 @@ This will start those services:
 
 To query Prometheus:
 
-1. Open <http://localhost:9091> to explore UI
+1. Open <http://172.22.0.1:9091> to explore UI
 2. or via API examples:
 
 ```bash
-curl --fail http://127.0.0.1:9091/api/v1/query?query=mem_free | grep mem_free
-curl --fail http://127.0.0.1:9091/api/v1/query?query=cpu_usage_user | grep cpu_usage_user
-curl --fail http://127.0.0.1:9091/api/v1/query?query=spdk_num_read_ops | grep spdk_num_read_ops
-curl --fail http://127.0.0.1:9091/api/v1/query?query=nstat_TcpActiveOpens | grep nstat_TcpActiveOpens
-curl --fail http://127.0.0.1:9091/api/v1/query?query=redfish_power_powercontrol_interval_in_min | grep redfish_power_powercontrol_interval_in_min
+curl --fail http://172.22.0.1:9091/api/v1/query?query=mem_free | grep mem_free
+curl --fail http://172.22.0.1:9091/api/v1/query?query=cpu_usage_user | grep cpu_usage_user
+curl --fail http://172.22.0.1:9091/api/v1/query?query=spdk_num_read_ops | grep spdk_num_read_ops
+curl --fail http://172.22.0.1:9091/api/v1/query?query=nstat_TcpActiveOpens | grep nstat_TcpActiveOpens
+curl --fail http://172.22.0.1:9091/api/v1/query?query=redfish_power_powercontrol_interval_in_min | grep redfish_power_powercontrol_interval_in_min
 ```
