@@ -29,7 +29,7 @@ This will start those services:
 
 To query Prometheus:
 
-1. Open http://localhost:9091 to explore UI
+1. Open <http://localhost:9091> to explore UI
 2. or via API examples:
 
 ```bash
