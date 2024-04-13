@@ -1,0 +1,37 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2022-2023 Dell Inc, or its subsidiaries.
+---
+version: "3.7"
+
+services:
+
+  otel-gw-collector:
+    image: docker.io/otel/opentelemetry-collector:0.92.0
+    command: ["--config=/etc/otel-collector-config.yaml"]
+    volumes:
+      - ./config/otel-collector-config.yaml:/etc/otel-collector-config.yaml:z
+    ports:
+      - "1888:1888"    # pprof extension
+      - "8888:8888"    # Prometheus metrics exposed by the collector
+      - "8889:8889"    # Prometheus exporter metrics
+      - "13133:13133"  # health_check extension
+      - "4317:4317"    # OTLP gRPC receiver
+      - "55679:55679"  # zpages extension
+    networks:
+      - opi
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:8086/ping || exit 1
+
+  prometheus:
+    image: docker.io/prom/prometheus:v2.48.1
+    volumes:
+      - ./config/prometheus.yaml:/etc/prometheus/prometheus.yml:z
+    ports:
+      - "9091:9090"
+    networks:
+      - opi
+    healthcheck:
+      test: ["CMD", "wget", "http://localhost:9090"]
+
+networks:
+  opi:
