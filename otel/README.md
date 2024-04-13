@@ -33,8 +33,7 @@ To query Prometheus:
 ```bash
 curl --fail http://127.0.0.1:9091/api/v1/query?query=mem_free | grep mem_free
 curl --fail http://127.0.0.1:9091/api/v1/query?query=cpu_usage_user | grep cpu_usage_user
-curl --fail http://127.0.0.1:9091/api/v1/query?query=dpu_num_blocks | grep dpu_num_blocks
-curl --fail http://127.0.0.1:9091/api/v1/query?query=net_bytes_recv_total | grep net_bytes_recv_total
-curl --fail http://127.0.0.1:9091/api/v1/query?query=nginx_requests | grep nginx_requests
-curl --fail http://127.0.0.1:9091/api/v1/query?query=redfish_thermal_fans_reading_rpm | grep redfish_thermal_fans_reading_rpm
+curl --fail http://127.0.0.1:9091/api/v1/query?query=spdk_num_read_ops | grep spdk_num_read_ops
+curl --fail http://127.0.0.1:9091/api/v1/query?query=nstat_TcpActiveOpens | grep nstat_TcpActiveOpens
+curl --fail http://127.0.0.1:9091/api/v1/query?query=redfish_power_powercontrol_interval_in_min | grep redfish_power_powercontrol_interval_in_min
 ```
