@@ -16,8 +16,8 @@ Proposal is to use 172.22.0.0/16 network for all ip addresing in the lab, and ha
 
 ## Per Device IP allocation
 
-| IPv4                          | IPv6     | DEVICE           |
-|---------------------------    |------    |----------------- |
+| IPv4                          | IPv6     | DEVICE           | Helpful URLs   |
+|---------------------------    |------    |----------------- |-----------------
 | public ip / 172.22.0.1        |          | gateway/mgmt     |
 | 172.22.0.5                    |          | ToR              |
 | 172.22.0.10                   |          | Network PDU      |
@@ -28,21 +28,21 @@ Proposal is to use 172.22.0.0/16 network for all ip addresing in the lab, and ha
 | 172.22.0.228                  |          | F5 VPN Floating  |
 |                               |          |                  |
 | 172.22.1.1                    |          | DPU Host 1       |
-| 172.22.2.1                    |          | DH1 iDRAC        |
+| 172.22.2.1                    |          | DH1 iDRAC        | https://172.22.2.1/redfish/v1/
 | 172.22.3.1                    |          | AMD DSC200       |
 |                               |          |                  |
 | 172.22.1.2                    |          | DPU Host 2       |
-| 172.22.2.2                    |          | DH2 iLO          |
+| 172.22.2.2                    |          | DH2 iLO          | https://172.22.2.2/redfish/v1/
 | 172.22.3.2                    |          | Nvidia BF2       |
-| 172.22.4.2                    |          | Nvidia BF2 bmc   |
+| 172.22.4.2                    |          | Nvidia BF2 bmc   | https://172.22.4.2/redfish/v1/
 |                               |          |                  |
 | 172.22.1.3                    |          | DPU Host 3       |
-| 172.22.2.3                    |          | DH3 iLO          |
+| 172.22.2.3                    |          | DH3 iLO          | https://172.22.2.3/redfish/v1/
 | 172.22.3.3                    |          | Marvell CN106    |
-| 172.22.4.3                    |          | Marvell CN106 bmc |
+| 172.22.4.3                    |          | Marvell CN106 bmc | https://172.22.4.3/redfish/v1/
 |                               |          |                  |
 | 172.22.1.4                    |          | DPU Host 4       |
-| 172.22.2.4                    |          | DH4 iDRAC        |
+| 172.22.2.4                    |          | DH4 iDRAC        | https://172.22.2.4/redfish/v1/
 | 172.22.4.4                    |          | Intel DYP imc    |
 |                               |          |                  |
 | 172.22.1.100                  |          | Tgen1            |
