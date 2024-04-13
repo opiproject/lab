@@ -5,7 +5,7 @@ Took from <https://github.com/opiproject/otel>
 ## On DPUs and IPUs
 
 1. Create `telegraf.conf` file, see example [here](./config/telegraf.conf)
-    * change `otel-gw-collector` to the management server name/ip
+    * change `outputs.opentelemetry` to the management server name/ip
     * change `192.168.240.1` to the internal DPU/IPU AMC/BMC for redfish collection
     * make sure [SPDK](https://spdk.io/) app and [spdk_rpc_http_proxy.py](https://github.com/spdk/spdk/blob/v24.01.x/scripts/rpc_http_proxy.py) script are running to collect `storage` statistics
 2. Run telegraf container:
