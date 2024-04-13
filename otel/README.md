@@ -16,6 +16,8 @@ sudo docker run --rm -it --network=host -v ./config/telegraf.conf:/etc/telegraf/
 
 ## On Management server
 
+See management server details [here](../hardware/mgmt)
+
 Run `docker compose up -d` or `docker-compose up -d`
 
 :exclamation: `docker-compose` is deprecated. For details, see [Migrate to Compose V2](https://docs.docker.com/compose/migrate/).
