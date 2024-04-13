@@ -11,7 +11,7 @@ Took from <https://github.com/opiproject/otel>
 2. Run telegraf container:
 
 ```bash
-$ sudo docker run --rm -it --network=host -v ./config/telegraf.conf:/etc/telegraf/telegraf.conf docker.io/library/telegraf:1.29
+sudo docker run --rm -it --network=host -v ./config/telegraf.conf:/etc/telegraf/telegraf.conf docker.io/library/telegraf:1.29
 ```
 
 ## On Management server
