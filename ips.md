@@ -18,34 +18,34 @@ Proposal is to use 172.22.0.0/16 network for all ip addresing in the lab, and ha
 
 | IPv4                          | IPv6     | DEVICE           | Helpful URLs   |
 |---------------------------    |------    |----------------- |-----------------
-| public ip / 172.22.0.1        |          | gateway/mgmt     | http://172.22.0.1:9091/ and http://172.22.0.1:3000/
-| 172.22.0.5                    |          | ToR              |
-| 172.22.0.10                   |          | Network PDU      |
-| 172.22.0.20                   |          | KVM              |
-| 172.22.0.30                   |          | TS               |
-| 172.22.0.226                  |          | F5 VPN Floating  |
-| 172.22.0.227                  |          | F5 BIG-IP-01     |
-| 172.22.0.228                  |          | F5 VPN Floating  |
-|                               |          |                  |
-| 172.22.1.1                    |          | DPU Host 1       |
-| 172.22.2.1                    |          | DH1 iDRAC        | https://172.22.2.1/redfish/v1/
-| 172.22.3.1                    |          | AMD DSC200       |
-|                               |          |                  |
-| 172.22.1.2                    |          | DPU Host 2       |
-| 172.22.2.2                    |          | DH2 iLO          | https://172.22.2.2/redfish/v1/
-| 172.22.3.2                    |          | Nvidia BF2       |
-| 172.22.4.2                    |          | Nvidia BF2 bmc   | https://172.22.4.2/redfish/v1/
-|                               |          |                  |
-| 172.22.1.3                    |          | DPU Host 3       |
-| 172.22.2.3                    |          | DH3 iLO          | https://172.22.2.3/redfish/v1/
-| 172.22.3.3                    |          | Marvell CN106    |
-| 172.22.4.3                    |          | Marvell CN106 bmc | https://172.22.4.3/redfish/v1/
-|                               |          |                  |
-| 172.22.1.4                    |          | DPU Host 4       |
-| 172.22.2.4                    |          | DH4 iDRAC        | https://172.22.2.4/redfish/v1/
-| 172.22.4.4                    |          | Intel DYP imc    |
-|                               |          |                  |
-| 172.22.1.100                  |          | Tgen1            |
-| 172.22.2.100                  |          | Tgen1 bmc        |
-|                               |          |                  |
-| 172.22.1.250                  |          | Arista 100G      |
+| public ip / 172.22.0.1        |          | gateway/mgmt     | <http://172.22.0.1:9091/> and <http://172.22.0.1:3000/> |
+| 172.22.0.5                    |          | ToR              |                                  |
+| 172.22.0.10                   |          | Network PDU      |                                  |
+| 172.22.0.20                   |          | KVM              |                                  |
+| 172.22.0.30                   |          | TS               |                                  |
+| 172.22.0.226                  |          | F5 VPN Floating  |                                  |
+| 172.22.0.227                  |          | F5 BIG-IP-01     |                                  |
+| 172.22.0.228                  |          | F5 VPN Floating  |                                  |
+|                               |          |                  |                                  |
+| 172.22.1.1                    |          | DPU Host 1       |                                  |
+| 172.22.2.1                    |          | DH1 iDRAC        | <https://172.22.2.1/redfish/v1/> |
+| 172.22.3.1                    |          | AMD DSC200       |                                  |
+|                               |          |                  |                                  |
+| 172.22.1.2                    |          | DPU Host 2       |                                  |
+| 172.22.2.2                    |          | DH2 iLO          | <https://172.22.2.2/redfish/v1/> |
+| 172.22.3.2                    |          | Nvidia BF2       |                                  |
+| 172.22.4.2                    |          | Nvidia BF2 bmc   | <https://172.22.4.2/redfish/v1/> |
+|                               |          |                  |                                  |
+| 172.22.1.3                    |          | DPU Host 3       |                                  |
+| 172.22.2.3                    |          | DH3 iLO          | <https://172.22.2.3/redfish/v1/> |
+| 172.22.3.3                    |          | Marvell CN106    |                                  |
+| 172.22.4.3                    |          | Marvell CN106 bmc | <https://172.22.4.3/redfish/v1/> |
+|                               |          |                  |                                  |
+| 172.22.1.4                    |          | DPU Host 4       |                                  |
+| 172.22.2.4                    |          | DH4 iDRAC        | <https://172.22.2.4/redfish/v1/> |
+| 172.22.4.4                    |          | Intel DYP imc    |                                  |
+|                               |          |                  |                                  |
+| 172.22.1.100                  |          | Tgen1            |                                  |
+| 172.22.2.100                  |          | Tgen1 bmc        |                                  |
+|                               |          |                  |                                  |
+| 172.22.1.250                  |          | Arista 100G      |                                  |
