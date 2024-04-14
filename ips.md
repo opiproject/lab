@@ -17,7 +17,7 @@ Proposal is to use 172.22.0.0/16 network for all ip addresing in the lab, and ha
 ## Per Device IP allocation
 
 | IPv4                          | IPv6     | DEVICE           | Helpful URLs   |
-|---------------------------    |------    |----------------- |-----------------
+|---------------------------    |------    |----------------- |----------------|
 | public ip / 172.22.0.1        |          | gateway/mgmt     | <http://172.22.0.1:9091/> and <http://172.22.0.1:3000/> |
 | 172.22.0.5                    |          | ToR              |                                  |
 | 172.22.0.10                   |          | Network PDU      |                                  |
