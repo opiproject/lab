@@ -13,7 +13,7 @@ Took from <https://github.com/opiproject/otel>
 
 ### Service
 
-2. Run telegraf container:
+1. Run telegraf container:
 
 ```bash
 sudo docker run -d --restart=always --network=host -v ./config/telegraf.conf:/etc/telegraf/telegraf.conf docker.io/library/telegraf:1.29
