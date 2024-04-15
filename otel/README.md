@@ -21,9 +21,16 @@ sudo docker run -d --restart=always --network=host -v ./config/telegraf.conf:/et
 
 ### Optional Temperature
 
+For regular Servers, add to your config file: 
+
+```ini
+[[inputs.temp]]
+  # no configuration
+```
+
 For Nvidia BlueField cards, to monitor temperature, add to your config file:
 
-```text
+```ini
 [[inputs.file]]
   files = ["/run/emu_param/bluefield_temp"]
   name_override = "temp"
