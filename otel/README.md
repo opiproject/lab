@@ -43,6 +43,8 @@ and add to your docker run command:
 
 See management server details [here](../hardware/mgmt)
 
+### Run
+
 Run `docker compose up -d` or `docker-compose up -d`
 
 :exclamation: `docker-compose` is deprecated. For details, see [Migrate to Compose V2](https://docs.docker.com/compose/migrate/).
@@ -53,9 +55,9 @@ This will start those services:
 2. [Prometheus](https://prometheus.io/) Monitoring system & time series database
 3. [Grafana](https://grafana.com/) Open source analytics & monitoring solution for every database.
 
-To query Prometheus:
+### Prometheus
 
-1. Open <http://172.22.0.1:9091> to explore UI
+1. Open <http://172.22.0.1:9091> to explore Prometheus UI
 2. or via API examples:
 
 ```bash
@@ -66,9 +68,9 @@ curl --fail http://172.22.0.1:9091/api/v1/query?query=nstat_TcpActiveOpens | gre
 curl --fail http://172.22.0.1:9091/api/v1/query?query=redfish_power_powercontrol_interval_in_min | grep redfish_power_powercontrol_interval_in_min
 ```
 
-To query Grafana:
+### Grafana
 
-1. Open <http://172.22.0.1:3000> to explore UI
+1. Open <http://172.22.0.1:3000> to explore Grafana UI
 2. or via API examples:
 
 ```bash
