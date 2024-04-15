@@ -27,10 +27,10 @@ For Nvidia BlueField cards, to monitor temperature, add to your config file:
 [[inputs.file]]
   files = ["/run/emu_param/bluefield_temp"]
   name_override = "temp"
-  #value_field_name="temp"
+  value_field_name="temp"
   data_format = "value"
   data_type = "integer"
-  file_tag = "file"
+  file_tag = "sensor"
 ```
 
 and add to your docker run command:
