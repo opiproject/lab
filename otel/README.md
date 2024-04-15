@@ -21,7 +21,7 @@ sudo docker run -d --restart=always --network=host -v ./config/telegraf.conf:/et
 
 ### Optional Temperature
 
-For regular Servers, add to your config file: 
+For regular Servers, add to your config file:
 
 ```ini
 [[inputs.temp]]
