@@ -51,6 +51,7 @@ This will start those services:
 
 1. [OTEL Gateway Collector](https://opentelemetry.io/docs/collector/deployment/gateway/) to aggregate telemetry from all DPUs and IPUs.
 2. [Prometheus](https://prometheus.io/) Monitoring system & time series database
+3. [Grafana][https://grafana.com/] Open source analytics & monitoring solution for every database.
 
 To query Prometheus:
 
@@ -63,4 +64,13 @@ curl --fail http://172.22.0.1:9091/api/v1/query?query=cpu_usage_user | grep cpu_
 curl --fail http://172.22.0.1:9091/api/v1/query?query=spdk_num_read_ops | grep spdk_num_read_ops
 curl --fail http://172.22.0.1:9091/api/v1/query?query=nstat_TcpActiveOpens | grep nstat_TcpActiveOpens
 curl --fail http://172.22.0.1:9091/api/v1/query?query=redfish_power_powercontrol_interval_in_min | grep redfish_power_powercontrol_interval_in_min
+```
+
+To query Grafana:
+
+1. Open <http://172.22.0.1:3000> to explore UI
+2. or via API examples:
+
+```bash
+curl -s http://172.22.0.1:3000/api/datasources | jq .
 ```
