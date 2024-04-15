@@ -33,5 +33,22 @@ services:
     healthcheck:
       test: ["CMD", "wget", "http://localhost:9090"]
 
+  grafana:
+    image: docker.io/grafana/grafana:10.2.3
+    volumes:
+      - ./config/grafana.ini:/etc/grafana/grafana.ini
+      - ./config/grafana-datasources.yml:/etc/grafana/provisioning/datasources/datasource.yaml
+      - ./config/grafana-dashboards.yaml:/etc/grafana/provisioning/dashboards/default.yaml
+      - ./config/grafana-dashboard.json:/var/lib/grafana/dashboards/myexample.json
+    ports:
+      - "3000:3000"
+    networks:
+      - opi
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:3000/ || exit 1
+      interval: 6s
+      timeout: 10s
+      retries: 3
+
 networks:
   opi:
