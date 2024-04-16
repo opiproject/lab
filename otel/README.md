@@ -2,6 +2,8 @@
 
 Took from <https://github.com/opiproject/otel>
 
+![OPI Telemetry Deploy Option](https://github.com/opiproject/otel/blob/main/doc/dpu-otel.png)
+
 ## On DPUs and IPUs
 
 ### Configuration
