@@ -1,0 +1,12 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2022 Red Hat
+---
+- name: Debian | Install package dependencies
+  apt:
+    name: docker.io,python3-pip,sshpass,git
+    state: present
+
+- name: Debian | Install docker-compose
+  pip:
+    name: docker-compose>=1.29
+    state: present
