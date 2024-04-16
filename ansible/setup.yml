@@ -1,0 +1,9 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2022 Dell Inc, or its subsidiaries.
+---
+- name: Set up for OPI LAB environment
+  hosts: all
+  become: yes
+  tasks:
+    - name: Testing
+      shell: uname -a
