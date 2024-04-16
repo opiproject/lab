@@ -31,7 +31,7 @@ For regular Servers, add to your config file:
   # no configuration
 ```
 
-For Nvidia BlueField cards, to monitor temperature, add to your config file:
+For `Nvidia BlueField` cards, to monitor temperature, add to your config file:
 
 ```ini
 [[inputs.file]]
@@ -47,6 +47,15 @@ and add to your docker run command:
 
 ```text
 -v /run/emu_param:/run/emu_param
+```
+
+For `Intel MEV` cards the temperature is on the ICC chip, no easy access to it:
+
+```ini
+[[inputs.exec]]
+  commands = ["iset-cli get-temperature"]
+  name_override = "temp"
+  data_format = "json"
 ```
 
 ## On Management server
