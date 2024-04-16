@@ -8,14 +8,14 @@ Took from <https://github.com/opiproject/otel>
 
 ### Configuration
 
-1. Create `telegraf.conf` file, see example [here](./config/telegraf.conf)
+Create `telegraf.conf` file, see example [here](./config/telegraf.conf)
     * change `outputs.opentelemetry` to the management server name/ip
     * change `192.168.240.1` to the internal DPU/IPU AMC/BMC for redfish collection
     * make sure [SPDK](https://spdk.io/) app and [spdk_rpc_http_proxy.py](https://github.com/spdk/spdk/blob/v24.01.x/scripts/rpc_http_proxy.py) script are running to collect `storage` statistics
 
 ### Service
 
-1. Run telegraf container:
+Run telegraf container:
 
 ```bash
 sudo docker run -d --restart=always --network=host -v ./config/telegraf.conf:/etc/telegraf/telegraf.conf docker.io/library/telegraf:1.29
