@@ -5,5 +5,14 @@
   hosts: all
   become: yes
   tasks:
+    - include: debian.yml
+      when: ansible_os_family == 'Debian'
+
+    - include: redhat.yml
+      when: ansible_os_family == 'RedHat'
+
+    - include: suse.yml
+      when: ansible_os_family == 'Suse'
+
     - name: Testing
       shell: uname -a
