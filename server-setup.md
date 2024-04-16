@@ -108,6 +108,8 @@ yamllint /etc/netplan/00-installer-config.yaml
   * ensure networking is ok
   * this is needed also for the permissions to be update, otherwise next step will fail
 
+## Testing
+
 * clone the `opiproject/testing` repository into your working directory:
 
 ```Shell
