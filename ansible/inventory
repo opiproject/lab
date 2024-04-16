@@ -1,0 +1,11 @@
+[hostservers]
+172.22.0.1     ansible_connection=ssh        ansible_user=root
+172.22.1.2     ansible_connection=ssh        ansible_user=root
+172.22.1.3     ansible_connection=ssh        ansible_user=root
+172.22.1.4     ansible_connection=ssh        ansible_user=root
+
+[DPUs]
+172.22.3.1     ansible_connection=ssh        ansible_user=root
+172.22.3.2     ansible_connection=ssh        ansible_user=root
+172.22.3.3     ansible_connection=ssh        ansible_user=root
+172.22.4.4     ansible_connection=ssh        ansible_user=root
