@@ -8,6 +8,12 @@ The ansible_user should have sudo privileges.  Preferably, set up password-less
 ssh and password-less sudo for that user, though you can instead instruct
 ansible to ask for passwords.
 
+This is an example how to set password-less:
+
+```bash
+ ssh-copy-id root@172.22.X.X
+```
+
 Then run the playbook:
 
 ```bash
