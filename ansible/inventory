@@ -1,3 +1,5 @@
+# from https://github.com/opiproject/opi-poc/blob/main/lab/ips.md
+
 [hostservers]
 dh1 ansible_host=172.22.0.1     ansible_connection=ssh        ansible_user=root
 dh2 ansible_host=172.22.1.2     ansible_connection=ssh        ansible_user=root
