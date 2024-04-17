@@ -33,3 +33,12 @@
             source: /root/telegraf.conf
             target: /etc/telegraf/telegraf.conf
             read_only: true
+
+- name:
+  hosts: dh1
+  become: yes
+  tasks:
+    - name: Run Monitoring OTEL, Prometheus, Grafana
+      community.docker.docker_compose_v2:
+        project_src: /root/opi-poc/lab/otel
+      register: output
