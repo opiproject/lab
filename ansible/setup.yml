@@ -16,3 +16,20 @@
 
     - name: Testing
       shell: uname -a
+
+    # TODO: copy correct telegraf.conf file per host...
+
+    - name: Run telegraf container
+      community.docker.docker_container:
+        name: telegraf
+        image: docker.io/library/telegraf:1.29
+        state: started
+        restart: true
+        detach: true
+        network_mode: host
+        restart_policy: always
+        mounts:
+          - type: bind
+            source: /root/telegraf.conf
+            target: /etc/telegraf/telegraf.conf
+            read_only: true
