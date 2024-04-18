@@ -35,7 +35,7 @@
             read_only: true
 
 - name:
-  hosts: dh1
+  hosts: Management
   become: yes
   tasks:
     - name: Run Monitoring OTEL, Prometheus, Grafana
