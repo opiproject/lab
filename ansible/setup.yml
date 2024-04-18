@@ -42,3 +42,18 @@
       community.docker.docker_compose_v2:
         project_src: /root/opi-poc/lab/otel
       register: output
+
+- name:
+  hosts: mev
+  become: yes
+  tasks:
+    # - name: Install socat
+    #   ansible.builtin.package:
+    #     name: socat
+    #     state: present
+    # TODO: copy socat-otel unit file
+    - name: Enable and Start service socat-otel
+      ansible.builtin.service:
+        name: socat-otel
+        enabled: yes
+        state: started
