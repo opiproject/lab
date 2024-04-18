@@ -47,13 +47,15 @@
   hosts: mev
   become: yes
   tasks:
-    # - name: Install socat
-    #   ansible.builtin.package:
-    #     name: socat
-    #     state: present
+    - name: Install socat
+      ansible.builtin.package:
+        name: socat
+        state: present
+        sslverify: false
     # TODO: copy socat-otel unit file
     - name: Enable and Start service socat-otel
       ansible.builtin.service:
         name: socat-otel
         enabled: yes
         state: started
+
