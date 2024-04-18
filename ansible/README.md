@@ -14,6 +14,12 @@ This is an example how to set password-less:
  ssh-copy-id root@172.22.X.X
 ```
 
+Install dependencies:
+
+```bash
+ansible-galaxy collection install community.docker
+```
+
 Then run the playbook:
 
 ```bash
