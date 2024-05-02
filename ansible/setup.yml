@@ -14,6 +14,11 @@
     #- import_tasks: suse.yml
     #  when: ansible_os_family == 'Suse'
 
+    - name: Install other generic packages
+      ansible.builtin.package:
+        name: python3-pip,sshpass,git
+        state: present
+
     - name: Testing
       shell: uname -a
 

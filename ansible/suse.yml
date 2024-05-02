@@ -4,7 +4,7 @@
 ---
 - name: Suse | Install package dependencies
   zypper:
-    name: docker.io,python3-pip,sshpass,git
+    name: docker.io
     state: present
 
 - name: Suse | Install docker-compose
