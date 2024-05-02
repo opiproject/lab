@@ -16,7 +16,7 @@
     origin = "openconfig"
     path = "/interfaces/interface/state/counters"
 
-    subscription_mode = "sample"
+    subscription_mode = "TARGET_DEFINED"
     sample_interval = "10s"
 
   [[inputs.gnmi.subscription]]
@@ -26,7 +26,7 @@
     origin = "openconfig"
     path = "/network-instances/network-instance/protocols/protocol/bgp/"
 
-    subscription_mode = "sample"
+    subscription_mode = "TARGET_DEFINED"
     sample_interval = "10s"
 
 [[inputs.gnmi]]
@@ -43,21 +43,21 @@
   [[inputs.gnmi.subscription]]
     name = "eos_bgp"
     origin = "eos_native"
-    subscription_mode = "sample"
+    subscription_mode = "TARGET_DEFINED"
     path = "/Sysdb/routing/bgp/export/"
     sample_interval = "10s"
 
   [[inputs.gnmi.subscription]]
     name = "CPU"
     origin = "eos_native"
-    subscription_mode = "sample"
+    subscription_mode = "TARGET_DEFINED"
     path = "/Kernel/proc/cpu/utilization/total"
     sample_interval = "10s"
 
   [[inputs.gnmi.subscription]]
     name = "RAM"
     origin = "eos_native"
-    subscription_mode = "sample"
+    subscription_mode = "TARGET_DEFINED"
     path = "/Kernel/proc/meminfo"
     sample_interval = "10s"
 
