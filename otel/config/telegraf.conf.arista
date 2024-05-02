@@ -1,3 +1,6 @@
+[global_tags]
+  hostname = "arista"
+
 [[inputs.gnmi]]
   ## Address and port of the GNMI GRPC server
   addresses = ["172.22.1.250:5900"]
