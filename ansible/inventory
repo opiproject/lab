@@ -18,5 +18,10 @@ bf2 ansible_host=172.22.3.2     ansible_connection=ssh        ansible_user=root
 mrv ansible_host=172.22.3.3     ansible_connection=ssh        ansible_user=root
 mev ansible_host=172.22.4.4     ansible_connection=ssh        ansible_user=root
 
+[dpubmcs]
+bf2bmc ansible_host=172.22.4.2  ansible_connection=local      ansible_user=root
+mrvbmc ansible_host=172.22.4.3  ansible_connection=local      ansible_user=root
+mevbmc ansible_host=172.22.4.4  ansible_connection=local      ansible_user=root
+
 [Management]
 dh1
