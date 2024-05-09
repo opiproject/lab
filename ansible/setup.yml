@@ -3,6 +3,14 @@
 ---
 
 - name:
+  hosts: tor
+  gather_facts: false
+  tasks:
+    - name: run show version on remote devices
+      arista.eos.eos_command:
+        commands: show version
+
+- name:
   hosts: hostbmcs
   become: yes
   tasks:
