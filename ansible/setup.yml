@@ -2,7 +2,7 @@
 # Copyright (c) 2022 Dell Inc, or its subsidiaries.
 ---
 - name: Set up for OPI LAB environment
-  hosts: all
+  hosts: hostservers,DPUs
   become: yes
   tasks:
     - import_tasks: debian.yml
