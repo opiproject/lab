@@ -25,7 +25,7 @@ ansible-galaxy collection install arista.eos
 Then run the playbook:
 
 ```bash
-ansible-playbook -i inventory setup.yml
+ansible-playbook -i inventory -e ansible_password='TAKE-FROM-1-PASSWORD' setup.yml
 ```
 
 ## Example log
