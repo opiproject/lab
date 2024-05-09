@@ -1,6 +1,20 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2022 Dell Inc, or its subsidiaries.
 ---
+
+- name:
+  hosts: hostbmcs
+  become: yes
+  tasks:
+    - name: Get Firmware Inventory
+      community.general.redfish_info:
+        category: Update
+        command: GetFirmwareInventory
+        baseuri: "{{ ansible_host }}"
+        username: "{{ ansible_user | default(ansible_env.USER) }}"
+        password: "{{ ansible_password }}"
+      register: result
+
 - name: Set up for OPI LAB environment
   hosts: hostservers,DPUs
   become: yes
