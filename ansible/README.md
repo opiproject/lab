@@ -27,6 +27,12 @@ Then run the playbook:
 ansible-playbook -i inventory -e ansible_password='TAKE-FROM-1-PASSWORD' setup.yml
 ```
 
+Run the playbook only on specific host or group:
+
+```bash
+ansible-playbook -i inventory -l mev -e ansible_password='TAKE-FROM-1-PASSWORD' setup.yml
+```
+
 ## Example log
 
 ```bash
