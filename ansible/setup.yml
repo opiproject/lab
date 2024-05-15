@@ -111,10 +111,15 @@
         name: socat
         state: present
         sslverify: false
-    # TODO: copy socat-otel unit file
+
+    - name: Create socat-otel systemd service file
+      template:
+        src: ../hardware/dh4/fs/etc/systemd/system/socat-otel.service
+        dest: /etc/systemd/system/socat-otel.service
+
     - name: Enable and Start service socat-otel
       ansible.builtin.service:
         name: socat-otel
         enabled: yes
         state: started
-
+        daemon_reload: yes
