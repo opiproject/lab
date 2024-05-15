@@ -3,7 +3,7 @@
 ---
 
 - name:
-  hosts: tor
+  hosts: switches
   gather_facts: false
   tasks:
     - name: run show version on remote devices
