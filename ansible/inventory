@@ -26,5 +26,6 @@ mevbmc ansible_host=172.22.4.4  ansible_connection=local      ansible_user=root
 [Management]
 mgmt ansible_host=172.22.222.2  ansible_connection=ssh       ansible_user=root
 
-[tor]
-ceos ansible_host=172.22.1.250 ansible_connection=ansible.netcommon.network_cli ansible_user=arista ansible_ssh_pass=arista ansible_network_os=arista.eos.eos
+[switches]
+tor    ansible_host=172.22.0.5   ansible_connection=ansible.netcommon.network_cli ansible_user=arista ansible_ssh_pass=arista ansible_network_os=arista.eos.eos
+arista ansible_host=172.22.1.250 ansible_connection=ansible.netcommon.network_cli ansible_user=arista ansible_ssh_pass=arista ansible_network_os=arista.eos.eos
