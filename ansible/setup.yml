@@ -24,7 +24,7 @@
       register: result
 
 - name: Set up for OPI LAB environment
-  hosts: hostservers,DPUs
+  hosts: hostservers,DPUs,Management
   become: yes
   tasks:
     - name: Install usefull packages
