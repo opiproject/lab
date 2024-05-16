@@ -51,6 +51,55 @@ Server:             running on port 5900, in default VRF
 SSL Profile:        none
 ```
 
+test
+
+```bash
+root@dh1:~# docker run --network host --rm ghcr.io/openconfig/gnmic get --log --username arista --password arista --insecure --address 172.22.1.250 --port 5900 --path /openconfig-interfaces:interfaces/interface[name=Management1]/state
+2024/05/16 18:50:27.749705 [gnmic] version=0.37.0, commit=05a3e785, date=2024-05-13T23:27:31Z, gitURL=https://github.com/openconfig/gnmic, docs=https://gnmic.openconfig.net
+2024/05/16 18:50:27.749742 [gnmic] using config file ""
+2024/05/16 18:50:27.750028 [gnmic] sending gNMI GetRequest: prefix='<nil>', path='[elem:{name:"openconfig-interfaces:interfaces"}  elem:{name:"interface"  key:{key:"name"  value:"Management1"}}  elem:{name:"state"}]', type='ALL', encoding='JSON', models='[]', extension='[]' to 172.22.1.250
+2024/05/16 18:50:27.750656 [gnmic] creating gRPC client for target "172.22.1.250"
+[
+  {
+    "source": "172.22.1.250",
+    "time": "1970-01-01T00:00:00Z",
+    "updates": [
+      {
+        "Path": "interfaces/interface[name=Management1]/state",
+        "values": {
+          "interfaces/interface/state": {
+            "arista-intf-augments:inactive": false,
+            "openconfig-interfaces:admin-status": "UP",
+            "openconfig-interfaces:counters": {
+              "in-broadcast-pkts": "36076006",
+              "in-discards": "0",
+              "in-errors": "0",
+              "in-multicast-pkts": "184661",
+              "in-octets": "10041381967",
+              "in-unicast-pkts": "93505125",
+              "out-broadcast-pkts": "8649",
+              "out-discards": "0",
+              "out-errors": "0",
+              "out-multicast-pkts": "184034",
+              "out-octets": "23569377019",
+              "out-unicast-pkts": "116336808"
+            },
+            "openconfig-interfaces:description": "",
+            "openconfig-interfaces:enabled": true,
+            "openconfig-interfaces:ifindex": 999001,
+            "openconfig-interfaces:last-change": "171036192364",
+            "openconfig-interfaces:mtu": 0,
+            "openconfig-interfaces:name": "Management1",
+            "openconfig-interfaces:oper-status": "UP",
+            "openconfig-interfaces:type": "ethernetCsmacd"
+          }
+        }
+      }
+    ]
+  }
+]
+```
+
 ## Docs
 
 [7280R-DataSheet](https://www.arista.com/assets/data/pdf/Datasheets/7280R-DataSheet.pdf)
