@@ -18,21 +18,17 @@
 
   [[inputs.gnmi.subscription]]
     ## Name of the measurement
-    name = "ifcounters"
-
+    name = "interfaces"
     origin = "openconfig"
-    path = "/interfaces/interface/state/counters"
-
+    path = "/interfaces/interface/state"
     subscription_mode = "TARGET_DEFINED"
     sample_interval = "10s"
 
   [[inputs.gnmi.subscription]]
     ## Name of the measurement
     name = "openconfig_bgp"
-
     origin = "openconfig"
     path = "/network-instances/network-instance/protocols/protocol/bgp/"
-
     subscription_mode = "TARGET_DEFINED"
     sample_interval = "10s"
 
