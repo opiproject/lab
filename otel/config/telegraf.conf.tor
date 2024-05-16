@@ -12,6 +12,10 @@
   ## redial in case of failures after
   redial = "10s"
 
+  ## Guess the path-tag if an update does not contain a prefix-path
+  ## If enabled, the common-path of all elements in the update is used.
+  guess_path_tag = true
+
   [[inputs.gnmi.subscription]]
     ## Name of the measurement
     name = "ifcounters"
