@@ -62,6 +62,8 @@
             state: started
 
     # TODO: copy correct telegraf.conf file per host...
+    #- name: Copy file to host
+    #  ansible.builtin.copy: src=../otel/config/telegraf.conf.{{ inventory_hostname }} dest=/root/telegraf.conf.new
 
     - name: Run telegraf container
       community.docker.docker_container:
