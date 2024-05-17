@@ -3,7 +3,7 @@
 
 [[inputs.gnmi]]
   ## Address and port of the GNMI GRPC server
-  addresses = ["172.22.1.250:5900"]
+  addresses = ["172.22.0.5:5900", "172.22.1.250:5900"]
 
   ## credentials
   username = "arista"
