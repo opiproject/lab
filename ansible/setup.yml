@@ -87,7 +87,7 @@
         project_src: /root/opi-poc/lab/otel
       register: output
 
-    - name: Run telegraf container for 100G arista switch
+    - name: Run telegraf container for TOR and 100G arista switch
       community.docker.docker_container:
         name: telegraf_arista
         image: docker.io/library/telegraf:1.29
@@ -99,21 +99,6 @@
         mounts:
           - type: bind
             source: /root/telegraf.conf.arista
-            target: /etc/telegraf/telegraf.conf
-            read_only: true
-
-    - name: Run telegraf container for TOR arista switch
-      community.docker.docker_container:
-        name: telegraf_tor
-        image: docker.io/library/telegraf:1.29
-        state: started
-        restart: true
-        detach: true
-        network_mode: host
-        restart_policy: always
-        mounts:
-          - type: bind
-            source: /root/telegraf.conf.tor
             target: /etc/telegraf/telegraf.conf
             read_only: true
 
