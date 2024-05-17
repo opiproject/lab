@@ -23,6 +23,14 @@
         password: "{{ ansible_password }}"
       register: result
 
+    - name: Get BIOS attributes
+      community.general.redfish_info:
+        category: Systems
+        command: GetBiosAttributes
+        baseuri: "{{ ansible_host }}"
+        username: "{{ ansible_user | default(ansible_env.USER) }}"
+        password: "{{ ansible_password }}"
+
 - name: Set up for OPI LAB environment
   hosts: hostservers,DPUs,Management
   become: yes
