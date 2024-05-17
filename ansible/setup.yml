@@ -36,7 +36,7 @@
       register: result
 
     - name: Debug print bios serial number
-      ansible.builtin.debug: var=result.redfish_facts.bios_attribute.entries[0][1].SerialNumber
+      ansible.builtin.debug: msg={{ result.redfish_facts.bios_attribute.entries[0][1].SerialNumber | default(result.redfish_facts.bios_attribute.entries[0][1].SystemServiceTag) }}
 
 - name: Set up for OPI LAB environment
   hosts: hostservers,DPUs,Management
