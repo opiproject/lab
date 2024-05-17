@@ -23,6 +23,9 @@
         password: "{{ ansible_password }}"
       register: result
 
+    - name: Debug print first firmware entry version
+      ansible.builtin.debug: var=result.redfish_facts.firmware.entries[0].Version
+
     - name: Get BIOS attributes
       community.general.redfish_info:
         category: Systems
