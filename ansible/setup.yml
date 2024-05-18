@@ -66,8 +66,10 @@
             name: docker-ce,docker-ce-cli,containerd.io,docker-buildx-plugin,docker-compose-plugin
             state: present
 
+    # TODO: re-enable MEV
+
     - name: Red Hat | Docker
-      when: ansible_os_family == 'RedHat'
+      when: ansible_os_family == 'RedHat' and inventory_hostname != 'mev'
       block:
         - name: Red Hat | Install package dependencies
           ansible.builtin.package:
@@ -87,7 +89,10 @@
     #- name: Copy file to host
     #  ansible.builtin.copy: src=../otel/config/telegraf.conf.{{ inventory_hostname }} dest=/root/telegraf.conf.new
 
+    # TODO: re-enable MEV
+
     - name: Run telegraf container
+      when: inventory_hostname != 'mev'
       community.docker.docker_container:
         name: telegraf
         image: docker.io/library/telegraf:1.29
@@ -134,7 +139,6 @@
       ansible.builtin.package:
         name: socat
         state: present
-        sslverify: false
 
     - name: Create socat-otel systemd service file
       template:
