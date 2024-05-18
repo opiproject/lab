@@ -3,6 +3,13 @@
 ---
 
 - name:
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Sync all clocks
+      ansible.builtin.shell: "date -s '{{ now() }}'"
+
+- name:
   hosts: switches
   gather_facts: false
   tasks:
