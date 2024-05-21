@@ -9,8 +9,12 @@ services:
     restart: unless-stopped
     image: docker.io/library/telegraf:1.29
     volumes:
+      - /:/hostfs:ro
       - ./telegraf.d:/etc/telegraf/telegraf.d:ro
     network_mode: host
+    environment:
+      HOST_MOUNT_PREFIX: /hostfs
+      HOST_PROC: /hostfs/proc
 
   otel-gw-collector:
     restart: unless-stopped
