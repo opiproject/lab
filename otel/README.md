@@ -76,9 +76,9 @@ This will start those services:
 
 ### Otel Gateway Collector
 
-1. http://172.22.0.1:13133 - health check 
-2. http://172.22.0.1:8888/metrics - my own metrics
-3. http://172.22.0.1:8889/metrics - real metrics
+1. <http://172.22.0.1:13133> - health check
+2. <http://172.22.0.1:8888/metrics> - my own metrics
+3. <http://172.22.0.1:8889/metrics> - real metrics
 
 ### Prometheus
 
