@@ -27,7 +27,7 @@ or [compose](https://github.com/opiproject/sztp/blob/0addb57154332e7ecdebe4ba18b
 
 ## GitHub self hosted runners
 
-todo
+Follow GitHub [instructions](https://github.com/opiproject/opi-poc/settings/actions/runners/new?arch=x64&os=linux)
 
 ## Ansible
 
