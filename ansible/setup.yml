@@ -46,7 +46,7 @@
       ansible.builtin.debug: msg={{ result.redfish_facts.bios_attribute.entries[0][1].SerialNumber | default(result.redfish_facts.bios_attribute.entries[0][1].SystemServiceTag) }}
 
 - name: Set up for OPI LAB environment
-  hosts: hostservers,DPUs,Management
+  hosts: hostservers,tgens,DPUs,Management
   become: yes
   tasks:
     - name: Install usefull packages
