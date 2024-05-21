@@ -2,6 +2,10 @@
 
 Proposal is to use 172.22.0.0/16 network for all ip addresing in the lab, and have 1 gateway that will handle internet access and be entry point for access in the lab.
 
+## Code duplication
+
+:exclamation: with [ansible inventory](./ansible/inventory)
+
 ## Device types ip allocation
 
 | IR Range            | Purpose                                                     |
