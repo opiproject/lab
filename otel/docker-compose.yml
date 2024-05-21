@@ -5,6 +5,13 @@ version: "3.7"
 
 services:
 
+  telegraf:
+    image: docker.io/library/telegraf:1.29
+    volumes:
+      - ./telegraf.d:/etc/telegraf/telegraf.d:ro
+    networks:
+      - opi
+
   otel-gw-collector:
     restart: unless-stopped
     image: docker.io/otel/opentelemetry-collector:0.92.0
