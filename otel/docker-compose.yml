@@ -6,11 +6,11 @@ version: "3.7"
 services:
 
   telegraf:
+    restart: unless-stopped
     image: docker.io/library/telegraf:1.29
     volumes:
       - ./telegraf.d:/etc/telegraf/telegraf.d:ro
-    networks:
-      - opi
+    network_mode: host
 
   otel-gw-collector:
     restart: unless-stopped
@@ -100,9 +100,9 @@ services:
       - mysql
 
   portainer:
+    restart: unless-stopped
     image: portainer/portainer-ce:2.0.0
     command: -H unix:///var/run/docker.sock
-    restart: always
     networks:
       - opi
     ports:
