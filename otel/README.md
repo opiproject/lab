@@ -74,6 +74,12 @@ This will start those services:
 2. [Prometheus](https://prometheus.io/) Monitoring system & time series database
 3. [Grafana](https://grafana.com/) Open source analytics & monitoring solution for every database.
 
+### Otel Gateway Collector
+
+1. http://172.22.0.1:13133 - health check 
+2. http://172.22.0.1:8888/metrics - my own metrics
+3. http://172.22.0.1:8889/metrics - real metrics
+
 ### Prometheus
 
 1. Open <http://172.22.0.1:9091> to explore Prometheus UI
