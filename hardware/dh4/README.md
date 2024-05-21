@@ -37,3 +37,11 @@ ExecStart=socat tcp-l:4317,fork,reuseaddr tcp:172.22.0.1:4317
 [Install]
 WantedBy=default.target
 ```
+
+## Otel or telegraf
+
+Run telegraf container:
+
+```bash
+sudo docker run -d --restart=always --network=host -v ./telegraf.d/telegraf.conf:/etc/telegraf/telegraf.conf docker.io/library/telegraf:1.29
+```
