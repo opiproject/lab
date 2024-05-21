@@ -6,7 +6,7 @@ Dell PowerEdge R650
 
 - change power to always on
 
-### Otel or telegraf
+## Otel or telegraf
 
 Run telegraf container:
 
