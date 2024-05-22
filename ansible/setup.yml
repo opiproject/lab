@@ -47,6 +47,8 @@
     - name: Debug print bios serial number
       ansible.builtin.debug: msg={{ result.redfish_facts.bios_attribute.entries[0][1].SerialNumber | default(result.redfish_facts.bios_attribute.entries[0][1].SystemServiceTag) }}
 
+    # TODO: configre BIOS to be always on ( see lab/hardware/dh123)
+
 - name: Install docker and other packages
   hosts: hostservers,tgens,DPUs,Management
   become: yes
