@@ -17,6 +17,8 @@
       arista.eos.eos_command:
         commands: show version
 
+    # TODO: send lab/hardware/A100G/arista.config to the switch
+
 - name:
   hosts: hostbmcs
   become: yes
