@@ -96,14 +96,8 @@
     - name: Copy telegraf folder to remote
       ansible.builtin.copy: src=../otel/telegraf.d dest=/root
 
-    # TODO: copy correct telegraf.conf file per host...
-    #- name: Copy file to host
-    #  ansible.builtin.copy: src=../otel/telegraf.d/telegraf.conf.{{ inventory_hostname }} dest=/root/telegraf.conf.new
-
-    # TODO: re-enable MEV
-
-    - name: Run telegraf container
-      when: inventory_hostname != 'mev'
+    - name: Run telegraf container on Nvidia BF
+      when: inventory_hostname == 'bf2'
       community.docker.docker_container:
         name: telegraf
         image: docker.io/library/telegraf:1.29
@@ -114,8 +108,36 @@
         restart_policy: always
         mounts:
           - type: bind
-            source: /root/telegraf.conf
+            source: /root/telegraf.d/telegraf.conf.bf2
             target: /etc/telegraf/telegraf.conf
+            read_only: true
+          - type: bind
+            source: /run/emu_param
+            target: /run/emu_param
+            read_only: true
+
+    # TODO: copy correct telegraf.conf file per host...
+    #- name: Copy file to host
+    #  ansible.builtin.copy: src=../otel/telegraf.d/telegraf.conf.{{ inventory_hostname }} dest=/root/telegraf.conf.new
+
+    # TODO: re-enable MEV
+
+    - name: Run telegraf container on others
+      when:
+        - inventory_hostname != 'mev'
+        - inventory_hostname != 'bf2'
+      community.docker.docker_container:
+        name: telegraf
+        image: docker.io/library/telegraf:1.29
+        state: started
+        restart: true
+        detach: true
+        network_mode: host
+        restart_policy: always
+        mounts:
+          - type: bind
+            source: /root/telegraf.d
+            target: /etc/telegraf/telegraf.d
             read_only: true
 
 - name:
