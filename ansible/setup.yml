@@ -92,6 +92,10 @@
   hosts: hostservers,tgens,DPUs
   become: yes
   tasks:
+
+    - name: Copy telegraf folder to remote
+      ansible.builtin.copy: src=../otel/telegraf.d dest=/root
+
     # TODO: copy correct telegraf.conf file per host...
     #- name: Copy file to host
     #  ansible.builtin.copy: src=../otel/telegraf.d/telegraf.conf.{{ inventory_hostname }} dest=/root/telegraf.conf.new
