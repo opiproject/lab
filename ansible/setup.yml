@@ -45,7 +45,7 @@
     - name: Debug print bios serial number
       ansible.builtin.debug: msg={{ result.redfish_facts.bios_attribute.entries[0][1].SerialNumber | default(result.redfish_facts.bios_attribute.entries[0][1].SystemServiceTag) }}
 
-- name: Set up for OPI LAB environment
+- name: Install docker and other packages
   hosts: hostservers,tgens,DPUs,Management
   become: yes
   tasks:
@@ -85,6 +85,11 @@
             name: podman.socket
             state: started
 
+- name: Monitoring
+  # Management server runs it via compose, see below. So skip it here
+  hosts: hostservers,tgens,DPUs
+  become: yes
+  tasks:
     # TODO: copy correct telegraf.conf file per host...
     #- name: Copy file to host
     #  ansible.builtin.copy: src=../otel/telegraf.d/telegraf.conf.{{ inventory_hostname }} dest=/root/telegraf.conf.new
