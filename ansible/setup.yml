@@ -98,6 +98,8 @@
     - name: Copy telegraf folder to remote
       ansible.builtin.copy: src=../otel/telegraf.d dest=/root
 
+    # TODO: create new telegraf container or use same for Marvell card
+
     - name: Run telegraf container on Nvidia BF
       when: inventory_hostname == 'bf2'
       community.docker.docker_container:
