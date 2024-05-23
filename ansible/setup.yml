@@ -106,6 +106,14 @@
 
     # TODO: create new telegraf container or use same for Marvell card
 
+    - name: Nvidia | make sure emulation is running for temperature
+      when: inventory_hostname == 'bf2'
+      ansible.builtin.systemd:
+        name: set_emu_param
+        state: started
+
+    # TODO: see if there is an opportunity to consolidate and code dup removal
+
     - name: Run telegraf container on Nvidia BF
       when: inventory_hostname == 'bf2'
       community.docker.docker_container:
