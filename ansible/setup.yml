@@ -183,6 +183,7 @@
   tasks:
     - name: Check lspci
       ansible.builtin.shell: lspci | grep BlueField
+
     - name: Check RSHIM
       ansible.builtin.shell: cat /dev/rshim0/misc
 
@@ -194,3 +195,5 @@
       ansible.builtin.get_url: url={{ bmc_fw_update_image_url }} dest={{ bmc_fw_update_image_file }} mode='0440'
       when: not bfb_local_file_check.stat.exists
 
+    #- name: Flush BFB image and reboot BF card
+    #  ansible.builtin.shell: cat {{ bmc_fw_update_image_file }} > /dev/rshim0/boot
