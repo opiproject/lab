@@ -223,3 +223,14 @@
     - name: Flush BFB image and reboot BF card
       ansible.builtin.shell: cat {{ bfb_local_file }} > /dev/rshim0/boot
       when: not hostvars.bf2.bf_version in bfb_local_file
+
+# from https://www.kernel.org/doc/html/v5.8/networking/device_drivers/pensando/ionic.html
+- name: Pensando DSC installation-update
+  hosts: dh1
+  become: yes
+  tasks:
+    - ansible.builtin.shell: lspci | grep Pensando
+    - ansible.builtin.shell: dmesg | grep ionic
+    - ansible.builtin.shell: ls -l  /sys/class/net/*/device/driver
+    - ansible.builtin.shell: ethtool -i enp25s0np0
+    - ansible.builtin.shell: devlink dev info pci/0000:19:00.0
