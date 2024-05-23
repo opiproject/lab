@@ -69,6 +69,10 @@
           ansible.builtin.package:
             name: docker-ce,docker-ce-cli,containerd.io,docker-buildx-plugin,docker-compose-plugin
             state: present
+        - name: Debian | Enable docker daemon
+          ansible.builtin.systemd:
+            name: docker
+            state: started
 
     # TODO: re-enable MEV
 
