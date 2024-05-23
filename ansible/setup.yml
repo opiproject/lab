@@ -215,6 +215,11 @@
       ansible.builtin.get_url: url={{ bfb_url }} dest={{ bfb_local_file }} mode='0440'
       when: not bfb_local_file_check.stat.exists
 
+    - ansible.builtin.debug: var=bfb_local_file
+    - ansible.builtin.debug: var=hostvars.bf2.bf_version
+
+    # TODO: ansible.builtin.shell: "bfb-install --bfb {{ local_bfb }} --config /tmp/bf.cfg --rshim {{ rshim.dev }}"
+
     - name: Flush BFB image and reboot BF card
       ansible.builtin.shell: cat {{ bfb_local_file }} > /dev/rshim0/boot
       when: not hostvars.bf2.bf_version in bfb_local_file
