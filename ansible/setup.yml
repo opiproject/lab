@@ -178,9 +178,10 @@
   hosts: bf2
   become: yes
   tasks:
-    - name: Read BF version
-      ansible.builtin.shell: cat /etc/mlnx-release
-      register: bf_version
+    - ansible.builtin.shell: cat /etc/mlnx-release
+      register: result
+    - ansible.builtin.set_fact: bf_version={{ result.stdout | trim }}
+    - ansible.builtin.debug: var=bf_version
 
 - name: Nvidia BlueField installation-update
   hosts: dh2
@@ -203,6 +204,6 @@
       ansible.builtin.get_url: url={{ bfb_url }} dest={{ bfb_local_file }} mode='0440'
       when: not bfb_local_file_check.stat.exists
 
-    #- name: Flush BFB image and reboot BF card
-    #  ansible.builtin.shell: cat {{ bfb_local_file }} > /dev/rshim0/boot
-    #  when: not bfb_local_file | search(bf_version.stdout)
+    - name: Flush BFB image and reboot BF card
+      ansible.builtin.shell: cat {{ bfb_local_file }} > /dev/rshim0/boot
+      when: not hostvars.bf2.bf_version in bmc_fw_update_image_file
