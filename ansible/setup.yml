@@ -99,6 +99,8 @@
   become: yes
   tasks:
 
+    # TODO: redfish fix IP and credentials for the BMC
+
     - name: Copy telegraf folder to remote
       ansible.builtin.copy: src=../telegraf.d dest=/root
 
