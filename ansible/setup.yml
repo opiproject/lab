@@ -210,4 +210,4 @@
 
     - name: Flush BFB image and reboot BF card
       ansible.builtin.shell: cat {{ bfb_local_file }} > /dev/rshim0/boot
-      when: not hostvars.bf2.bf_version in bfb_local_file_check
+      when: not hostvars.bf2.bf_version in bfb_local_file
