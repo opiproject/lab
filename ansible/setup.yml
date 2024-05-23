@@ -186,8 +186,8 @@
   hosts: dh2
   become: yes
   vars:
-      bmc_fw_update_image_file: /root/bf-bundle-2.7.0-33_24.04_ubuntu-22.04_prod.bfb
-      bmc_fw_update_image_url: https://content.mellanox.com/BlueField/BFBs/Ubuntu22.04/{{ bmc_fw_update_image_file | basename }}
+      bfb_local_file: /root/bf-bundle-2.7.0-33_24.04_ubuntu-22.04_prod.bfb
+      bfb_url: https://content.mellanox.com/BlueField/BFBs/Ubuntu22.04/{{ bfb_local_file | basename }}
   tasks:
     - name: Check lspci
       ansible.builtin.shell: lspci | grep BlueField
@@ -195,14 +195,14 @@
     - name: Check RSHIM
       ansible.builtin.shell: cat /dev/rshim0/misc
 
-    - name: Check if firmware image exists locally {{ bmc_fw_update_image_file }}
-      ansible.builtin.stat: path={{ bmc_fw_update_image_file }}
+    - name: Check if firmware image exists locally {{ bfb_local_file }}
+      ansible.builtin.stat: path={{ bfb_local_file }}
       register: bfb_local_file_check
 
-    - name: Download firmware image {{ bmc_fw_update_image_url }}
-      ansible.builtin.get_url: url={{ bmc_fw_update_image_url }} dest={{ bmc_fw_update_image_file }} mode='0440'
+    - name: Download firmware image {{ bfb_url }}
+      ansible.builtin.get_url: url={{ bfb_url }} dest={{ bfb_local_file }} mode='0440'
       when: not bfb_local_file_check.stat.exists
 
     #- name: Flush BFB image and reboot BF card
-    #  ansible.builtin.shell: cat {{ bmc_fw_update_image_file }} > /dev/rshim0/boot
-    #  when: not bmc_fw_update_image_file | search(bf_version.stdout)
+    #  ansible.builtin.shell: cat {{ bfb_local_file }} > /dev/rshim0/boot
+    #  when: not bfb_local_file | search(bf_version.stdout)
