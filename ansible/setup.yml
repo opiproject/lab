@@ -106,33 +106,33 @@
 
     # TODO: create new telegraf container or use same for Marvell card
 
-    - name: Nvidia | make sure emulation is running for temperature
-      when: inventory_hostname == 'bf2'
-      ansible.builtin.systemd:
-        name: set_emu_param
-        state: started
-
     # TODO: see if there is an opportunity to consolidate and code dup removal
 
-    - name: Run telegraf container on Nvidia BF
+    - name: Nvidia | telegraf otel monitoring
       when: inventory_hostname == 'bf2'
-      community.docker.docker_container:
-        name: telegraf
-        image: docker.io/library/telegraf:1.29
-        state: started
-        restart: true
-        detach: true
-        network_mode: host
-        restart_policy: always
-        mounts:
-          - type: bind
-            source: /root/telegraf.d/telegraf.conf.bf2
-            target: /etc/telegraf/telegraf.conf
-            read_only: true
-          - type: bind
-            source: /run/emu_param
-            target: /run/emu_param
-            read_only: true
+      block:
+        - name: Nvidia | make sure emulation is running for temperature
+          ansible.builtin.systemd:
+            name: set_emu_param
+            state: started
+        - name: Nvidia | Run telegraf container on Nvidia BF
+          community.docker.docker_container:
+            name: telegraf
+            image: docker.io/library/telegraf:1.29
+            state: started
+            restart: true
+            detach: true
+            network_mode: host
+            restart_policy: always
+            mounts:
+              - type: bind
+                source: /root/telegraf.d/telegraf.conf.bf2
+                target: /etc/telegraf/telegraf.conf
+                read_only: true
+              - type: bind
+                source: /run/emu_param
+                target: /run/emu_param
+                read_only: true
 
     # TODO: copy correct telegraf.conf file per host...
     #- name: Copy file to host
