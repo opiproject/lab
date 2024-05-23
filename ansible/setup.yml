@@ -173,3 +173,12 @@
         enabled: yes
         state: started
         daemon_reload: yes
+
+- name: Nvidia BlueField installation-update
+  hosts: dh2
+  become: yes
+  tasks:
+    - name: Check lspci
+      ansible.builtin.shell: lspci | grep BlueField
+    - name: Check RSHIM
+      ansible.builtin.shell: cat /dev/rshim0/misc
