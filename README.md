@@ -3,6 +3,7 @@
 - [Goals and Requirments](goals-and-requirements.md)
 - Setup
   - [LAB IPs allocation](./ips.md)
+  - [Open Telemetry Observability](./otel.md)
   - [Server Software Setup](server-setup.md)
   - [Bill of Materials](bom.md)
   - [Physical Testbed Setup](physical-testbed.md)
