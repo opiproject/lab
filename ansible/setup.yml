@@ -204,11 +204,8 @@
       bfb_local_file: /root/bf-bundle-2.7.0-33_24.04_ubuntu-22.04_prod.bfb
       bfb_url: https://content.mellanox.com/BlueField/BFBs/Ubuntu22.04/{{ bfb_local_file | basename }}
   tasks:
-    - name: Check lspci
-      ansible.builtin.shell: lspci | grep BlueField
-
-    - name: Check RSHIM
-      ansible.builtin.shell: cat /dev/rshim0/misc
+    - ansible.builtin.shell: lspci | grep BlueField
+    - ansible.builtin.shell: cat /dev/rshim0/misc
 
     - name: Check if firmware image exists locally {{ bfb_local_file }}
       ansible.builtin.stat: path={{ bfb_local_file }}
