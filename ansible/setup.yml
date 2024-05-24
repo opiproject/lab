@@ -171,6 +171,8 @@
   hosts: mev
   become: yes
   tasks:
+    - ansible.builtin.shell: cat /etc/issue
+    - ansible.builtin.shell: /usr/bin/ipu-update -i
     - name: Install socat
       ansible.builtin.package:
         name: socat
