@@ -176,9 +176,6 @@
       imc_remote_file: /work/intel-ipu-pldm-image-{{ imc_version }}/intel-ipu-pldm-{{ imc_version }}.bin
       ansible_remote_tmp: /tmp
   tasks:
-    - ansible.builtin.shell: cat /etc/issue
-    - ansible.builtin.shell: /usr/bin/ipu-update -i
-
     - name: Install socat
       ansible.builtin.package:
         name: socat
@@ -205,8 +202,6 @@
       ansible.builtin.stat: path={{ imc_local_file }}
       register: imc_local_file_check
 
-    - ansible.builtin.shell: /usr/bin/ipu-update -i
-
     - name: Extract {{ imc_local_file }} into /work
       when: 
         - imc_local_file_check.stat.exists
@@ -214,6 +209,8 @@
       block:
         - ansible.builtin.unarchive: src={{ imc_local_file }} dest=/work
 
+    - ansible.builtin.shell: cat /etc/issue
+    - ansible.builtin.shell: /usr/bin/ipu-update -i
     - ansible.builtin.shell: /usr/bin/ipu-update -i /work/{{ imc_remote_file }}
       when: imc_remote_file_check.stat.exists
     
