@@ -172,9 +172,8 @@
   become: yes
   vars:
       imc_version: 1.3.0.7756
-      imc_folder: intel-ipu-pldm-image-{{ imc_version }}
-      imc_bin: intel-ipu-pldm-{{ imc_version }}.bin
       imc_local_file: /root/intel-ipu-pldm-image-{{ imc_version }}.tar.gz
+      imc_remote_file: /work/intel-ipu-pldm-image-{{ imc_version }}/intel-ipu-pldm-{{ imc_version }}.bin
       ansible_remote_tmp: /tmp
   tasks:
     - ansible.builtin.shell: cat /etc/issue
@@ -197,18 +196,29 @@
         state: started
         daemon_reload: yes
 
+    - name: Check if firmware image exists remotely {{ imc_remote_file }}
+      ansible.builtin.stat: path={{ imc_remote_file }}
+      register: imc_remote_file_check
+
     - name: Check if firmware image exists locally {{ imc_local_file }}
       delegate_to: localhost
       ansible.builtin.stat: path={{ imc_local_file }}
       register: imc_local_file_check
 
+    - ansible.builtin.shell: /usr/bin/ipu-update -i
+
     - name: Extract {{ imc_local_file }} into /work
-      when: imc_local_file_check.stat.exists
+      when: 
+        - imc_local_file_check.stat.exists
+        - not imc_remote_file_check.stat.exists
       block:
         - ansible.builtin.unarchive: src={{ imc_local_file }} dest=/work
-        - ansible.builtin.shell: /usr/bin/ipu-update -i /work/{{ imc_folder }}/{{imc_bin}}
-        #- ansible.builtin.shell: /usr/bin/ipu-update -u /work/{{ imc_folder }}/{{imc_bin}}
-        # now reboot
+
+    - ansible.builtin.shell: /usr/bin/ipu-update -i /work/{{ imc_remote_file }}
+      when: imc_remote_file_check.stat.exists
+    
+    #- ansible.builtin.shell: /usr/bin/ipu-update -u /work/{{  imc_remote_file }}
+    # now reboot
 
 - name:
   hosts: bf2
