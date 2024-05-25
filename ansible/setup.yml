@@ -209,6 +209,7 @@
       block:
         - ansible.builtin.unarchive: src={{ imc_local_file }} dest=/work
 
+    - ansible.builtin.shell: cat /etc/issue.net
     - ansible.builtin.shell: cat /etc/issue
       register: result
 
