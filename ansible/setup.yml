@@ -245,6 +245,8 @@
             - ansible.builtin.shell: echo /usr/bin/ipu-update -u {{  imc_remote_file }}
             - ansible.builtin.shell: echo reboot
 
+    # TODO: now update ACC using /usr/bin/imc-scripts/acc_os_partition_provision.sh
+
 - name:
   hosts: bf2
   become: yes
