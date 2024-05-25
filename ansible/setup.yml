@@ -171,7 +171,7 @@
   hosts: mev
   become: yes
   vars:
-      imc_version: 1.3.0.7756
+      imc_version: 1.4.0.8469
       imc_local_file: /root/intel-ipu-pldm-image-{{ imc_version }}.tar.gz
       imc_remote_file: /work/intel-ipu-pldm-image-{{ imc_version }}/intel-ipu-pldm-{{ imc_version }}.bin
       ansible_remote_tmp: /tmp
