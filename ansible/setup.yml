@@ -175,6 +175,7 @@
       imc_folder: intel-ipu-pldm-image-{{ imc_version }}
       imc_bin: intel-ipu-pldm-{{ imc_version }}.bin
       imc_local_file: /root/intel-ipu-pldm-image-{{ imc_version }}.tar.gz
+      ansible_remote_tmp: /tmp
   tasks:
     - ansible.builtin.shell: cat /etc/issue
     - ansible.builtin.shell: /usr/bin/ipu-update -i
