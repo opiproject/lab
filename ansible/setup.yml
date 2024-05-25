@@ -197,6 +197,7 @@
         daemon_reload: yes
 
     - name: Check if firmware image exists locally {{ imc_local_file }}
+      delegate_to: localhost
       ansible.builtin.stat: path={{ imc_local_file }}
       register: imc_local_file_check
 
