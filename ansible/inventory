@@ -33,5 +33,5 @@ tgen1bmc ansible_host=172.22.2.100 ansible_connection=local   ansible_user=ADMIN
 mgmt ansible_host=172.22.222.2  ansible_connection=ssh       ansible_user=root
 
 [switches]
-tor    ansible_host=172.22.0.5   ansible_connection=ansible.netcommon.network_cli ansible_user=arista ansible_ssh_pass=arista ansible_network_os=arista.eos.eos
-arista ansible_host=172.22.1.250 ansible_connection=ansible.netcommon.network_cli ansible_user=arista ansible_ssh_pass=arista ansible_network_os=arista.eos.eos
+ToR    ansible_host=172.22.0.5   ansible_connection=ansible.netcommon.network_cli ansible_user=arista ansible_ssh_pass=arista ansible_network_os=arista.eos.eos
+A100G  ansible_host=172.22.1.250 ansible_connection=ansible.netcommon.network_cli ansible_user=arista ansible_ssh_pass=arista ansible_network_os=arista.eos.eos
