@@ -193,34 +193,50 @@
         state: started
         daemon_reload: yes
 
-    - name: Check if firmware image exists remotely {{ imc_remote_file }}
-      ansible.builtin.stat: path={{ imc_remote_file }}
-      register: imc_remote_file_check
-
-    - name: Check if firmware image exists locally {{ imc_local_file }}
-      delegate_to: localhost
-      ansible.builtin.stat: path={{ imc_local_file }}
-      register: imc_local_file_check
-
-    - name: Extract {{ imc_local_file }} into /work
-      when: 
-        - imc_local_file_check.stat.exists
-        - not imc_remote_file_check.stat.exists
-      block:
-        - ansible.builtin.unarchive: src={{ imc_local_file }} dest=/work
-
-    - ansible.builtin.shell: cat /etc/issue.net
     - ansible.builtin.shell: cat /etc/issue
+    - ansible.builtin.shell: cat cat /etc/issue.net
       register: result
-
+    - ansible.builtin.set_fact: imc_run_version={{ result.stdout | trim }}
+    - ansible.builtin.debug: var=imc_run_version
     - ansible.builtin.shell: /usr/bin/ipu-update -i
-    - ansible.builtin.shell: /usr/bin/ipu-update -i {{ imc_remote_file }}
-      when: imc_remote_file_check.stat.exists
-    
-    - ansible.builtin.shell: echo /usr/bin/ipu-update -u {{  imc_remote_file }}
-      when: not imc_version in result.stdout
 
-    # TODO: now reboot
+    - name: Upgrade Intel Mev IMC FW to {{ imc_version }}
+      when: not imc_version in imc_run_version
+      block:
+        - name: Check if firmware image exists remotely {{ imc_remote_file }}
+          ansible.builtin.stat: path={{ imc_remote_file }}
+          register: imc_remote_file_check
+
+        # FW file doesn't exist, copy and unpack it
+
+        - name: Copy and Extract {{ imc_local_file }} into remote /work folder
+          when: not imc_remote_file_check.stat.exists
+          block:
+            - name: Check if firmware image exists locally {{ imc_local_file }}
+              delegate_to: localhost
+              ansible.builtin.stat: path={{ imc_local_file }}
+              register: imc_local_file_check
+        
+            - name: Copy and Unpack {{ imc_local_file }} into remote /work folder
+              when: imc_local_file_check.stat.exists
+              ansible.builtin.unarchive: src={{ imc_local_file }} dest=/work
+
+            - name: Check again if firmware image exists remotely {{ imc_remote_file }} after copy and unpack
+              ansible.builtin.stat: path={{ imc_remote_file }}
+              register: imc_remote_file_check
+              
+        # FW file exists, use it to start upgrade
+
+        - name: Start upgrade Intel Mev IMC FW using existing {{ imc_remote_file }}
+          when: imc_remote_file_check.stat.exists
+          block:
+            - ansible.builtin.shell: /usr/bin/ipu-update -i {{ imc_remote_file }}
+              when: imc_remote_file_check.stat.exists
+            
+            - ansible.builtin.shell: echo /usr/bin/ipu-update -u {{  imc_remote_file }}
+              when: not imc_version in result.stdout
+        
+            # TODO: now reboot
 
 - name:
   hosts: bf2
