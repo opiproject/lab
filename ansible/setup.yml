@@ -211,10 +211,10 @@
 
     - ansible.builtin.shell: cat /etc/issue
     - ansible.builtin.shell: /usr/bin/ipu-update -i
-    - ansible.builtin.shell: /usr/bin/ipu-update -i /work/{{ imc_remote_file }}
+    - ansible.builtin.shell: /usr/bin/ipu-update -i {{ imc_remote_file }}
       when: imc_remote_file_check.stat.exists
     
-    #- ansible.builtin.shell: /usr/bin/ipu-update -u /work/{{  imc_remote_file }}
+    #- ansible.builtin.shell: /usr/bin/ipu-update -u {{  imc_remote_file }}
     # now reboot
 
 - name:
