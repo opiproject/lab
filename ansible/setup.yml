@@ -241,14 +241,9 @@
           when: imc_remote_file_check.stat.exists
           block:
             - ansible.builtin.shell: /usr/bin/ipu-update -i {{ imc_remote_file }}
-              when: imc_remote_file_check.stat.exists
-
             # TODO: remove echo below
-
             - ansible.builtin.shell: echo /usr/bin/ipu-update -u {{  imc_remote_file }}
-              when: not imc_version in result.stdout
-        
-            # TODO: now reboot
+            - ansible.builtin.shell: echo reboot
 
 - name:
   hosts: bf2
