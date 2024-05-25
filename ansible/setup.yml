@@ -15,7 +15,10 @@
   tasks:
     - name: run show version on remote devices
       arista.eos.eos_command:
-        commands: show version
+        commands:
+          - show version
+          - show interfaces
+          - show running-config
 
     # TODO: send lab/hardware/A100G/arista.config to the switch
     # TODO: send lab/hardware/ToR/arista.config to the switch
