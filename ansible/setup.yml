@@ -18,6 +18,12 @@
         commands: show version
 
     # TODO: send lab/hardware/A100G/arista.config to the switch
+    # TODO: send lab/hardware/ToR/arista.config to the switch
+
+    #- name: load config file onto an Arista switch
+    #  arista.eos.eos_config:
+    #    backup: true
+    #    src: ../hardware/{{ inventory_hostname }} /arista.config
 
 - name:
   hosts: hostbmcs
