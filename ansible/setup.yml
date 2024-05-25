@@ -14,11 +14,12 @@
   gather_facts: false
   tasks:
     - name: run show version on remote devices
+      #become: yes
       arista.eos.eos_command:
         commands:
           - show version
           - show interfaces
-          - show running-config
+          #- show running-config
 
     # TODO: send lab/hardware/A100G/arista.config to the switch
     # TODO: send lab/hardware/ToR/arista.config to the switch
