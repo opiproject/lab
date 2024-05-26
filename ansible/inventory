@@ -16,7 +16,7 @@ dh4bmc ansible_host=172.22.2.4  ansible_connection=local      ansible_user=root
 amd ansible_host=172.22.3.1     ansible_connection=ssh        ansible_user=root
 bf2 ansible_host=172.22.3.2     ansible_connection=ssh        ansible_user=root
 mrv ansible_host=172.22.3.3     ansible_connection=ssh        ansible_user=root
-mev ansible_host=172.22.4.4     ansible_connection=ssh        ansible_user=root
+mev ansible_host=192.168.0.2    ansible_connection=ssh        ansible_user=root ansible_ssh_common_args='-J root@172.22.4.4'
 
 [dpubmcs]
 bf2bmc ansible_host=172.22.4.2  ansible_connection=local      ansible_user=root
