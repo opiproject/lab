@@ -63,7 +63,11 @@
   hosts: hostservers,tgens,DPUs,Management
   become: yes
   tasks:
+
+      # TODO: re-enable MEV
+
     - name: Install usefull packages
+      when: inventory_hostname != 'mev'
       ansible.builtin.package:
         name: python3-pip,sshpass,git
         state: present
@@ -143,6 +147,23 @@
                 source: /run/emu_param
                 target: /run/emu_param
                 read_only: true
+
+    # TODO: see if there is an opportunity to consolidate and code dup removal
+
+    - name: Intel | Run telegraf container on Intel MEV
+      community.docker.docker_container:
+        name: telegraf
+        image: docker.io/library/telegraf:1.29
+        state: started
+        restart: true
+        detach: true
+        network_mode: host
+        restart_policy: always
+        mounts:
+          - type: bind
+            source: /root/telegraf.d/telegraf.conf.mev
+            target: /etc/telegraf/telegraf.conf
+            read_only: true
 
     # TODO: copy correct telegraf.conf file per host...
     #- name: Copy file to host
