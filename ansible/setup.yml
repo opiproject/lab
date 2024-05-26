@@ -184,7 +184,7 @@
       imc_version: 1.4.0.8469
       imc_local_file: /root/intel-ipu-pldm-image-{{ imc_version }}.tar.gz
       imc_remote_file: /work/intel-ipu-pldm-image-{{ imc_version }}/intel-ipu-pldm-{{ imc_version }}.bin
-      acc_version: {{ imc_version }}
+      acc_version: "{{ imc_version }}"
       acc_local_file: /root/intel-ipu-acc-eval-image-{{ acc_version }}.tar.gz
       acc_remote_file: /work/intel-ipu-acc-eval-image-{{ acc_version }}/ACC/OS/acc-os-kernel.bin
       ansible_remote_tmp: /tmp
