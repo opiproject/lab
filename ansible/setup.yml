@@ -178,6 +178,16 @@
       register: output
 
 - name:
+  hosts: mev
+  become: yes
+  tasks:
+    - ansible.builtin.shell: cat /etc/issue
+    - ansible.builtin.shell: cat /etc/issue.net
+      register: result
+    - ansible.builtin.set_fact: acc_run_version={{ result.stdout | trim }}
+    - ansible.builtin.debug: var=acc_run_version
+
+- name:
   hosts: mevbmc
   become: yes
   vars:
@@ -212,6 +222,7 @@
     - ansible.builtin.set_fact: imc_run_version={{ result.stdout | trim }}
     - ansible.builtin.debug: var=imc_run_version
     - ansible.builtin.shell: /usr/bin/ipu-update -i
+    - ansible.builtin.debug: var=hostvars.mev.acc_run_version
 
     - name: Upgrade Intel Mev IMC FW to {{ imc_version }}
       when: not imc_version in imc_run_version
