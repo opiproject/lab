@@ -151,6 +151,7 @@
     # TODO: see if there is an opportunity to consolidate and code dup removal
 
     - name: Intel | Run telegraf container on Intel MEV
+      when: inventory_hostname == 'mev'
       community.docker.docker_container:
         name: telegraf
         image: docker.io/library/telegraf:1.29
