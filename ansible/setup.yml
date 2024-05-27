@@ -126,27 +126,28 @@
 
     # TODO: see if there is an opportunity to consolidate and code dup removal
 
-    - name: Intel | Run telegraf container on Intel MEV
+    - name: Intel | telegraf otel monitoring
       when: inventory_hostname == 'mev'
-      community.docker.docker_container:
-        name: telegraf
-        image: docker.io/library/telegraf:1.29
-        state: started
-        restart: true
-        detach: true
-        network_mode: host
-        restart_policy: always
-        mounts:
-          - type: bind
-            source: /root/telegraf.d/telegraf.conf.mev
-            target: /etc/telegraf/telegraf.conf
-            read_only: true
-
-    # TODO: copy correct telegraf.conf file per host...
-    #- name: Copy file to host
-    #  ansible.builtin.copy: src=../telegraf.d/telegraf.conf.{{ inventory_hostname }} dest=/root/telegraf.conf.new
-
-    # TODO: re-enable MEV
+      block:
+        - name: Intel | Downgrade requests package due to bug https://github.com/ansible-collections/community.docker/issues/868
+          ansible.builtin.pip: name=requests<2.32
+            environment:
+              http_proxy: http://192.168.0.1:3128
+              https_proxy: http://192.168.0.1:3128
+        - name: Intel | Run telegraf container on Intel MEV
+          community.docker.docker_container:
+            name: telegraf
+            image: docker.io/library/telegraf:1.29
+            state: started
+            restart: true
+            detach: true
+            network_mode: host
+            restart_policy: always
+            mounts:
+              - type: bind
+                source: /root/telegraf.d/telegraf.conf.mev
+                target: /etc/telegraf/telegraf.conf
+                read_only: true
 
     - name: Run telegraf container on others
       when:
