@@ -74,12 +74,12 @@
 - name: Install docker and other packages
   hosts: hostservers,tgens,DPUs,Management
   become: yes
+  environment:
+    http_proxy:  "{{ 'http://192.168.0.1:3128' if inventory_hostname == 'mev' else '' }}"
+    https_proxy: "{{ 'http://192.168.0.1:3128' if inventory_hostname == 'mev' else '' }}"
   tasks:
 
-      # TODO: re-enable MEV
-
     - name: Install usefull packages
-      when: inventory_hostname != 'mev'
       ansible.builtin.package:
         name: python3-pip,sshpass,git
         state: present
