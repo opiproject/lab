@@ -128,12 +128,12 @@
 
     - name: Intel | telegraf otel monitoring
       when: inventory_hostname == 'mev'
+      environment:
+        http_proxy: http://192.168.0.1:3128
+        https_proxy: http://192.168.0.1:3128
       block:
         - name: Intel | Downgrade requests package due to bug https://github.com/ansible-collections/community.docker/issues/868
           ansible.builtin.pip: name=requests<2.32
-            environment:
-              http_proxy: http://192.168.0.1:3128
-              https_proxy: http://192.168.0.1:3128
         - name: Intel | Run telegraf container on Intel MEV
           community.docker.docker_container:
             name: telegraf
