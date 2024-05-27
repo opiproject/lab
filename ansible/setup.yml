@@ -67,8 +67,9 @@
   tasks:
     - ansible.builtin.package: name=socat,squid state=present
     - ansible.builtin.copy: src=../hardware/dh4/fs/etc/systemd/system/socat-otel.service dest=/etc/systemd/system/socat-otel.service
+    - ansible.builtin.service: name=socat-otel enabled=yes state=started daemon_reload=yes
     - ansible.builtin.shell: sed -i 's/http_access deny all/http_access allow all/g' /etc/squid/squid.conf
-    - ansible.builtin.service: name=socat-otel,squid enabled=yes state=started daemon_reload=yes
+    - ansible.builtin.service: name=squid enabled=yes state=started
 
 - name: Install docker and other packages
   hosts: hostservers,tgens,DPUs,Management
