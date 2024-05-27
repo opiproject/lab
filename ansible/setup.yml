@@ -59,6 +59,17 @@
 
     # TODO: configre BIOS to be always on ( see lab/hardware/dh123)
 
+
+- name: Intel MEV | Enable Proxy and Port Forwarding
+  hosts: mevbmc
+  become: yes
+  gather_facts: false
+  tasks:
+    - ansible.builtin.package: name=socat,squid state=present
+    - ansible.builtin.copy: src=../hardware/dh4/fs/etc/systemd/system/socat-otel.service dest=/etc/systemd/system/socat-otel.service
+    - ansible.builtin.shell: sed -i 's/http_access deny all/http_access allow all/g' /etc/squid/squid.conf
+    - ansible.builtin.service: name=socat-otel,squid enabled=yes state=started daemon_reload=yes
+
 - name: Install docker and other packages
   hosts: hostservers,tgens,DPUs,Management
   become: yes
@@ -221,23 +232,6 @@
       acc_remote_file: /work/intel-ipu-acc-eval-image-{{ acc_version }}/ACC/OS/acc-os-kernel.bin
       ansible_remote_tmp: /tmp
   tasks:
-    - name: Install socat
-      ansible.builtin.package:
-        name: socat
-        state: present
-
-    - name: Create socat-otel systemd service file
-      template:
-        src: ../hardware/dh4/fs/etc/systemd/system/socat-otel.service
-        dest: /etc/systemd/system/socat-otel.service
-
-    - name: Enable and Start service socat-otel
-      ansible.builtin.service:
-        name: socat-otel
-        enabled: yes
-        state: started
-        daemon_reload: yes
-
     - ansible.builtin.shell: cat /etc/issue
     - ansible.builtin.shell: cat /etc/issue.net
       register: result
