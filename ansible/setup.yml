@@ -85,7 +85,6 @@
         state: present
 
     - name: Debian | Docker
-      when: ansible_os_family == 'Debian'
       block:
         - name: Debian | Remove old docker
           ansible.builtin.package:
@@ -98,25 +97,6 @@
         - name: Debian | Enable docker daemon
           ansible.builtin.systemd:
             name: docker
-            state: started
-
-    # TODO: re-enable MEV
-
-    - name: Red Hat | Docker
-      when: ansible_os_family == 'RedHat' and inventory_hostname != 'mev'
-      block:
-        - name: Red Hat | Install package dependencies
-          ansible.builtin.package:
-            name: podman,podman-docker,podman-plugins
-            state: present
-        # docker-compose >=2 does not work with podman currently
-        - name: Red Hat | Install docker-compose
-          ansible.builtin.pip:
-            name: docker-compose>=1.29,<2
-            state: present
-        - name: Red Hat | Enable podman socket for docker-compose
-          ansible.builtin.systemd:
-            name: podman.socket
             state: started
 
 - name: Monitoring
