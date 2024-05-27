@@ -78,22 +78,10 @@
     http_proxy:  "{{ 'http://192.168.0.1:3128' if inventory_hostname == 'mev' else '' }}"
     https_proxy: "{{ 'http://192.168.0.1:3128' if inventory_hostname == 'mev' else '' }}"
   tasks:
-    - name: Install usefull packages
-      ansible.builtin.package:
-        name: python3-pip,sshpass,git
-        state: present
-    - name: Remove old docker
-      ansible.builtin.package:
-        name: docker.io,docker-doc,docker-compose,docker-compose-v2,podman-docker,containerd,runc
-        state: absent
-    - name: Install new docker
-      ansible.builtin.package:
-        name: docker-ce,docker-ce-cli,containerd.io,docker-buildx-plugin,docker-compose-plugin
-        state: present
-    - name: Enable docker daemon
-      ansible.builtin.systemd:
-        name: docker
-        state: started
+    - ansible.builtin.package: state=present name=python3-pip,sshpass,git
+    - ansible.builtin.package: state=absent  name=docker.io,docker-doc,docker-compose,docker-compose-v2,podman-docker,containerd,runc
+    - ansible.builtin.package: state=present name=docker-ce,docker-ce-cli,containerd.io,docker-buildx-plugin,docker-compose-plugin
+    - ansible.builtin.systemd: state=started name=docker
 
 - name: Monitoring
   # Management server runs it via compose, see below. So skip it here
