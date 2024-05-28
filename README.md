@@ -27,7 +27,7 @@ We manage all passwords in <https://opi-team.1password.com>
 
 ## Access the LAB
 
-- ask in slack for initial user/password
+- ask in [Opi Slack](https://join.slack.com/t/opi-project/shared_invite/zt-1ctqtrgkz-WJZrcVPp3P1ACZWjpZP2KQ) for initial user/password
 - log into [vpn.opiproject-lab.org](http://vpn.opiproject-lab.org) via web browser and change first time password
 - either allow the browser based Network Access application to be installed and the VPN will be launched
 - or if your company restricts browser-based installs you can:
