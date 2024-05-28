@@ -4,6 +4,12 @@ Took from <https://github.com/opiproject/otel>
 
 ![OPI Telemetry Deploy Option](https://github.com/opiproject/otel/blob/main/doc/dpu-otel.png)
 
+## Standartization
+
+OPI standardized on OTEL, but is agnostic to actual collector or agent implementation that each vendor decides to run inside.
+
+For example, Nvidia is using [Nvidia Doca Telemetry Service](https://docs.nvidia.com/doca/sdk/nvidia+doca+telemetry+service+guide/index.html), unfortanutely it does not support OTEL as of writing this paragraph.
+
 ## On DPUs and IPUs
 
 ### Configuration
