@@ -2,7 +2,7 @@
 
 - [Goals and Requirments](goals-and-requirements.md)
 - Setup
-  - [Cables](./cables.md)
+  - [Cables/Fibers/transceivers](./cables.md)
   - [LAB IPs allocation](./ips.md) and [Inventory](./ansible/inventory)
   - [Open Telemetry Observability](./otel.md)
   - [Server Software Setup](server-setup.md)
@@ -19,7 +19,6 @@
     - [DH4 - DPU Host 4 - Dell R760](./hardware/dh4/README.md)
     - [A100G - 100G Switch - Arista DCS-7280CR](./hardware/A100G/README.md)
     - [TGEN1 - Traffic Generator 1 - Supermicro](./hardware/tgen1/README.md)
-    - [Cables/Fibers/transceivers](./hardware/cables.md)
 - [Running the Test Cases](running-the-tests.md)
 
 ## Passwords
