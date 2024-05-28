@@ -102,9 +102,9 @@
       when: inventory_hostname == 'bf2'
       block:
         - name: Nvidia | make sure emulation is running for temperature
-          ansible.builtin.systemd:
-            name: set_emu_param
-            state: started
+          ansible.builtin.systemd: state=started name=set_emu_param
+        - ansible.builtin.systemd: state=stopped name=mlnx_snap
+        - ansible.builtin.systemd: state=started name=spdk_tgt
         - name: Nvidia | Run telegraf container on Nvidia BF
           community.docker.docker_container:
             name: telegraf
