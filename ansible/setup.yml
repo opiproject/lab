@@ -57,7 +57,9 @@
     - name: Debug print bios serial number
       ansible.builtin.debug: msg={{ result.redfish_facts.bios_attribute.entries[0][1].SerialNumber | default(result.redfish_facts.bios_attribute.entries[0][1].SystemServiceTag) }}
 
-    # TODO: configre BIOS to be always on ( see lab/hardware/dh123)
+    # TODO: configre BIOS to be always on ( see lab/hardware/dh123) and any virtualization or hyper threading settings we might need
+
+    # TODO: consider flushing OS image (we use ubuntu currently) on the Host x86 servers, since we do it manually will now
 
 
 - name: Intel MEV | Enable Proxy and Port Forwarding
@@ -314,6 +316,8 @@
     - ansible.builtin.debug: var=bfb_local_file
     - ansible.builtin.debug: var=hostvars.bf2.bf_version
 
+    # TODO: handle password
+
     # TODO: ansible.builtin.shell: "bfb-install --bfb {{ local_bfb }} --config /tmp/bf.cfg --rshim {{ rshim.dev }}"
 
     - name: Flush BFB image and reboot BF card
@@ -333,6 +337,8 @@
     - ansible.builtin.shell: ethtool -i enp25s0np0
     - ansible.builtin.shell: devlink dev info pci/0000:19:00.0
 
+    # TODO: update FW for Pensando DSC
+
 - name: Marvell CN106 installation-update
   hosts: dh3
   become: yes
@@ -340,3 +346,5 @@
     - ansible.builtin.shell: lspci | grep Cavium
     - ansible.builtin.shell: lsusb | grep CP2105
     - ansible.builtin.shell: ls -l  /dev/ttyUSB*
+
+    # TODO: update FW for Marvell CN106
