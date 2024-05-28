@@ -185,6 +185,8 @@
       register: result
     - ansible.builtin.set_fact: acc_run_version={{ result.stdout | trim }}
     - ansible.builtin.debug: var=acc_run_version
+    - ansible.builtin.fail: msg="Could not find ACC string in the running {{ acc_run_version }}"
+      when: not '"ACC" in acc_run_version'
 
 - name:
   hosts: mevbmc
@@ -205,6 +207,8 @@
     - ansible.builtin.debug: var=imc_run_version
     - ansible.builtin.shell: /usr/bin/ipu-update -i
     - ansible.builtin.debug: var=hostvars.mev.acc_run_version
+    - ansible.builtin.fail: msg="Could not find IMC string in the running {{ imc_run_version }}"
+      when: not '"IMC" in imc_run_version'
 
     - name: Upgrade Intel Mev IMC FW to {{ imc_version }}
       when: not imc_version in imc_run_version
@@ -222,7 +226,7 @@
               delegate_to: localhost
               ansible.builtin.stat: path={{ imc_local_file }}
               register: imc_local_file_check
-        
+
             - name: Copy and Unpack {{ imc_local_file }} into remote /work folder
               when: imc_local_file_check.stat.exists
               ansible.builtin.unarchive: src={{ imc_local_file }} dest=/work
@@ -230,7 +234,7 @@
             - name: Check again if firmware image exists remotely {{ imc_remote_file }} after copy and unpack
               ansible.builtin.stat: path={{ imc_remote_file }}
               register: imc_remote_file_check
-              
+
         # FW file exists, use it to start upgrade
 
         - name: Start upgrade Intel Mev IMC FW using existing {{ imc_remote_file }}
@@ -259,7 +263,7 @@
               delegate_to: localhost
               ansible.builtin.stat: path={{ acc_local_file }}
               register: acc_local_file_check
-        
+
             - name: Copy and Unpack {{ acc_local_file }} into remote /work folder
               when: acc_local_file_check.stat.exists
               ansible.builtin.unarchive: src={{ acc_local_file }} dest=/work
@@ -267,7 +271,7 @@
             - name: Check again if firmware image exists remotely {{ acc_remote_file }} after copy and unpack
               ansible.builtin.stat: path={{ acc_remote_file }}
               register: acc_remote_file_check
-              
+
         # FW file exists, use it to start upgrade
 
         - name: Start upgrade Intel Mev ACC FW using existing {{ acc_remote_file }}
