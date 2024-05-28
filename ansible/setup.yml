@@ -180,13 +180,15 @@
   hosts: mev
   become: yes
   tasks:
-    - ansible.builtin.shell: cat /etc/issue
-    - ansible.builtin.shell: cat /etc/issue.net
-      register: result
-    - ansible.builtin.set_fact: acc_run_version={{ result.stdout | trim }}
-    - ansible.builtin.debug: var=acc_run_version
-    - ansible.builtin.fail: msg="Could not find ACC string in the running {{ acc_run_version }}"
-      when: not '"ACC" in acc_run_version'
+    - name: Fetch Intel Mev ACC running version
+      block:
+        - ansible.builtin.shell: cat /etc/issue
+        - ansible.builtin.shell: cat /etc/issue.net
+          register: result
+        - ansible.builtin.set_fact: acc_run_version={{ result.stdout | trim }}
+        - ansible.builtin.debug: var=acc_run_version
+        - ansible.builtin.fail: msg="Could not find ACC string in the running {{ acc_run_version }}"
+          when: not '"ACC" in acc_run_version'
 
 - name:
   hosts: mevbmc
@@ -200,15 +202,17 @@
       acc_remote_file: /work/intel-ipu-acc-eval-image-{{ acc_version }}/ACC/OS/acc-os-kernel.bin
       ansible_remote_tmp: /tmp
   tasks:
-    - ansible.builtin.shell: cat /etc/issue
-    - ansible.builtin.shell: cat /etc/issue.net
-      register: result
-    - ansible.builtin.set_fact: imc_run_version={{ result.stdout | trim }}
-    - ansible.builtin.debug: var=imc_run_version
-    - ansible.builtin.shell: /usr/bin/ipu-update -i
-    - ansible.builtin.debug: var=hostvars.mev.acc_run_version
-    - ansible.builtin.fail: msg="Could not find IMC string in the running {{ imc_run_version }}"
-      when: not '"IMC" in imc_run_version'
+    - name: Fetch Intel Mev IMC running version
+      block:
+        - ansible.builtin.shell: cat /etc/issue
+        - ansible.builtin.shell: cat /etc/issue.net
+          register: result
+        - ansible.builtin.set_fact: imc_run_version={{ result.stdout | trim }}
+        - ansible.builtin.debug: var=imc_run_version
+        - ansible.builtin.shell: /usr/bin/ipu-update -i
+        - ansible.builtin.debug: var=hostvars.mev.acc_run_version
+        - ansible.builtin.fail: msg="Could not find IMC string in the running {{ imc_run_version }}"
+          when: not '"IMC" in imc_run_version'
 
     - name: Upgrade Intel Mev IMC FW to {{ imc_version }}
       when: not imc_version in imc_run_version
