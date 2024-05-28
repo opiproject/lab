@@ -2,6 +2,7 @@
 
 - [Goals and Requirments](goals-and-requirements.md)
 - Setup
+  - [Cables](../cables.md)
   - [LAB IPs allocation](../ips.md)
   - [Server Software Setup](../server-setup.md)
   - [Bill of Materials](../bom.md)
