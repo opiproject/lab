@@ -40,6 +40,9 @@
   data_type = "integer"
   file_tag = "sensor"
 
+[[inputs.infiniband]]
+  # no configuration
+
 [[outputs.file]]
   files = ["stdout"]
   data_format = "influx"
