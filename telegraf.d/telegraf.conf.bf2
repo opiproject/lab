@@ -1,3 +1,5 @@
+# Also check https://docs.nvidia.com/doca/sdk/nvidia+doca+telemetry+service+guide/index.html
+
 [[inputs.redfish]]
   address = "https://172.22.4.2"
   username = "root"
