@@ -10,9 +10,8 @@ Took from <https://github.com/opiproject/otel>
 
 Create `telegraf.conf` file, see example [here](./telegraf.d/telegraf.conf.bf2)
 
-- change `outputs.opentelemetry` to the management server name/ip
-- change `192.168.240.1` to the internal DPU/IPU AMC/BMC for redfish collection
-- make sure [SPDK](https://spdk.io/) app and [spdk_rpc_http_proxy.py](https://github.com/spdk/spdk/blob/v24.01.x/scripts/rpc_http_proxy.py) script are running to collect `storage` statistics
+- change `172.22.0.1` in `outputs.opentelemetry` to the correct management server name/ip
+- change `192.168.240.1` and credentails to the internal DPU/IPU AMC/BMC for redfish collection
 
 ### Service
 
@@ -20,6 +19,46 @@ Run telegraf container:
 
 ```bash
 sudo docker run -d --restart=always --network=host -v ./telegraf.d/telegraf.conf.bf2:/etc/telegraf/telegraf.conf docker.io/library/telegraf:1.29
+```
+
+### Optional SPDK
+
+To monitor [SPDK](https://spdk.io/) storage metrics, make sure correct service is running:
+
+```bash
+systemctl stop mlnx_snap
+systemctl start spdk_tgt
+```
+
+And few block devices exist to monitor, like:
+
+```bash
+spdk_rpc.py bdev_malloc_create -b Malloc0 64 512
+spdk_rpc.py bdev_malloc_create -b Malloc1 64 512
+```
+
+And [Proxy](https://github.com/spdk/spdk/blob/v24.01.x/scripts/rpc_http_proxy.py) script is running:
+
+```bash
+# TODO: make it a service
+spdk_rpc_http_proxy.py 0.0.0.0 9009 spdkuser spdkpass
+```
+
+And add this to your config file:
+
+```ini
+[[inputs.http]]
+  urls = ["http://localhost:9009"]
+  headers = {"Content-Type" = "application/json"}
+  method = "POST"
+  username = "spdkuser"
+  password = "spdkpass"
+  body = '{"id":1, "method": "bdev_get_iostat"}'
+  data_format = "json"
+  name_override = "spdk"
+  json_strict = true
+  tag_keys = ["name"]
+  json_query = "result.bdevs"
 ```
 
 ### Optional Temperature
@@ -31,7 +70,7 @@ For regular Servers, add to your config file:
   # no configuration
 ```
 
-For `Nvidia BlueField` cards, to monitor temperature, add to your config file:
+For `Nvidia BlueField` cards, to monitor temperature, add to your telegraf config file:
 
 ```ini
 [[inputs.file]]
@@ -47,6 +86,12 @@ and add to your docker run command:
 
 ```text
 -v /run/emu_param:/run/emu_param
+```
+
+and make sure emulation service is running:
+
+```bash
+systemctl start set_emu_param
 ```
 
 For `Intel MEV` cards the temperature is on the ICC chip, no easy access to it:
