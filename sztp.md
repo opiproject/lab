@@ -45,7 +45,7 @@ request subnet-mask, broadcast-address, time-offset, routers, sztp-redirect-urls
 Make sure lease file received the correct option:
 
 ```bash
-DHCLIENT_LEASE_FILE=/var/lib/NetworkManager/dhclient-aa93b667-6aac-3804-91e9-4958e07fdb2f-oob_net0.lease
+root@bf2:~# DHCLIENT_LEASE_FILE=/var/lib/NetworkManager/dhclient-aa93b667-6aac-3804-91e9-4958e07fdb2f-oob_net0.lease
 root@bf2:~# grep sztp ${DHCLIENT_LEASE_FILE}
   option sztp-redirect-urls "https://bootstrap:8080/restconf/operations/ietf-sztp-bootstrap-server:get-bootstrapping-data";
 ```
@@ -61,7 +61,6 @@ root@bf2:~# grep bootstrap /etc/hosts
 Finally run SZTP agent/client:
 
 ```bash
-DHCLIENT_LEASE_FILE=/var/lib/NetworkManager/dhclient-aa93b667-6aac-3804-91e9-4958e07fdb2f-oob_net0.lease
 docker run --rm -it --network=host -v /mnt/:/mnt \
   --mount type=bind,source=${DHCLIENT_LEASE_FILE},target=/var/lib/dhclient/dhclient.leases \
   ghcr.io/opiproject/opi-sztp-client:main \
