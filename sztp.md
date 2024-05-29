@@ -10,7 +10,7 @@ Start Bootstrap and Web servers from [compose](./docker-compose.yml):
 docker compose up -d
 ```
 
-Add SZTP options to your DHCP server, [example](https://github.com/opiproject/sztp/blob/main/dhcp/dhcpd.conf.template):
+Add SZTP options to your DHCP server [config](./hardware/mgmt/fs/etc/dhcp/dhcpd.conf), [for example](https://github.com/opiproject/sztp/blob/main/dhcp/dhcpd.conf.template):
 
 ```bash
 $ grep sztp /etc/dhcp/dhcpd.conf
