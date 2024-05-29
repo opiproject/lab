@@ -304,6 +304,7 @@
       bfb_url: https://content.mellanox.com/BlueField/BFBs/Ubuntu22.04/{{ bfb_local_file | basename }}
   tasks:
     - ansible.builtin.shell: lspci | grep BlueField
+    - ansible.builtin.service: name=rshim enabled=yes state=started
     - ansible.builtin.shell: cat /dev/rshim0/misc
 
     - name: Check if firmware image exists locally {{ bfb_local_file }}
@@ -316,7 +317,6 @@
 
     - ansible.builtin.debug: var=bfb_local_file
     - ansible.builtin.debug: var=hostvars.bf2.bf_version
-    - ansible.builtin.service: name=rshim enabled=yes state=started
 
     # TODO: handle password
 
