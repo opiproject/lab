@@ -134,6 +134,15 @@ services:
     healthcheck:
       test: ["CMD-SHELL", "curl --fail -H Accept:application/yang-data+json http://127.0.0.1:$$SZTPD_NBI_PORT/.well-known/host-meta || exit 1"]
 
+  web:
+    image: docker.io/library/httpd:2.4.57-alpine3.17
+    volumes:
+      - ./sztp/my-boot-image.img:/usr/local/apache2/htdocs/my-boot-image.img
+    ports:
+      - 8082:80
+    networks:
+      - opi
+
 volumes:
   semaphore-mysql:
   portainer_data:
