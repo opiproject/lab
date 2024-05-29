@@ -15,7 +15,7 @@ Add SZTP options to your DHCP server [config](./hardware/mgmt/fs/etc/dhcp/dhcpd.
 ```bash
 $ grep sztp /etc/dhcp/dhcpd.conf
 option sztp-redirect-urls code 143  = text;
-option sztp-redirect-urls \"https://bootstrap:8080/restconf/operations/ietf-sztp-bootstrap-server:get-bootstrapping-data\";
+option sztp-redirect-urls "https://bootstrap:8080/restconf/operations/ietf-sztp-bootstrap-server:get-bootstrapping-data";
 ```
 
 Extract certificates from Bootstrap server:
