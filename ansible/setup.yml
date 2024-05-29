@@ -316,6 +316,7 @@
 
     - ansible.builtin.debug: var=bfb_local_file
     - ansible.builtin.debug: var=hostvars.bf2.bf_version
+    - ansible.builtin.service: name=rshim enabled=yes state=started
 
     # TODO: handle password
 
