@@ -25,9 +25,10 @@
     # TODO: send lab/hardware/ToR/arista.config to the switch
 
     #- name: load config file onto an Arista switch
+    #  become: yes
     #  arista.eos.eos_config:
     #    backup: true
-    #    src: ../hardware/{{ inventory_hostname }} /arista.config
+    #    src: ../hardware/{{ inventory_hostname }}/arista.config
 
 - name:
   hosts: hostbmcs
