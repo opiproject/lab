@@ -295,41 +295,40 @@
 - name:
   hosts: bf2
   become: yes
-  tasks:
-    - ansible.builtin.shell: cat /etc/mlnx-release
-      register: result
-    - ansible.builtin.set_fact: bf_version={{ result.stdout | trim }}
-    - ansible.builtin.debug: var=bf_version
-
-- name: Nvidia BlueField installation-update
-  hosts: dh2
-  become: yes
   vars:
       bfb_local_file: /root/bf-bundle-2.7.0-33_24.04_ubuntu-22.04_prod.bfb
       bfb_url: https://content.mellanox.com/BlueField/BFBs/Ubuntu22.04/{{ bfb_local_file | basename }}
   tasks:
-    - ansible.builtin.shell: lspci | grep BlueField
-    - ansible.builtin.service: name=rshim enabled=yes state=started
-    - ansible.builtin.shell: cat /dev/rshim0/misc
+    - name: Nvidia | Fetch BlueField runnikng version
+      delegate_to: dh2
+      block:
+        - ansible.builtin.shell: cat /etc/mlnx-release
+          register: result
+        - ansible.builtin.set_fact: bf_version={{ result.stdout | trim }}
+        - ansible.builtin.debug: var=bf_version
 
-    - name: Check if firmware image exists locally {{ bfb_local_file }}
-      ansible.builtin.stat: path={{ bfb_local_file }}
-      register: bfb_local_file_check
+    - name: Nvidia | Update BlueField using BFB image from the Host
+      delegate_to: dh2
+      block:
+        - ansible.builtin.shell: lspci | grep BlueField
+        - ansible.builtin.service: name=rshim enabled=yes state=started
+        - ansible.builtin.shell: cat /dev/rshim0/misc
 
-    - name: Download firmware image {{ bfb_url }}
-      ansible.builtin.get_url: url={{ bfb_url }} dest={{ bfb_local_file }} mode='0440'
-      when: not bfb_local_file_check.stat.exists
+        - name: Check if firmware image exists locally {{ bfb_local_file }}
+          ansible.builtin.stat: path={{ bfb_local_file }}
+          register: bfb_local_file_check
 
-    - ansible.builtin.debug: var=bfb_local_file
-    - ansible.builtin.debug: var=hostvars.bf2.bf_version
+        - name: Download firmware image {{ bfb_url }}
+          ansible.builtin.get_url: url={{ bfb_url }} dest={{ bfb_local_file }} mode='0440'
+          when: not bfb_local_file_check.stat.exists
 
-    # TODO: handle password
+        # TODO: handle ubuntu bfb cfg password
 
-    # TODO: ansible.builtin.shell: "bfb-install --bfb {{ local_bfb }} --config /tmp/bf.cfg --rshim {{ rshim.dev }}"
+        # TODO: ansible.builtin.shell: "bfb-install --bfb {{ local_bfb }} --config /tmp/bf.cfg --rshim {{ rshim.dev }}"
 
-    - name: Flush BFB image and reboot BF card
-      ansible.builtin.shell: cat {{ bfb_local_file }} > /dev/rshim0/boot
-      when: not hostvars.bf2.bf_version in bfb_local_file
+        - name: Flush BFB image and reboot BF card
+          ansible.builtin.shell: cat {{ bfb_local_file }} > /dev/rshim0/boot
+          when: not hostvars.bf2.bf_version in bfb_local_file
 
 # from https://www.kernel.org/doc/html/v5.8/networking/device_drivers/pensando/ionic.html
 - name: Pensando DSC installation-update
