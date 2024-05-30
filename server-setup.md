@@ -107,7 +107,7 @@ yamllint /etc/netplan/00-installer-config.yaml
 * reboot
   * ensure networking is ok
   * this is needed also for the permissions to be update, otherwise next step will fail
- 
+
 ## DHCP Server
 
 ```Shell
@@ -123,19 +123,12 @@ systemctl restart isc-dhcp-server
 
 to see new devices use `cat /var/lib/dhcp/dhcpd.leases`
 
-
 ## Others
 
 * install ansible
 
 ```bash
 sudo apt -y install ansible-core
-```
-
-* make sure dhcp is running
-
-```bash
-systemctl status isc-dhcp-server
 ```
 
 * Fix pasword-less access
