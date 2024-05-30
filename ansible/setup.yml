@@ -300,7 +300,6 @@
       bfb_url: https://content.mellanox.com/BlueField/BFBs/Ubuntu22.04/{{ bfb_local_file | basename }}
   tasks:
     - name: Nvidia | Fetch BlueField runnikng version
-      delegate_to: dh2
       block:
         - ansible.builtin.shell: cat /etc/mlnx-release
           register: result
