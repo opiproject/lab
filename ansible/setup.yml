@@ -312,6 +312,7 @@
         - ansible.builtin.shell: lspci | grep BlueField
         - ansible.builtin.service: name=rshim enabled=yes state=started
         - ansible.builtin.shell: cat /dev/rshim0/misc
+        - ansible.builtin.shell: ifconfig tmfifo_net0 192.168.100.1/30 up
 
         - name: Check if firmware image exists locally {{ bfb_local_file }}
           ansible.builtin.stat: path={{ bfb_local_file }}
