@@ -16,6 +16,12 @@ sudo docker run -d --restart=always --network=host -v ./telegraf.d/telegraf.conf
 
 ## Pensando
 
+:exclamation: register management to the ionic driver (if using standard linux drivers )
+
+```bash
+echo "1dd8 1004" > /sys/bus/pci/drivers/ionic/new_id
+```
+
 lspci
 
 ```bash
