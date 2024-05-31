@@ -76,19 +76,24 @@ root@dh1:~# dmesg | grep ionic
 [    3.260512] ionic 0000:1a:00.0: FW: 1.46.0-E-28
 [    3.450751] ionic 0000:1a:00.0 enp26s0np0: renamed from eth1
 [    3.459006] ionic 0000:19:00.0 enp25s0np0: renamed from eth0
+[149888.934142] ionic 0000:1b:00.0: 252.048 Gb/s available PCIe bandwidth (16.0 GT/s PCIe x16 link)
+[149888.937785] ionic 0000:1b:00.0: FW: 1.46.0-E-28
+[149889.003793] ionic 0000:1b:00.0 eth0: Link up - 1 Gbps
 
 root@dh1:~# ls -l  /sys/class/net/*/device
 lrwxrwxrwx 1 root root 0 May 29 23:10 /sys/class/net/eno12399np0/device -> ../../../0000:31:00.0
 lrwxrwxrwx 1 root root 0 May 29 23:10 /sys/class/net/eno12409np1/device -> ../../../0000:31:00.1
-lrwxrwxrwx 1 root root 0 May 29 23:10 /sys/class/net/enp25s0np0/device -> ../../../0000:19:00.0
-lrwxrwxrwx 1 root root 0 May 29 23:10 /sys/class/net/enp26s0np0/device -> ../../../0000:1a:00.0
+lrwxrwxrwx 1 root root 0 May 31 16:28 /sys/class/net/enp25s0np0/device -> ../../../0000:19:00.0
+lrwxrwxrwx 1 root root 0 May 31 16:28 /sys/class/net/enp26s0np0/device -> ../../../0000:1a:00.0
+lrwxrwxrwx 1 root root 0 May 31 16:48 /sys/class/net/enp27s0np0/device -> ../../../0000:1b:00.0
 lrwxrwxrwx 1 root root 0 May 30 17:45 /sys/class/net/idrac/device -> ../../../1-14.3:1.0
 
 root@dh1:~# ls -l  /sys/class/net/*/device/driver
 lrwxrwxrwx 1 root root 0 May 29 23:10 /sys/class/net/eno12399np0/device/driver -> ../../../../bus/pci/drivers/bnxt_en
 lrwxrwxrwx 1 root root 0 May 29 23:10 /sys/class/net/eno12409np1/device/driver -> ../../../../bus/pci/drivers/bnxt_en
-lrwxrwxrwx 1 root root 0 May 29 23:10 /sys/class/net/enp25s0np0/device/driver -> ../../../../../../bus/pci/drivers/ionic
-lrwxrwxrwx 1 root root 0 May 29 23:10 /sys/class/net/enp26s0np0/device/driver -> ../../../../../../bus/pci/drivers/ionic
+lrwxrwxrwx 1 root root 0 May 31 16:28 /sys/class/net/enp25s0np0/device/driver -> ../../../../../../bus/pci/drivers/ionic
+lrwxrwxrwx 1 root root 0 May 31 16:28 /sys/class/net/enp26s0np0/device/driver -> ../../../../../../bus/pci/drivers/ionic
+lrwxrwxrwx 1 root root 0 May 31 16:48 /sys/class/net/enp27s0np0/device/driver -> ../../../../../../bus/pci/drivers/ionic
 lrwxrwxrwx 1 root root 0 May 29 23:10 /sys/class/net/idrac/device/driver -> ../../../../../../../bus/usb/drivers/cdc_ether
 ```
 
@@ -134,12 +139,13 @@ enp26s0np0: flags=4099<UP,BROADCAST,MULTICAST>  mtu 1500
         TX packets 0  bytes 0 (0.0 B)
         TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
 
-lo: flags=73<UP,LOOPBACK,RUNNING>  mtu 65536
-        inet 127.0.0.1  netmask 255.0.0.0
-        inet6 ::1  prefixlen 128  scopeid 0x10<host>
-        loop  txqueuelen 1000  (Local Loopback)
-        RX packets 278  bytes 31807 (31.8 KB)
+enp27s0np0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        inet 169.254.27.2  netmask 255.255.255.0  broadcast 169.254.27.255
+        inet6 fe80::2ae:cdff:fe5b:e7ee  prefixlen 64  scopeid 0x20<link>
+        ether 00:ae:cd:5b:e7:ee  txqueuelen 1000  (Ethernet)
+        RX packets 0  bytes 0 (0.0 B)
         RX errors 0  dropped 0  overruns 0  frame 0
-        TX packets 278  bytes 31807 (31.8 KB)
+        TX packets 280  bytes 12304 (12.3 KB)
         TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+...
 ```
