@@ -56,3 +56,18 @@ DEV_NAME        pcie-0000:0f:00.2
 DEV_INFO        BlueField-2(Rev 1)
 OPN_STR         N/A
 ```
+
+ssh over rshim
+
+```bash
+root@dh2:~# ifconfig tmfifo_net0 192.168.100.1/30 up
+root@dh2:~# ping 192.168.100.2
+root@dh2:~# ssh ubuntu@192.168.100.2
+```
+
+flush new BFB image
+
+```bash
+root@dh2:~# wget https://content.mellanox.com/BlueField/BFBs/Ubuntu22.04/bf-bundle-2.7.0-33_24.04_ubuntu-22.04_prod.bfb
+root@dh2:~# cat bf-bundle-2.7.0-33_24.04_ubuntu-22.04_prod.bfb > /dev/rshim0/boot
+```
