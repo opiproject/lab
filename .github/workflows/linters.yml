@@ -1,0 +1,15 @@
+name: Linters
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  call:
+    uses: opiproject/actions/.github/workflows/linters.yml@main
+    with:
+      with_golang: false
+    secrets: inherit
