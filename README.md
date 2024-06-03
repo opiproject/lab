@@ -2,6 +2,7 @@
 
 [![License](https://img.shields.io/github/license/opiproject/lab?style=flat&color=blue&label=License)](https://github.com/opiproject/lab/blob/main/LICENSE)
 [![Linters](https://github.com/opiproject/lab/actions/workflows/linters.yml/badge.svg)](https://github.com/opiproject/lab/actions/workflows/linters.yml)
+[![Ansible](https://github.com/opiproject/lab/actions/workflows/ansible.yml/badge.svg)](https://github.com/opiproject/lab/actions/workflows/ansible.yml)
 [![CodeQL](https://github.com/opiproject/lab/actions/workflows/codeql.yml/badge.svg)](https://github.com/opiproject/lab/actions/workflows/codeql.yml)
 [![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/opiproject/lab/badge)](https://securityscorecards.dev/viewer/?platform=github.com&org=opiproject&repo=lab)
 [![GitHub stars](https://img.shields.io/github/stars/opiproject/lab.svg?style=flat-square&label=github%20stars)](https://github.com/opiproject/lab)
