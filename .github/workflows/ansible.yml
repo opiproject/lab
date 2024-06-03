@@ -14,5 +14,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ansible/ansible-lint@v24.5.0
+        with:
+          working_directory: ./ansible
 
 # TODO: add build, test, ut, docs, ...
