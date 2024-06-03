@@ -13,6 +13,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: ansible/ansible-lint@v6
+      - uses: ansible/ansible-lint@v24.5.0
 
 # TODO: add build, test, ut, docs, ...
