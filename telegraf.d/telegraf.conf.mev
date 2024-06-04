@@ -11,7 +11,7 @@
   # no configuration
 
 #[[inputs.exec]]
-#  commands = ["ssh root@192.168.0.1 iset-cli get-temperature"]
+#  commands = ["ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=3 root@192.168.0.1 iset-cli get-temperature"]
 #  name_override = "temp"
 #  data_format = "json"
 
