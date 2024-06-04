@@ -77,9 +77,7 @@
 - name: Install docker and other packages
   hosts: hostservers,tgens,DPUs,Management
   become: yes
-  environment:
-    http_proxy:  "{{ 'http://192.168.0.1:3128' if inventory_hostname == 'mev' else '' }}"
-    https_proxy: "{{ 'http://192.168.0.1:3128' if inventory_hostname == 'mev' else '' }}"
+  environment: "{{ proxy_env | default({}) }}"
   tasks:
     - ansible.builtin.package: state=present name=python3-pip,sshpass,git
     - when: ansible_os_family == 'Debian'
@@ -137,9 +135,7 @@
 
     - name: Intel | telegraf otel monitoring
       when: inventory_hostname == 'mev'
-      environment:
-        http_proxy: http://192.168.0.1:3128
-        https_proxy: http://192.168.0.1:3128
+      environment: "{{ proxy_env | default({}) }}"
       block:
         - name: Intel | Downgrade requests package due to bug https://github.com/ansible-collections/community.docker/issues/868
           ansible.builtin.pip: name=requests<2.32
