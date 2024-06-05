@@ -306,6 +306,12 @@
       delegate_to: dh2
       block:
         - ansible.builtin.shell: lspci | grep BlueField
+        # TODO: for f in $( dpkg --list | grep doca | awk '{print $2}' ); do echo $f ; apt remove --purge $f -y ; done
+        # TODO: sudo apt-get autoremove
+        # TODO: wget https://developer.nvidia.com/networking/secure/doca-sdk/doca_2.7/doca-host_2.7.0-204000-24.04-ubuntu2404_amd64.deb
+        # TODO: sudo dpkg -i doca-host-repo-ubuntu<version>_amd64.deb
+        # TODO: sudo apt-get update
+        # TODO: sudo apt install -y doca-runtime doca-sdk
         - ansible.builtin.service: name=rshim enabled=yes state=started
         - ansible.builtin.shell: cat /dev/rshim0/misc
         - ansible.builtin.shell: ifconfig tmfifo_net0 192.168.100.1/30 up
