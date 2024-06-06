@@ -119,7 +119,7 @@ services:
       - portainer_data:/data
 
   bootstrap:
-    image: ghcr.io/opiproject/opi-sztp-server:main
+    image: docker.io/opiproject/sztpd:0.0.15
     environment:
       SZTPD_INIT_PORT: 6080
       SZTPD_NBI_PORT: 7080
@@ -127,15 +127,18 @@ services:
       SZTPD_INIT_MODE: 1
       SZTPD_ACCEPT_CONTRACT: "Yes"
       SZTPD_INIT_ADDR: 0.0.0.0
-      SZTPD_OPI_MODE: "running"
-      SZTPD_RETRY_ATTEMPTS: 30
     ports:
+      - 6080:6080
       - 7080:7080
       - 8080:8080
     networks:
       - opi
     healthcheck:
-      test: ["CMD-SHELL", "curl --fail -H Accept:application/yang-data+json http://127.0.0.1:$$SZTPD_NBI_PORT/.well-known/host-meta || exit 1"]
+      test: ["CMD-SHELL", "curl --fail -H Accept:application/yang-data+json http://127.0.0.1:$$SZTPD_INIT_PORT/.well-known/host-meta || exit 1"]
+      interval: 6s
+      retries: 5
+      start_period: 20s
+      timeout: 10s
 
   web:
     image: docker.io/library/httpd:2.4.57-alpine3.17
