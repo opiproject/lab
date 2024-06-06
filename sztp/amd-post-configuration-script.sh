@@ -1,2 +1,2 @@
 #!/bin/bash
-echo "inside the post-configuration-script..."
+echo "inside the amd-post-configuration-script..."

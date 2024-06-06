@@ -1,2 +1,2 @@
 #!/bin/bash
-echo "inside the post-configuration-script..."
+echo "inside the intel-post-configuration-script..."

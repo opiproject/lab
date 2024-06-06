@@ -1,2 +1,2 @@
 #!/bin/bash
-echo "inside the pre-configuration-script..."
+echo "inside the amd-pre-configuration-script..."
