@@ -4,13 +4,14 @@ Took from <https://github.com/opiproject/sztp>
 
 ## Run on Management server
 
-Start Bootstrap and Web servers from [compose](./docker-compose.yml):
+Find the correct Bootsrap port:
 
 ```bash
-docker compose up -d
+root@mgmt:~# grep SZTPD_SBI_PORT ~/lab/docker-compose.yml
+      SZTPD_SBI_PORT: 8080
 ```
 
-Add SZTP options to your DHCP server [config](./hardware/mgmt/fs/etc/dhcp/dhcpd.conf), [for example](https://github.com/opiproject/sztp/blob/main/dhcp/dhcpd.conf.template):
+Add SZTP options to your DHCP server [config](./hardware/mgmt/fs/etc/dhcp/dhcpd.conf), [for example](https://github.com/opiproject/lab/blob/519485bc141ae8dfcf10e9fb5b844e0fda76c915/hardware/mgmt/fs/etc/dhcp/dhcpd.conf#L14-L15):
 
 ```bash
 $ grep sztp /etc/dhcp/dhcpd.conf
@@ -18,18 +19,24 @@ option sztp-redirect-urls code 143  = text;
 option sztp-redirect-urls "https://bootstrap:8080/restconf/operations/ietf-sztp-bootstrap-server:get-bootstrapping-data";
 ```
 
-Extract certificates from Bootstrap server:
+Generate keys, certificates and server configuration file from template:
 
 ```bash
-docker compose cp bootstrap:/opi.pem /tmp/opi.pem
-docker compose cp bootstrap:/tmp/sztpd-simulator/pki/client/end-entity/my_cert.pem /tmp/opi_cert.pem
-docker compose cp bootstrap:/tmp/sztpd-simulator/pki/client/end-entity/private_key.pem /tmp/opi_private_key.pem
+pushd sztp
+bash ./generate.sh
+popd
 ```
 
-Copy extracted certificates to DPUs:
+Start Bootstrap and Web servers from [compose](./docker-compose.yml):
 
 ```bash
-scp /tmp/opi*.pem root@172.22.3.2:/mnt/
+docker compose up -d bootstrap
+```
+
+Copy extracted keys and certificates to DPUs:
+
+```bash
+scp ./generated-client/opi*.pem root@172.22.3.2:/mnt/
 ```
 
 ## Run on DPUs
