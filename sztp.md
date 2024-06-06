@@ -23,6 +23,7 @@ Generate keys, certificates and server configuration file from template:
 
 ```bash
 pushd sztp
+bash ./keys.sh
 bash ./generate.sh
 popd
 ```
