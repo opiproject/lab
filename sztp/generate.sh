@@ -38,7 +38,7 @@ cp ${MYTMPDIR}/sztpd-simulator/pki/client/end-entity/private_key.pem ./generated
 
 declare -a names
 
-for vendor in nvidia intel marvell
+for vendor in nvidia intel marvell amd
 do
     names+=("${vendor^^}_BOOT_IMG_HASH_VAL" "${vendor^^}_CONFIG_B64")
     export ${vendor^^}_BOOT_IMG_HASH_VAL=$(openssl dgst -sha256 -c  ./images/${vendor,,}-boot-image.img | awk '{print $2}')
