@@ -23,10 +23,10 @@ export SBI_EE_CERT_B64=$(openssl enc -base64 -A -in         cert_chain.cms)
 export CLIENT_CERT_TA_B64=$(openssl enc -base64 -A -in      ta_cert_chain.cms)
 
 names+=(SZTPD_INIT_ADDR SZTPD_INIT_PORT SZTPD_NBI_PORT SZTPD_SBI_PORT)
-export SZTPD_INIT_ADDR=$(awk '/SZTPD_INIT_ADDR/{print $2}' ../docker-compose.yml)
-export SZTPD_INIT_PORT=$(awk '/SZTPD_INIT_PORT/{print $2}' ../docker-compose.yml)
-export SZTPD_NBI_PORT=$(awk '/SZTPD_NBI_PORT/{print $2}' ../docker-compose.yml)
-export SZTPD_SBI_PORT=$(awk '/SZTPD_SBI_PORT/{print $2}' ../docker-compose.yml)
+export SZTPD_INIT_ADDR=$(awk '/SZTPD_INIT_ADDR:/{print $2}' ../docker-compose.yml)
+export SZTPD_INIT_PORT=$(awk '/SZTPD_INIT_PORT:/{print $2}' ../docker-compose.yml)
+export SZTPD_NBI_PORT=$(awk '/SZTPD_NBI_PORT:/{print $2}' ../docker-compose.yml)
+export SZTPD_SBI_PORT=$(awk '/SZTPD_SBI_PORT:/{print $2}' ../docker-compose.yml)
 
 envsubst "$(printf '${%s} ' ${names[@]})" < template.json > config.json
 
