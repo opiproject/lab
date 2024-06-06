@@ -12,7 +12,7 @@ do
     export ${vendor^^}_CONFIG_B64=$(openssl enc -base64 -A -in      ./config/${vendor,,}-configuration.xml)
     for item in pre post
     do
-        names+=("${vendor^^}_PRE_SCRIPT_B64" "${vendor^^}_POST_SCRIPT_B64")
+        names+=("${vendor^^}_${item^^}_SCRIPT_B64")
         export ${vendor^^}_${item^^}_SCRIPT_B64=$(openssl enc -base64 -A -in  ./config/${vendor,,}-${item,,}-configuration-script.sh)
     done
 done
