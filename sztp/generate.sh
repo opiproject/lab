@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-set -euxo pipefail
+set -euo pipefail
 
 MYTMPDIR="$(mktemp -d)"
 trap 'rm -rf -- "$MYTMPDIR"' EXIT
@@ -46,7 +46,7 @@ do
     for item in pre post
     do
         names+=("${vendor^^}_PRE_SCRIPT_B64" "${vendor^^}_POST_SCRIPT_B64")
-        export ${vendor^^}_${item^^}_SCRIPT_B64=$(openssl enc -base64 -A -in  ${vendor,,}-${item,,}-configuration-script.sh)
+        export ${vendor^^}_${item^^}_SCRIPT_B64=$(openssl enc -base64 -A -in  ./config/${vendor,,}-${item,,}-configuration-script.sh)
     done
 done
 
