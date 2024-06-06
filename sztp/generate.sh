@@ -69,7 +69,8 @@ diff template.json config.json || true
 echo "Now COPY client files to the remote clients:"
 echo scp ./generated-client/opi*.pem root@172.22.3.2:/mnt/
 
-# curl --fail -H Accept:application/yang-data+json http://127.0.0.1:$SZTPD_NBI_PORT/.well-known/host-meta || exit 1
-# curl --fail -i -X GET --user my-admin@example.com:my-secret -H 'Accept:application/yang-data+json' http://bootstrap:"${SZTPD_INIT_PORT}"/restconf/ds/ietf-datastores:running
-# curl --fail -i -X PUT --user my-admin@example.com:my-secret --data @./config.json -H 'Content-Type:application/yang-data+json' http://127.0.0.1:"${SZTPD_INIT_PORT}"/restconf/ds/ietf-datastores:running
-# curl --fail -i -X GET --user my-admin@example.com:my-secret -H 'Accept:application/yang-data+json' http://bootstrap:"${SZTPD_INIT_PORT}"/restconf/ds/ietf-datastores:running
+echo "Now CONFIG server:"
+echo curl --fail -i -X GET --user my-admin@example.com:my-secret -H 'Accept:application/yang-data+json' "http://127.0.0.1:${SZTPD_INIT_PORT}/restconf/ds/ietf-datastores:running"
+echo curl --fail -i -X PUT --user my-admin@example.com:my-secret --data @./config.json -H 'Content-Type:application/yang-data+json' "http://127.0.0.1:${SZTPD_INIT_PORT}/restconf/ds/ietf-datastores:running"
+echo curl --fail -i -X GET --user my-admin@example.com:my-secret -H 'Accept:application/yang-data+json' "http://127.0.0.1:${SZTPD_NBI_PORT}/restconf/ds/ietf-datastores:running"
+echo curl --fail -H Accept:application/yang-data+json "http://127.0.0.1:${SZTPD_NBI_PORT}/.well-known/host-meta"
