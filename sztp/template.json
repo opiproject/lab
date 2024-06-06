@@ -162,6 +162,25 @@
             }
           ]
         }
+      },
+      {
+        "serial-number": "amd-serial-number",
+        "device-type": "my-device-type",
+        "activation-code": "$0$my-secret",
+        "response-manager": {
+          "matched-response": [
+            {
+              "name": "catch-all-response",
+              "response": {
+                "conveyed-information": {
+                  "onboarding-information": {
+                    "reference": "amd-onboarding-information"
+                  }
+                }
+              }
+            }
+          ]
+        }
       }
     ]
   },
@@ -205,6 +224,19 @@
             "hash-value": "$MARVELL_BOOT_IMG_HASH_VAL"
           }
         ]
+      },
+      {
+        "name": "amd-boot-image.img",
+        "download-uri": [
+          "http://web:80/amd-boot-image.img",
+          "ftp://web:82/amd-boot-image.img"
+        ],
+        "image-verification": [
+          {
+            "hash-algorithm": "ietf-sztp-conveyed-info:sha-256",
+            "hash-value": "$AMD_BOOT_IMG_HASH_VAL"
+          }
+        ]
       }
     ]
   },
@@ -221,6 +253,10 @@
           {
               "name": "marvell-pre-configuration-script",
               "script": "$MARVELL_PRE_SCRIPT_B64"
+          },
+          {
+              "name": "amd-pre-configuration-script",
+              "script": "$AMD_PRE_SCRIPT_B64"
           }
       ],
       "post-configuration-script": [
@@ -235,6 +271,10 @@
           {
               "name": "marvell-post-configuration-script",
               "script": "$MARVELL_POST_SCRIPT_B64"
+          },
+          {
+              "name": "amd-post-configuration-script",
+              "script": "$AMD_POST_SCRIPT_B64"
           }
       ]
   },
@@ -254,6 +294,11 @@
               "name": "marvell-configuration",
               "configuration-handling": "merge",
               "config": "$MARVELL_CONFIG_B64"
+          },
+          {
+              "name": "amd-configuration",
+              "configuration-handling": "merge",
+              "config": "$AMD_CONFIG_B64"
           }
       ]
   },
@@ -284,6 +329,15 @@
                   "pre-configuration-script": "marvell-pre-configuration-script",
                   "configuration": "marvell-configuration",
                   "post-configuration-script": "marvell-post-configuration-script"
+              }
+          },
+          {
+              "name": "amd-onboarding-information",
+              "onboarding-information": {
+                  "boot-image": "amd-boot-image.img",
+                  "pre-configuration-script": "amd-pre-configuration-script",
+                  "configuration": "amd-configuration",
+                  "post-configuration-script": "amd-post-configuration-script"
               }
           }
       ]
