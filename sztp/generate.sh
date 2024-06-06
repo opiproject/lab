@@ -19,19 +19,20 @@ done
 
 # keys and sertificates
 names+=(SBI_PRI_KEY_B64 SBI_PUB_KEY_B64 SBI_EE_CERT_B64 CLIENT_CERT_TA_B64)
-export SBI_PRI_KEY_B64=$(openssl enc -base64 -A -in    ./generated-server/private_key.der)
-export SBI_PUB_KEY_B64=$(openssl enc -base64 -A -in    ./generated-server/public_key.der)
-export SBI_EE_CERT_B64=$(openssl enc -base64 -A -in    ./generated-server/cert_chain.cms)
-export CLIENT_CERT_TA_B64=$(openssl enc -base64 -A -in ./generated-server/ta_cert_chain.cms)
+SBI_PRI_KEY_B64=$(openssl enc -base64 -A -in    ./generated-server/private_key.der)
+SBI_PUB_KEY_B64=$(openssl enc -base64 -A -in    ./generated-server/public_key.der)
+SBI_EE_CERT_B64=$(openssl enc -base64 -A -in    ./generated-server/cert_chain.cms)
+CLIENT_CERT_TA_B64=$(openssl enc -base64 -A -in ./generated-server/ta_cert_chain.cms)
 
 # ports and addresses
 names+=(SZTPD_INIT_ADDR SZTPD_INIT_PORT SZTPD_NBI_PORT SZTPD_SBI_PORT)
-export SZTPD_INIT_ADDR=$(awk '/SZTPD_INIT_ADDR:/{print $2}' ../docker-compose.yml)
-export SZTPD_INIT_PORT=$(awk '/SZTPD_INIT_PORT:/{print $2}' ../docker-compose.yml)
-export SZTPD_NBI_PORT=$(awk '/SZTPD_NBI_PORT:/{print $2}' ../docker-compose.yml)
-export SZTPD_SBI_PORT=$(awk '/SZTPD_SBI_PORT:/{print $2}' ../docker-compose.yml)
+SZTPD_INIT_ADDR=$(awk '/SZTPD_INIT_ADDR:/{print $2}' ../docker-compose.yml)
+SZTPD_INIT_PORT=$(awk '/SZTPD_INIT_PORT:/{print $2}' ../docker-compose.yml)
+SZTPD_NBI_PORT=$(awk '/SZTPD_NBI_PORT:/{print $2}' ../docker-compose.yml)
+SZTPD_SBI_PORT=$(awk '/SZTPD_SBI_PORT:/{print $2}' ../docker-compose.yml)
 
 # generate template
+export "${names[@]}"
 envsubst "$(printf '${%s} ' ${names[@]})" < template.json > generated_config.json
 
 # check what changed
