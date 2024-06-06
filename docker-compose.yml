@@ -140,7 +140,7 @@ services:
   web:
     image: docker.io/library/httpd:2.4.57-alpine3.17
     volumes:
-      - ./sztp/my-boot-image.img:/usr/local/apache2/htdocs/my-boot-image.img
+      - ./sztp/nvidia-boot-image.img:/usr/local/apache2/htdocs/my-boot-image.img
     ports:
       - 80:80
     networks:
