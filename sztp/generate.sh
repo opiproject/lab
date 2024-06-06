@@ -41,7 +41,7 @@ declare -a names
 for vendor in nvidia intel marvell
 do
     names+=("${vendor^^}_BOOT_IMG_HASH_VAL" "${vendor^^}_CONFIG_B64")
-    export ${vendor^^}_BOOT_IMG_HASH_VAL=$(openssl dgst -sha256 -c  ${vendor,,}-boot-image.img | awk '{print $2}')
+    export ${vendor^^}_BOOT_IMG_HASH_VAL=$(openssl dgst -sha256 -c  ./images/${vendor,,}-boot-image.img | awk '{print $2}')
     export ${vendor^^}_CONFIG_B64=$(openssl enc -base64 -A -in      ${vendor,,}-configuration.xml)
     for item in pre post
     do
