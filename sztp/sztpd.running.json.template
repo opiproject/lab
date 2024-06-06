@@ -117,7 +117,45 @@
               "response": {
                 "conveyed-information": {
                   "onboarding-information": {
-                    "reference": "my-onboarding-information"
+                    "reference": "nvidia-onboarding-information"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        "serial-number": "intel-serial-number",
+        "device-type": "my-device-type",
+        "activation-code": "$0$my-secret",
+        "response-manager": {
+          "matched-response": [
+            {
+              "name": "catch-all-response",
+              "response": {
+                "conveyed-information": {
+                  "onboarding-information": {
+                    "reference": "intel-onboarding-information"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        "serial-number": "marvell-serial-number",
+        "device-type": "my-device-type",
+        "activation-code": "$0$my-secret",
+        "response-manager": {
+          "matched-response": [
+            {
+              "name": "catch-all-response",
+              "response": {
+                "conveyed-information": {
+                  "onboarding-information": {
+                    "reference": "marvell-onboarding-information"
                   }
                 }
               }
@@ -130,15 +168,41 @@
   "wn-sztpd-1:boot-images": {
     "boot-image": [
       {
-        "name": "my-boot-image.img",
+        "name": "nvidia-boot-image.img",
         "download-uri": [
-          "http://web:80/my-boot-image.img",
-          "ftp://web:82/my-boot-image.img"
+          "http://web:80/nvidia-boot-image.img",
+          "ftp://web:82/nvidia-boot-image.img"
         ],
         "image-verification": [
           {
             "hash-algorithm": "ietf-sztp-conveyed-info:sha-256",
-            "hash-value": "$BOOT_IMG_HASH_VAL"
+            "hash-value": "$NVIDIA_BOOT_IMG_HASH_VAL"
+          }
+        ]
+      },
+      {
+        "name": "intel-boot-image.img",
+        "download-uri": [
+          "http://web:80/nvidia-boot-image.img",
+          "ftp://web:82/nvidia-boot-image.img"
+        ],
+        "image-verification": [
+          {
+            "hash-algorithm": "ietf-sztp-conveyed-info:sha-256",
+            "hash-value": "$INTEL_BOOT_IMG_HASH_VAL"
+          }
+        ]
+      },
+      {
+        "name": "marvell-boot-image.img",
+        "download-uri": [
+          "http://web:80/marvell-boot-image.img",
+          "ftp://web:82/marvell-boot-image.img"
+        ],
+        "image-verification": [
+          {
+            "hash-algorithm": "ietf-sztp-conveyed-info:sha-256",
+            "hash-value": "$MARVELL_BOOT_IMG_HASH_VAL"
           }
         ]
       }
@@ -147,35 +211,79 @@
   "wn-sztpd-1:scripts": {
       "pre-configuration-script": [
           {
-              "name": "my-pre-configuration-script",
-              "script": "$PRE_SCRIPT_B64"
+              "name": "nvidia-pre-configuration-script",
+              "script": "$NVIDIA_PRE_SCRIPT_B64"
+          },
+          {
+              "name": "intel-pre-configuration-script",
+              "script": "$INTEL_PRE_SCRIPT_B64"
+          },
+          {
+              "name": "marvell-pre-configuration-script",
+              "script": "$MARVELL_PRE_SCRIPT_B64"
           }
       ],
       "post-configuration-script": [
           {
-              "name": "my-post-configuration-script",
-              "script": "$POST_SCRIPT_B64"
+              "name": "nvidia-post-configuration-script",
+              "script": "$NVIDIA_POST_SCRIPT_B64"
+          },
+          {
+              "name": "intel-post-configuration-script",
+              "script": "$INTEL_POST_SCRIPT_B64"
+          },
+          {
+              "name": "marvell-post-configuration-script",
+              "script": "$MARVELL_POST_SCRIPT_B64"
           }
       ]
   },
   "wn-sztpd-1:configurations": {
       "configuration": [
           {
-              "name": "my-configuration",
+              "name": "nvidia-configuration",
               "configuration-handling": "merge",
-              "config": "$CONFIG_B64"
+              "config": "$NVIDIA_CONFIG_B64"
+          },
+          {
+              "name": "intel-configuration",
+              "configuration-handling": "merge",
+              "config": "$INTEL_CONFIG_B64"
+          },
+          {
+              "name": "marvell-configuration",
+              "configuration-handling": "merge",
+              "config": "$MARVELL_CONFIG_B64"
           }
       ]
   },
   "wn-sztpd-1:conveyed-information-responses": {
       "onboarding-information-response": [
           {
-              "name": "my-onboarding-information",
+              "name": "nvidia-onboarding-information",
               "onboarding-information": {
-                  "boot-image": "my-boot-image.img",
-                  "pre-configuration-script": "my-pre-configuration-script",
-                  "configuration": "my-configuration",
-                  "post-configuration-script": "my-post-configuration-script"
+                  "boot-image": "nvidia-boot-image.img",
+                  "pre-configuration-script": "nvidia-pre-configuration-script",
+                  "configuration": "nvidia-configuration",
+                  "post-configuration-script": "nvidia-post-configuration-script"
+              }
+          },
+          {
+              "name": "intel-onboarding-information",
+              "onboarding-information": {
+                  "boot-image": "intel-boot-image.img",
+                  "pre-configuration-script": "intel-pre-configuration-script",
+                  "configuration": "intel-configuration",
+                  "post-configuration-script": "intel-post-configuration-script"
+              }
+          },
+          {
+              "name": "marvell-onboarding-information",
+              "onboarding-information": {
+                  "boot-image": "marvell-boot-image.img",
+                  "pre-configuration-script": "marvell-pre-configuration-script",
+                  "configuration": "marvell-configuration",
+                  "post-configuration-script": "marvell-post-configuration-script"
               }
           }
       ]
