@@ -2,6 +2,8 @@
 
 This device is intended to mold the test traffic between the trafic generators and the devices under test
 
+[Howto upgrade](https://www.arista.com/en/um-eos/eos-standard-upgrades-and-downgrades#prepare_the_switch_for_ssu)
+
 ## HW spec
 
 Arista 7280R, 48x100GbE QSFP and 8x40GbE QSFP+ switch, front to rear air, 2 x AC and 2 x C19-C20 cords
