@@ -10,6 +10,7 @@ pushd ${MYTMPDIR}/sztpd-simulator/pki
 echo "DNS.2 = bootstrap" >> sztpd1/sbi/end-entity/openssl.cnf
 echo "DNS.3 = web" >> sztpd1/sbi/end-entity/openssl.cnf
 echo "DNS.4 = redirecter" >> sztpd1/sbi/end-entity/openssl.cnf
+sed -i 's/my-serial-number/nvidia-serial-number/g' client/end-entity/openssl.cnf
 make pki
 # SBI Port certificates
 cat sztpd1/sbi/end-entity/my_cert.pem sztpd1/sbi/intermediate2/my_cert.pem > ${MYTMPDIR}/sztpd-simulator/cert_chain.pem
