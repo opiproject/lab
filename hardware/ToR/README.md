@@ -40,6 +40,7 @@ configure
 management api gnmi
    transport grpc openmgmt
       port 5900
+   provider eos-native
 ```
 
 and
