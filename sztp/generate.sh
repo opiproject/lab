@@ -50,6 +50,6 @@ echo "Now CONFIG server:"
 echo curl --fail -i -X GET --user my-admin@example.com:my-secret -H 'Accept:application/yang-data+json' "http://127.0.0.1:${SZTPD_INIT_PORT}/restconf/ds/ietf-datastores:running"
 echo curl --fail -i -X PUT --user my-admin@example.com:my-secret --data @./generated_config.json -H 'Content-Type:application/yang-data+json' "http://127.0.0.1:${SZTPD_INIT_PORT}/restconf/ds/ietf-datastores:running"
 echo curl --fail -i -X GET --user my-admin@example.com:my-secret -H 'Accept:application/yang-data+json' "http://127.0.0.1:${SZTPD_NBI_PORT}/restconf/ds/ietf-datastores:running"
-echo curl --fail -i -X GET --user my-admin@example.com:my-secret  -H "Accept:application/yang-data+json" "http://127.0.0.1:${SZTPD_NBI_PORT}/restconf/ds/ietf-datastores:operational/wn-sztpd-1:devices/device=my-serial-number/bootstrapping-log"
+echo curl --fail -i -X GET --user my-admin@example.com:my-secret  -H "Accept:application/yang-data+json" "http://127.0.0.1:${SZTPD_NBI_PORT}/restconf/ds/ietf-datastores:operational/wn-sztpd-1:devices/device=nvidia-serial-number/bootstrapping-log"
 echo curl --fail -H Accept:application/yang-data+json "http://127.0.0.1:${SZTPD_NBI_PORT}/.well-known/host-meta"
 echo ==================================
