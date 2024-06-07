@@ -39,13 +39,17 @@ envsubst "$(printf '${%s} ' ${names[@]})" < template.json > generated_config.jso
 diff template.json generated_config.json || true
 
 # client
+echo ==================================
 echo "Now COPY client files to the remote clients:"
 echo scp ./generated-client/opi*.pem root@172.22.3.2:/mnt/
+echo ==================================
 
 # server
+echo ==================================
 echo "Now CONFIG server:"
 echo curl --fail -i -X GET --user my-admin@example.com:my-secret -H 'Accept:application/yang-data+json' "http://127.0.0.1:${SZTPD_INIT_PORT}/restconf/ds/ietf-datastores:running"
 echo curl --fail -i -X PUT --user my-admin@example.com:my-secret --data @./generated_config.json -H 'Content-Type:application/yang-data+json' "http://127.0.0.1:${SZTPD_INIT_PORT}/restconf/ds/ietf-datastores:running"
 echo curl --fail -i -X GET --user my-admin@example.com:my-secret -H 'Accept:application/yang-data+json' "http://127.0.0.1:${SZTPD_NBI_PORT}/restconf/ds/ietf-datastores:running"
 echo curl --fail -i -X GET --user my-admin@example.com:my-secret  -H "Accept:application/yang-data+json" "http://127.0.0.1:${SZTPD_NBI_PORT}/restconf/ds/ietf-datastores:operational/wn-sztpd-1:devices/device=my-serial-number/bootstrapping-log"
 echo curl --fail -H Accept:application/yang-data+json "http://127.0.0.1:${SZTPD_NBI_PORT}/.well-known/host-meta"
+echo ==================================
