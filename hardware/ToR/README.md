@@ -2,6 +2,8 @@
 
 ToR switch/router provides network conectivity for management and access to the lab devices. All non test traffic goes through this device.
 
+[Howto upgrade](https://www.arista.com/en/um-eos/eos-standard-upgrades-and-downgrades#prepare_the_switch_for_ssu)
+
 ## HW spec
 
 - Part Number: Arista DCS-7280TR-48C6-R
