@@ -69,7 +69,9 @@ root@bf2:~# grep bootstrap /etc/hosts
 Finally run SZTP agent/client:
 
 ```bash
-docker run --rm -it --network=host -v /mnt/:/mnt \
+docker run --rm -it --network=host \
+  --mount type=bind,source=/mnt,target=/mnt \
+  --mount type=bind,source=/etc/os-release,target=/etc/os-release \
   --mount type=bind,source=${DHCLIENT_LEASE_FILE},target=/var/lib/dhclient/dhclient.leases \
   ghcr.io/opiproject/opi-sztp-client:main \
   /opi-sztp-agent daemon --bootstrap-trust-anchor-cert /mnt/opi.pem --device-end-entity-cert /mnt/opi_cert.pem --device-private-key /mnt/opi_private_key.pem
