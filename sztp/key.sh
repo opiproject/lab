@@ -36,5 +36,7 @@ cp ${MYTMPDIR}/sztpd-simulator/opi.pem ./generated-client/opi.pem
 cp ${MYTMPDIR}/sztpd-simulator/pki/client/end-entity/my_cert.pem ./generated-client/opi_cert.pem
 cp ${MYTMPDIR}/sztpd-simulator/pki/client/end-entity/private_key.pem ./generated-client/opi_private_key.pem
 
+echo ==================================
 echo "Now COPY client files to the remote clients:"
 echo scp ./generated-client/opi*.pem root@172.22.3.2:/mnt/
+echo ==================================
