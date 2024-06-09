@@ -25,10 +25,12 @@ popd
 # copy locally for server
 rm -rf ./generated-server
 mkdir -p ./generated-server
+cp ${MYTMPDIR}/sztpd-simulator/pki/sztpd1/sbi/end-entity/*.pem ./generated-server/
 cp ${MYTMPDIR}/sztpd-simulator/pki/sztpd1/sbi/end-entity/private_key.der ./generated-server/
 cp ${MYTMPDIR}/sztpd-simulator/pki/sztpd1/sbi/end-entity/public_key.der ./generated-server/
 cp ${MYTMPDIR}/sztpd-simulator/cert_chain.cms ./generated-server/
 cp ${MYTMPDIR}/sztpd-simulator/ta_cert_chain.cms ./generated-server/
+chmod -R a+r ./generated-server
 
 # copy remotely for clients
 rm -rf ./generated-client
@@ -36,6 +38,7 @@ mkdir -p ./generated-client
 cp ${MYTMPDIR}/sztpd-simulator/opi.pem ./generated-client/opi.pem
 cp ${MYTMPDIR}/sztpd-simulator/pki/client/end-entity/my_cert.pem ./generated-client/opi_cert.pem
 cp ${MYTMPDIR}/sztpd-simulator/pki/client/end-entity/private_key.pem ./generated-client/opi_private_key.pem
+chmod -R a+r ./generated-client
 
 echo ==================================
 echo "Now COPY client files to the remote clients:"

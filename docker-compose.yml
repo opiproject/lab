@@ -144,10 +144,22 @@ services:
     image: docker.io/library/httpd:2.4.57-alpine3.17
     volumes:
       - ./sztp/images:/usr/local/apache2/htdocs
+      - ./sztp/generated-server/my_cert.pem:/usr/local/apache2/conf/server.crt
+      - ./sztp/generated-server/private_key.pem:/usr/local/apache2/conf/server.key
     ports:
-      - 80:80
+      - 443:443
     networks:
       - opi
+    entrypoint: /bin/ash
+    command: |
+        -x -e -c '
+        sed -i \
+        -e "s/^#\(Include .*httpd-ssl.conf\)/\1/" \
+        -e "s/^#\(LoadModule .*mod_ssl.so\)/\1/" \
+        -e "s/^#\(LoadModule .*mod_socache_shmcb.so\)/\1/" \
+        conf/httpd.conf
+        httpd-foreground
+        '
 
   jaeger:
     image: jaegertracing/all-in-one:1.53.0
