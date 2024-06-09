@@ -43,6 +43,7 @@ echo ==================================
 echo "Now COPY client files to the remote clients:"
 echo scp ./generated-client/opi*.pem root@172.22.3.2:/mnt/
 echo curl -X POST --data @/tmp/input.json -H "Content-Type:application/yang-data+json" --user nvidia-serial-number:my-secret --key /mnt/opi_private_key.pem --cert /mnt/opi_cert.pem --cacert /mnt/opi.pem https://bootstrap:8080/restconf/operations/ietf-sztp-bootstrap-server:get-bootstrapping-data
+echo curl -X GET --key /mnt/opi_private_key.pem --cert /mnt/opi_cert.pem --cacert /mnt/opi.pem --output /tmp/nvidia-boot-image.img https://web:443/nvidia-boot-image.img
 echo ==================================
 
 # server
