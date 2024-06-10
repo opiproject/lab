@@ -146,6 +146,7 @@ services:
       - ./sztp/images:/usr/local/apache2/htdocs
       - ./sztp/generated-server/my_cert.pem:/usr/local/apache2/conf/server.crt
       - ./sztp/generated-server/private_key.pem:/usr/local/apache2/conf/server.key
+      - ./sztp/generated-server/ta_cert_chain.pem:/usr/local/apache2/conf/ssl.crt/ca-bundle.crt
     ports:
       - 443:443
     networks:
@@ -158,6 +159,11 @@ services:
         -e "s/^#\(LoadModule .*mod_ssl.so\)/\1/" \
         -e "s/^#\(LoadModule .*mod_socache_shmcb.so\)/\1/" \
         conf/httpd.conf
+        sed -i \
+        -e "s/^#\(SSLVerifyClient .*require\)/\1/" \
+        -e "s/^#\(SSLVerifyDepth .*\)/\1/" \
+        -e "s/^#\(SSLCACertificateFile .*\)/\1/" \
+        conf/extra/httpd-ssl.conf
         httpd-foreground
         '
 
