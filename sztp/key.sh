@@ -26,10 +26,9 @@ popd
 rm -rf ./generated-server
 mkdir -p ./generated-server
 cp ${MYTMPDIR}/sztpd-simulator/pki/sztpd1/sbi/end-entity/*.pem ./generated-server/
-cp ${MYTMPDIR}/sztpd-simulator/pki/sztpd1/sbi/end-entity/private_key.der ./generated-server/
-cp ${MYTMPDIR}/sztpd-simulator/pki/sztpd1/sbi/end-entity/public_key.der ./generated-server/
-cp ${MYTMPDIR}/sztpd-simulator/cert_chain.cms ./generated-server/
-cp ${MYTMPDIR}/sztpd-simulator/ta_cert_chain.cms ./generated-server/
+cp ${MYTMPDIR}/sztpd-simulator/pki/sztpd1/sbi/end-entity/{private,public}_key.der ./generated-server/
+cp ${MYTMPDIR}/sztpd-simulator/cert_chain.{pem,cms} ./generated-server/
+cp ${MYTMPDIR}/sztpd-simulator/ta_cert_chain.{pem,cms} ./generated-server/
 chmod -R a+r ./generated-server
 
 # copy remotely for clients
