@@ -31,7 +31,7 @@ popd
 Start Bootstrap and Web servers from [compose](./docker-compose.yml):
 
 ```bash
-docker compose up -d bootstrap
+docker compose up -d bootstrap web
 ```
 
 Copy extracted keys and certificates to DPUs:
@@ -73,7 +73,7 @@ docker run --rm -it --network=host \
   --mount type=bind,source=/mnt,target=/mnt \
   --mount type=bind,source=/etc/os-release,target=/etc/os-release \
   --mount type=bind,source=${DHCLIENT_LEASE_FILE},target=/var/lib/dhclient/dhclient.leases \
-  ghcr.io/opiproject/opi-sztp-client:main \
+  ghcr.io/opiproject/opi-sztp-client:v0.2.0 \
   /opi-sztp-agent daemon \
   --bootstrap-trust-anchor-cert /mnt/opi.pem \
   --device-end-entity-cert /mnt/opi_cert.pem \
