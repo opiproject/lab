@@ -2,6 +2,20 @@
 
 Took from <https://github.com/opiproject/sztp>
 
+## Diagram
+
+```mermaid
+graph LR;
+    DPU[DPU or IPU]
+    Proxy[DHCP Proxy or Relay*]
+    DPU-->Proxy;
+    Proxy-->DHCPServer*;
+    Proxy-->BootstrapServer;
+    Proxy-->FileServer*;
+    Proxy-->DNSServer*;
+    Proxy-->SyslogServer*;
+```
+
 ## Run on Management server
 
 Find the correct Bootsrap port:
