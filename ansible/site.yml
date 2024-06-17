@@ -1,3 +1,7 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2022 Dell Inc, or its subsidiaries.
 ---
+
 # file: site.yml
 - import_playbook: setup.yml
+- import_playbook: monitoring.yml
