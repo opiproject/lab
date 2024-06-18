@@ -13,7 +13,7 @@
   hosts: switches
   gather_facts: false
   tasks:
-    - name: run show version on remote devices
+    - name: Run show version on remote devices
       #become: yes
       arista.eos.eos_command:
         commands:
