@@ -24,19 +24,19 @@ ansible-galaxy collection install -r collections/requirements.yml
 Then run the playbook:
 
 ```bash
-ansible-playbook -i inventory -e ansible_password='TAKE-FROM-1-PASSWORD' setup.yml
+ansible-playbook -i inventory -e ansible_password='TAKE-FROM-1-PASSWORD' site.yml
 ```
 
 Run the playbook only on specific host or group:
 
 ```bash
-ansible-playbook -i inventory -l mev -e ansible_password='TAKE-FROM-1-PASSWORD' setup.yml
+ansible-playbook -i inventory -l mev -e ansible_password='TAKE-FROM-1-PASSWORD' site.yml
 ```
 
 ## Example log
 
 ```bash
-root@dh1:~/opi-poc/lab/ansible# ansible-playbook -i inventory setup.yml
+root@dh1:~/opi-poc/lab/ansible# ansible-playbook -i inventory site.yml
 
 PLAY [Set up for OPI LAB environment] *******************************************************************************************************************************************************
 

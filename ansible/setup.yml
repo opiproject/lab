@@ -10,27 +10,6 @@
       ansible.builtin.shell: "date -s '{{ now() }}'"
 
 - name:
-  hosts: switches
-  gather_facts: false
-  tasks:
-    - name: run show version on remote devices
-      #become: yes
-      arista.eos.eos_command:
-        commands:
-          - show version
-          - show interfaces
-          #- show running-config
-
-    # TODO: send lab/hardware/A100G/arista.config to the switch
-    # TODO: send lab/hardware/ToR/arista.config to the switch
-
-    #- name: load config file onto an Arista switch
-    #  become: yes
-    #  arista.eos.eos_config:
-    #    backup: true
-    #    src: ../hardware/{{ inventory_hostname }}/arista.config
-
-- name:
   hosts: hostbmcs
   become: yes
   tasks:
