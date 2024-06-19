@@ -13,6 +13,9 @@
     - name: Copy telegraf folder to remote
       ansible.builtin.copy: src=../telegraf.d dest=/root
 
+    - name: Remove arista config file
+      ansible.builtin.file: state=absent path=/root/telegraf.d/arista.conf
+
     # TODO: create new telegraf container or use same for Marvell card
 
     # TODO: see if there is an opportunity to consolidate and code dup removal
