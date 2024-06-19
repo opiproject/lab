@@ -10,23 +10,26 @@ Arista 7280R, 48x100GbE QSFP and 8x40GbE QSFP+ switch, front to rear air, 2 x AC
 
 - Part number: Arista DCS-7280CR-48-F
 - Hardware version: 11.01
-- Software image version: 4.20.10M
+- Software image version: 4.32.0F
 
 ```bash
-A100G#show version
+A100G>show version
 Arista DCS-7280CR-48-F
-Hardware version:    11.01
-Serial number:       JPE16491339
-System MAC address:  444c.a897.b5cf
- 
-Software image version: 4.20.10M
-Architecture:           i386
-Internal build version: 4.20.10M-10040268.42010M
-Internal build ID:      5ba83857-5952-4713-b850-6e3c7c79cac3
- 
-Uptime:                 4 weeks, 6 days, 19 hours and 1 minutes
-Total memory:           15992160 kB
-Free memory:            13583756 kB
+Hardware version: 11.01
+Serial number: JPE16491339
+Hardware MAC address: 444c.a897.b5cf
+System MAC address: 444c.a897.b5cf
+
+Software image version: 4.32.0F
+Architecture: i686
+Internal build version: 4.32.0F-36401836.4320F
+Internal build ID: 6217eea5-c8bc-4ca0-a5d9-7f4c1d4f8e78
+Image format version: 3.0
+Image optimization: Sand-4GB
+
+Uptime: 1 week, 5 days, 2 hours and 55 minutes
+Total memory: 16253824 kB
+Free memory: 13076216 kB
 ```
 
 ## Management
@@ -48,10 +51,19 @@ management api gnmi
 and
 
 ```bash
-A100G#show management api gnmi
-Enabled:            Yes
-Server:             running on port 5900, in default VRF
-SSL Profile:        none
+A100G>show management api gnmi
+Octa: enabled
+
+Transport: default
+Enabled: yes
+Server: running on port 5900, in default VRF
+SSL profile: none
+QoS DSCP: none
+Authorization required: no
+Accounting requests: no
+Notification timestamp: last change time
+Listen addresses: ::
+Authentication username priority: x509-spiffe, metadata, x509-common-name
 ```
 
 test
