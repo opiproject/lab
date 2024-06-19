@@ -8,23 +8,26 @@ ToR switch/router provides network conectivity for management and access to the 
 
 - Part Number: Arista DCS-7280TR-48C6-R
 - Hardware version: 11.04
-- Software image version: 4.22.3M
+- Software image version: 4.32.0F
 
 ```bash
 tor>show vers
 Arista DCS-7280TR-48C6-R
-Hardware version:    11.04
-Serial number:       SSJ18302393
-System MAC address:  2899.3a9c.3965
+Hardware version: 11.04
+Serial number: SSJ18302393
+Hardware MAC address: 2899.3a9c.3965
+System MAC address: 2899.3a9c.3965
 
-Software image version: 4.22.3M
-Architecture:           i686
-Internal build version: 4.22.3M-14418192.4223M
-Internal build ID:      a077fcd6-7c48-4b5d-9d76-bd5f7a250bd5
+Software image version: 4.32.0F
+Architecture: i686
+Internal build version: 4.32.0F-36401836.4320F
+Internal build ID: 6217eea5-c8bc-4ca0-a5d9-7f4c1d4f8e78
+Image format version: 3.0
+Image optimization: Sand-4GB
 
-Uptime:                 16 weeks, 2 days, 6 hours and 37 minutes
-Total memory:           8104364 kB
-Free memory:            6384448 kB
+Uptime: 1 week, 5 days, 6 hours and 33 minutes
+Total memory: 8051592 kB
+Free memory: 5897932 kB
 ```
 
 ## Management
@@ -46,10 +49,19 @@ management api gnmi
 and
 
 ```bash
-tor#show management api gnmi
-Enabled:            Yes
-Server:             running on port 5900, in default VRF
-SSL Profile:        none
+tor>show management api gnmi
+Octa: enabled
+
+Transport: openmgmt
+Enabled: yes
+Server: running on port 5900, in default VRF
+SSL profile: none
+QoS DSCP: none
+Authorization required: no
+Accounting requests: no
+Notification timestamp: last change time
+Listen addresses: ::
+Authentication username priority: x509-spiffe, metadata, x509-common-name
 ```
 
 test
