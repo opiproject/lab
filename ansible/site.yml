@@ -3,6 +3,7 @@
 ---
 
 # file: site.yml
+- import_playbook: bios.yml
 - import_playbook: setup.yml
 - import_playbook: switches.yml
 - import_playbook: monitoring.yml
