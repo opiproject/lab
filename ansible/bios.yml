@@ -5,13 +5,6 @@
 - name:
   hosts: hostbmcs
   become: yes
-  vars:
-    iLO_bios_attributes_AutoPowerOn:
-      "AutoPowerOn": "AlwaysPowerOn"
-    iDRAC_bios_attributes_AcPwr:
-       "AcPwrRcvry": "On"
-       "AcPwrRcvryDelay": "Immediate"
-       "AcPwrRcvryUserDelay": 10
   tasks:
     - name: Get Firmware Inventory
       community.general.redfish_info:
@@ -39,26 +32,11 @@
 
     # TODO: configre BIOS to be always on ( see lab/hardware/dh123) and any virtualization or hyper threading settings we might need
 
-    # Bios attributes update for 'Auto power on'
-    # TODO: Add dh1bmc and dh3bmc when ready or automate based on BMC type
-    - name: Set BIOS attributes iLO
-      when: inventory_hostname == 'dh2bmc'
+    - name: Set BIOS attributes for 'Auto power on'
       community.general.redfish_config:
        category: Systems
        command: SetBiosAttributes
-       bios_attributes: "{{ iLO_bios_attributes_AutoPowerOn }}"
-       baseuri: "{{ ansible_host }}"
-       username: "{{ ansible_user }}"
-       password: "{{ ansible_password }}"
-      register: bios_attribute
-      tags: ["TEST"]
-
-    - name: Set BIOS attributes iDRAC
-      when: inventory_hostname == 'dh4bmc'
-      community.general.redfish_config:
-       category: Systems
-       command: SetBiosAttributes
-       bios_attributes: "{{ iDRAC_bios_attributes_AcPwr }}"
+       bios_attributes: "{{ bios_attributes }}"
        baseuri: "{{ ansible_host }}"
        username: "{{ ansible_user }}"
        password: "{{ ansible_password }}"
