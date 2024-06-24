@@ -7,10 +7,10 @@ dh3 ansible_host=172.22.1.3     ansible_connection=ssh        ansible_user=root
 dh4 ansible_host=172.22.1.4     ansible_connection=ssh        ansible_user=root
 
 [hostbmcs]
-dh1bmc ansible_host=172.22.2.1  ansible_connection=local      ansible_user=root
-dh2bmc ansible_host=172.22.2.2  ansible_connection=local      ansible_user=Administrator
-dh3bmc ansible_host=172.22.2.3  ansible_connection=local      ansible_user=Administrator
-dh4bmc ansible_host=172.22.2.4  ansible_connection=local      ansible_user=root
+dh1bmc ansible_host=172.22.2.1  ansible_connection=local      ansible_user=root          bios_attributes="{'AutoPowerOn': 'AlwaysPowerOn'}"
+dh2bmc ansible_host=172.22.2.2  ansible_connection=local      ansible_user=Administrator bios_attributes="{'AcPwrRcvry': 'On', 'AcPwrRcvryDelay': 'Immediate', 'AcPwrRcvryUserDelay': '10'}"
+dh3bmc ansible_host=172.22.2.3  ansible_connection=local      ansible_user=Administrator bios_attributes="{'AcPwrRcvry': 'On', 'AcPwrRcvryDelay': 'Immediate', 'AcPwrRcvryUserDelay': '10'}"
+dh4bmc ansible_host=172.22.2.4  ansible_connection=local      ansible_user=root          bios_attributes="{'AutoPowerOn': 'AlwaysPowerOn'}"
 
 [DPUs]
 amd ansible_host=172.22.3.1     ansible_connection=ssh        ansible_user=root
