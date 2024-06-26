@@ -30,7 +30,7 @@
         - name: Nvidia | Run telegraf container on Nvidia BF
           community.docker.docker_container:
             name: telegraf
-            image: docker.io/library/telegraf:1.29
+            image: docker.io/library/telegraf:1.31
             state: started
             restart: true
             detach: true
@@ -57,7 +57,7 @@
         - name: Intel | Run telegraf container on Intel MEV
           community.docker.docker_container:
             name: telegraf
-            image: docker.io/library/telegraf:1.29
+            image: docker.io/library/telegraf:1.31
             state: started
             restart: true
             detach: true
@@ -75,7 +75,7 @@
         - inventory_hostname != 'bf2'
       community.docker.docker_container:
         name: telegraf
-        image: docker.io/library/telegraf:1.29
+        image: docker.io/library/telegraf:1.31
         state: started
         restart: true
         detach: true

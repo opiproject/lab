@@ -7,7 +7,7 @@ services:
 
   telegraf:
     restart: unless-stopped
-    image: docker.io/library/telegraf:1.29
+    image: docker.io/library/telegraf:1.31
     volumes:
       - /:/hostfs:ro
       - ./telegraf.d:/etc/telegraf/telegraf.d:ro

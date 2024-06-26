@@ -24,7 +24,7 @@ Create `telegraf.conf` file, see example [here](./telegraf.d/telegraf.conf.bf2)
 Run telegraf container:
 
 ```bash
-sudo docker run -d --restart=always --network=host -v ./telegraf.d/telegraf.conf.bf2:/etc/telegraf/telegraf.conf docker.io/library/telegraf:1.29
+sudo docker run -d --restart=always --network=host -v ./telegraf.d/telegraf.conf.bf2:/etc/telegraf/telegraf.conf docker.io/library/telegraf:1.31
 ```
 
 ### Optional SPDK
