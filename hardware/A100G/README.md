@@ -37,6 +37,20 @@ Free memory: 13076216 kB
 - serial port
 - 1G ethernet management port
 
+## Docs
+
+[7280R-DataSheet](https://www.arista.com/assets/data/pdf/Datasheets/7280R-DataSheet.pdf)
+
+## Config
+
+[Config](arista.config)
+
+## Pictures
+
+![front](front.jpg)
+
+![back](back.png)
+
 ## gNMI
 
 ```bash
@@ -188,17 +202,3 @@ root@mgmt:~# docker run --network host --rm ghcr.io/openconfig/gnmic get --log -
   }
 ]
 ```
-
-## Docs
-
-[7280R-DataSheet](https://www.arista.com/assets/data/pdf/Datasheets/7280R-DataSheet.pdf)
-
-## Config
-
-[Config](arista.config)
-
-## Pictures
-
-![front](front.jpg)
-
-![back](back.png)
