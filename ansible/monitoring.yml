@@ -8,8 +8,6 @@
   become: yes
   tasks:
 
-    # TODO: redfish fix IP and credentials for the BMC
-
     - name: Copy telegraf folder to remote
       ansible.builtin.copy: src=../telegraf.d dest=/root
 
@@ -86,3 +84,8 @@
             source: /root/telegraf.d
             target: /etc/telegraf/telegraf.d
             read_only: true
+        env:
+          REDFISH_HOST: "{{ ansible_host }}"
+          REDFISH_USER: "{{ ansible_user | default(ansible_env.USER) }}"
+          REDFISH_PASSWORD: "{{ ansible_password }}"
+          REDFISH_SYSTEM_ID: "{{ resource_id | default() }}"
