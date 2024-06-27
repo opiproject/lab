@@ -6,6 +6,8 @@
   # Management server runs it via compose, see below. So skip it here
   hosts: hostservers,tgens,DPUs
   become: yes
+  vars:
+      bmc_vars: "{{ hostvars[inventory_hostname+'bmc'] }}"
   tasks:
 
     - name: Copy telegraf folder to remote
@@ -85,7 +87,7 @@
             target: /etc/telegraf/telegraf.d
             read_only: true
         env:
-          REDFISH_HOST: "{{ ansible_host }}"
-          REDFISH_USER: "{{ ansible_user | default(ansible_env.USER) }}"
-          REDFISH_PASSWORD: "{{ ansible_password }}"
-          REDFISH_SYSTEM_ID: "{{ resource_id | default() }}"
+          REDFISH_HOST: "{{ bmc_vars.ansible_host }}"
+          REDFISH_USER: "{{ bmc_vars.ansible_user }}"
+          REDFISH_PASSWORD: "{{ bmc_vars.ansible_password }}"
+          REDFISH_SYSTEM_ID: "{{ bmc_vars.resource_id }}"
