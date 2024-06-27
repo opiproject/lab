@@ -32,26 +32,13 @@
 
     # TODO: configre BIOS to be always on ( see lab/hardware/dh123) and any virtualization or hyper threading settings we might need
 
-    # Bios attributes update for 'Auto power on'
-    - name: Set BIOS attributes iLO
-      when: inventory_hostname == 'dh2bmc' or inventory_hostname == 'dh3bmc'
+    # Updating Bios attributes in host BMCs
+    - name: Set BIOS attributes
       community.general.redfish_config:
        category: Systems
+       resource_id: "{{ resource_id }}"
        command: SetBiosAttributes
-       bios_attributes: "{{ bios_attributes | default({}) }}"
-       baseuri: "{{ ansible_host }}"
-       username: "{{ ansible_user }}"
-       password: "{{ ansible_password }}"
-      register: bios_attribute
-      tags: ["TEST"]
-
-    - name: Set BIOS attributes iDRAC
-      when: inventory_hostname == 'dh1bmc' or inventory_hostname == 'dh4bmc'
-      community.general.redfish_config:
-       category: Systems
-       resource_id: System.Embedded.1
-       command: SetBiosAttributes
-       bios_attributes: "{{ bios_attributes | default({}) }}"
+       bios_attributes: "{{ bios_attributes }}"
        baseuri: "{{ ansible_host }}"
        username: "{{ ansible_user }}"
        password: "{{ ansible_password }}"
