@@ -37,6 +37,20 @@ Free memory: 13076216 kB
 - serial port
 - 1G ethernet management port
 
+## Docs
+
+[7280R-DataSheet](https://www.arista.com/assets/data/pdf/Datasheets/7280R-DataSheet.pdf)
+
+## Config
+
+[Config](arista.config)
+
+## Pictures
+
+![front](front.jpg)
+
+![back](back.png)
+
 ## gNMI
 
 ```bash
@@ -115,16 +129,76 @@ root@dh1:~# docker run --network host --rm ghcr.io/openconfig/gnmic get --log --
 ]
 ```
 
-## Docs
+eos_native test
 
-[7280R-DataSheet](https://www.arista.com/assets/data/pdf/Datasheets/7280R-DataSheet.pdf)
-
-## Config
-
-[Config](arista.config)
-
-## Pictures
-
-![front](front.jpg)
-
-![back](back.png)
+```bash
+root@mgmt:~# docker run --network host --rm ghcr.io/openconfig/gnmic get --log --username arista --password arista --insecure --address 172.22.1.250 --port 5900 --path 'eos_native:/Kernel/proc/cpu/utilization/total'
+2024/06/26 19:30:55.348744 [gnmic] version=0.37.0, commit=05a3e785, date=2024-05-13T23:27:31Z, gitURL=https://github.com/openconfig/gnmic, docs=https://gnmic.openconfig.net
+2024/06/26 19:30:55.348776 [gnmic] using config file ""
+2024/06/26 19:30:55.348946 [gnmic] sending gNMI GetRequest: prefix='<nil>', path='[origin:"eos_native"  elem:{name:"Kernel"}  elem:{name:"proc"}  elem:{name:"cpu"}  elem:{name:"utilization"}  elem:{name:"total"}]', type='ALL', encoding='JSON', models='[]', extension='[]' to 172.22.1.250
+2024/06/26 19:30:55.349361 [gnmic] creating gRPC client for target "172.22.1.250"
+[
+  {
+    "source": "172.22.1.250",
+    "timestamp": 1719427787116659585,
+    "time": "2024-06-26T18:49:47.116659585Z",
+    "prefix": "eos_native:Kernel/proc/cpu/utilization/total",
+    "updates": [
+      {
+        "Path": "util",
+        "values": {
+          "util": 3
+        }
+      },
+      {
+        "Path": "iowait",
+        "values": {
+          "iowait": 389489
+        }
+      },
+      {
+        "Path": "irq",
+        "values": {
+          "irq": 2413338
+        }
+      },
+      {
+        "Path": "user",
+        "values": {
+          "user": 42695512
+        }
+      },
+      {
+        "Path": "softirq",
+        "values": {
+          "softirq": 1823319
+        }
+      },
+      {
+        "Path": "system",
+        "values": {
+          "system": 4697823
+        }
+      },
+      {
+        "Path": "name",
+        "values": {
+          "name": "total"
+        }
+      },
+      {
+        "Path": "nice",
+        "values": {
+          "nice": 135
+        }
+      },
+      {
+        "Path": "idle",
+        "values": {
+          "idle": 1258337973
+        }
+      }
+    ]
+  }
+]
+```

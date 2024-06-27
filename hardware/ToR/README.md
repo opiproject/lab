@@ -35,6 +35,16 @@ Free memory: 5897932 kB
 - serial port
 - 1G ethernet management port
 
+## Docs
+
+[Data Sheet](https://www.arista.com/assets/data/pdf/Datasheets/7280R-DataSheet.pdf)
+
+## Pictures
+
+![front](front.png)
+
+![back](back.png)
+
 ## gNMI
 
 ```bash
@@ -115,12 +125,76 @@ root@dh1:~# docker run --network host --rm ghcr.io/openconfig/gnmic get --log --
 ]
 ```
 
-## Docs
+eos_native test
 
-[Data Sheet](https://www.arista.com/assets/data/pdf/Datasheets/7280R-DataSheet.pdf)
-
-## Pictures
-
-![front](front.png)
-
-![back](back.png)
+```bash
+root@mgmt:~# docker run --network host --rm ghcr.io/openconfig/gnmic get --log --username arista --password arista --insecure --address 172.22.0.5 --port 5900 --path 'eos_native:/Kernel/proc/cpu/utilization/total'
+2024/06/26 19:36:02.049760 [gnmic] version=0.37.0, commit=05a3e785, date=2024-05-13T23:27:31Z, gitURL=https://github.com/openconfig/gnmic, docs=https://gnmic.openconfig.net
+2024/06/26 19:36:02.049805 [gnmic] using config file ""
+2024/06/26 19:36:02.050010 [gnmic] sending gNMI GetRequest: prefix='<nil>', path='[origin:"eos_native"  elem:{name:"Kernel"}  elem:{name:"proc"}  elem:{name:"cpu"}  elem:{name:"utilization"}  elem:{name:"total"}]', type='ALL', encoding='JSON', models='[]', extension='[]' to 172.22.0.5
+2024/06/26 19:36:02.050421 [gnmic] creating gRPC client for target "172.22.0.5"
+[
+  {
+    "source": "172.22.0.5",
+    "timestamp": 1719430186814981271,
+    "time": "2024-06-26T19:29:46.814981271Z",
+    "prefix": "eos_native:Kernel/proc/cpu/utilization/total",
+    "updates": [
+      {
+        "Path": "idle",
+        "values": {
+          "idle": 624983782
+        }
+      },
+      {
+        "Path": "irq",
+        "values": {
+          "irq": 917291
+        }
+      },
+      {
+        "Path": "softirq",
+        "values": {
+          "softirq": 644250
+        }
+      },
+      {
+        "Path": "system",
+        "values": {
+          "system": 4889905
+        }
+      },
+      {
+        "Path": "util",
+        "values": {
+          "util": 4
+        }
+      },
+      {
+        "Path": "name",
+        "values": {
+          "name": "total"
+        }
+      },
+      {
+        "Path": "nice",
+        "values": {
+          "nice": 268
+        }
+      },
+      {
+        "Path": "iowait",
+        "values": {
+          "iowait": 397063
+        }
+      },
+      {
+        "Path": "user",
+        "values": {
+          "user": 28358125
+        }
+      }
+    ]
+  }
+]
+```
