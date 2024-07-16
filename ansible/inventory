@@ -33,6 +33,9 @@ tgen1bmc ansible_host=172.22.2.100 ansible_connection=local   ansible_user=ADMIN
 [Management]
 mgmt ansible_host=172.22.0.1    ansible_connection=ssh        ansible_user=root
 
+[lb]
+f5 ansible_host=216.218.200.227  ansible_user="{{f5_username}}" ansible_password="{{f5_password}}" server_port=443
+
 [switches]
 ToR    ansible_host=172.22.0.5   ansible_connection=ansible.netcommon.network_cli ansible_user=arista ansible_ssh_pass=arista ansible_network_os=arista.eos.eos
 A100G  ansible_host=172.22.1.250 ansible_connection=ansible.netcommon.network_cli ansible_user=arista ansible_ssh_pass=arista ansible_network_os=arista.eos.eos
