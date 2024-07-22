@@ -49,6 +49,9 @@ Proposal is to use 172.22.0.0/16 network for all ip addresing in the lab, and ha
 | 172.22.2.4                    |          | DH4 iDRAC        | <https://172.22.2.4/redfish/v1/> |
 | 172.22.4.4                    |          | Intel DYP imc    |                                  |
 |                               |          |                  |                                  |
+| 172.22.1.9                    |          | DPU Host 9       |                                  |
+| 172.22.2.9                    |          | DH9 ???          | <https://172.22.2.9/redfish/v1/> |
+|                               |          |                  |                                  |
 | 172.22.1.100                  |          | Tgen1            |                                  |
 | 172.22.2.100                  |          | Tgen1 bmc        | <https://172.22.2.100/redfish/v1/> |
 |                               |          |                  |                                  |
