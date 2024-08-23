@@ -4,13 +4,13 @@
   vars:
     bmc_vars: "{{ hostvars[inventory_hostname+'bmc'] }}"
   tasks:
-    - name: Copy telegraf folder to remote
+    - name: Copy telegraf folder to remote folder
       ansible.builtin.copy: src=../telegraf.d dest=/root
 
     - name: Remove arista config file
       ansible.builtin.file: state=absent path=/root/telegraf.d/arista.conf
 
-    - name: Nvidia | Additional Nvidia-specific tasks
+    - name: Nvidia | Run additional Nvidia specific tasks
       when: inventory_hostname == 'bf2'
       block:
         - name: Nvidia | make sure emulation is running for temperature
@@ -18,14 +18,14 @@
         - ansible.builtin.systemd: state=stopped name=mlnx_snap
         - ansible.builtin.systemd: state=started name=spdk_tgt
 
-    - name: Intel | Set environment and downgrade requests package
+    - name: Intel | Set proxy environment and downgrade requests package due to bug
       when: inventory_hostname == 'mev'
       environment: "{{ proxy_env | default({}) }}"
       block:
         - name: Intel | Downgrade requests package due to bug https://github.com/ansible-collections/community.docker/issues/868
           ansible.builtin.pip: name=requests<2.32
 
-    - name: Run telegraf container
+    - name: Run telegraf container on all hosts
       community.docker.docker_container:
         name: telegraf
         image: docker.io/library/telegraf:1.31
@@ -60,7 +60,7 @@
             )
           }}
 
-    - name: Run telegraf container on other hosts
+    - name: Set telegraf container parameters on dh1, dh2, dh3, dh4
       when:
         - inventory_hostname != 'mev'
         - inventory_hostname != 'bf2'
