@@ -1,20 +1,18 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2022 Dell Inc, or its subsidiaries.
 ---
-
 - name: Intel | Upgrade Intel Mev IMC and ACC FWs
   hosts: mev
   become: yes
   vars:
-      imc_version: 1.4.0.8469
-      imc_local_file: /root/intel-ipu-pldm-image-{{ imc_version }}.tar.gz
-      imc_remote_file: /work/intel-ipu-pldm-image-{{ imc_version }}/intel-ipu-pldm-{{ imc_version }}.bin
-      acc_version: "{{ imc_version }}"
-      acc_local_file: /root/intel-ipu-acc-eval-image-{{ acc_version }}.tar.gz
-      acc_remote_file: /work/intel-ipu-acc-eval-image-{{ acc_version }}/ACC/OS/acc-os-kernel.bin
-      ansible_remote_tmp: /tmp
+    imc_version: 1.4.0.8469
+    imc_local_file: /root/intel-ipu-pldm-image-{{ imc_version }}.tar.gz
+    imc_remote_file: /work/intel-ipu-pldm-image-{{ imc_version }}/intel-ipu-pldm-{{ imc_version }}.bin
+    acc_version: "{{ imc_version }}"
+    acc_local_file: /root/intel-ipu-acc-eval-image-{{ acc_version }}.tar.gz
+    acc_remote_file: /work/intel-ipu-acc-eval-image-{{ acc_version }}/ACC/OS/acc-os-kernel.bin
+    ansible_remote_tmp: /tmp
   tasks:
-
     - name: Fetch Intel Mev ACC running version
       block:
         - ansible.builtin.shell: cat /etc/issue
@@ -113,8 +111,8 @@
   hosts: bf2
   become: yes
   vars:
-      bfb_local_file: /root/bf-bundle-2.7.0-33_24.04_ubuntu-22.04_prod.bfb
-      bfb_url: https://content.mellanox.com/BlueField/BFBs/Ubuntu22.04/{{ bfb_local_file | basename }}
+    bfb_local_file: /root/bf-bundle-2.7.0-33_24.04_ubuntu-22.04_prod.bfb
+    bfb_url: https://content.mellanox.com/BlueField/BFBs/Ubuntu22.04/{{ bfb_local_file | basename }}
   tasks:
     - name: Nvidia | Fetch BlueField runnikng version
       block:
@@ -167,6 +165,24 @@
     - ansible.builtin.shell: devlink dev info pci/0000:19:00.0
 
     # TODO: update FW for Pensando DSC
+    - name: Update Pensando DSC Firmware
+      block:
+        - name: Check if firmware image is present on the system
+          ansible.builtin.stat:
+            path: /path/to/pensando_firmware.bin
+          register: pensando_firmware_check
+
+        - name: Download Pensando DSC Firmware if not present
+          ansible.builtin.get_url:
+            url: https://firmware.download.link/pensando_firmware.bin
+            dest: /path/to/pensando_firmware.bin
+            mode: "0440"
+          when: not pensando_firmware_check.stat.exists
+
+        - name: Install Pensando DSC Firmware
+          ansible.builtin.shell: |
+            fw-update --device /dev/ionic0 --fw /path/to/pensando_firmware.bin
+          when: pensando_firmware_check.stat.exists
 
 - name: Marvell CN106 installation-update
   hosts: dh3
@@ -177,3 +193,21 @@
     - ansible.builtin.shell: ls -l  /dev/ttyUSB*
 
     # TODO: update FW for Marvell CN106
+    - name: Update Marvell CN106 Firmware
+      block:
+        - name: Check if firmware image is present on the system
+          ansible.builtin.stat:
+            path: /path/to/marvell_cn106_firmware.bin
+          register: marvell_firmware_check
+
+        - name: Download Marvell CN106 Firmware if not present
+          ansible.builtin.get_url:
+            url: https://firmware.download.link/marvell_cn106_firmware.bin
+            dest: /path/to/marvell_cn106_firmware.bin
+            mode: "0440"
+          when: not marvell_firmware_check.stat.exists
+
+        - name: Install Marvell CN106 Firmware
+          ansible.builtin.shell: |
+            fwupdate -a /dev/cn106 -f /path/to/marvell_cn106_firmware.bin
+          when: marvell_firmware_check.stat.exists
