@@ -25,8 +25,7 @@
         - name: Intel | Downgrade requests package due to bug https://github.com/ansible-collections/community.docker/issues/868
           ansible.builtin.pip: name=requests<2.32
 
-    - name: Run telegraf container for Nvidia and Intel
-      when: inventory_hostname == 'bf2' or inventory_hostname == 'mev'
+    - name: Run telegraf container
       community.docker.docker_container:
         name: telegraf
         image: docker.io/library/telegraf:1.31
@@ -40,8 +39,11 @@
             [
               {
                 'type': 'bind',
-                'source': inventory_hostname == 'bf2' and '/root/telegraf.d/telegraf.conf.bf2' or '/root/telegraf.d/telegraf.conf.mev',
-                'target': '/etc/telegraf/telegraf.conf',
+                'source': inventory_hostname == 'bf2' and '/root/telegraf.d/telegraf.conf.bf2' or
+                          inventory_hostname == 'mev' and '/root/telegraf.d/telegraf.conf.mev' or
+                          '/root/telegraf.d',
+                'target': inventory_hostname in ['bf2', 'mev'] and '/etc/telegraf/telegraf.conf' or
+                          '/etc/telegraf/telegraf.d',
                 'read_only': True
               }
             ]
@@ -64,17 +66,6 @@
         - inventory_hostname != 'bf2'
       community.docker.docker_container:
         name: telegraf
-        image: docker.io/library/telegraf:1.31
-        state: started
-        restart: true
-        detach: true
-        network_mode: host
-        restart_policy: always
-        mounts:
-          - type: bind
-            source: /root/telegraf.d
-            target: /etc/telegraf/telegraf.d
-            read_only: true
         env:
           REDFISH_HOST: "{{ bmc_vars.ansible_host }}"
           REDFISH_USER: "{{ bmc_vars.ansible_user }}"
