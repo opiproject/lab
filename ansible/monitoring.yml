@@ -1,75 +1,64 @@
-# SPDX-License-Identifier: Apache-2.0
-# Copyright (c) 2022 Dell Inc, or its subsidiaries.
----
-
 - name: Monitoring
-  # Management server runs it via compose, see below. So skip it here
   hosts: hostservers,tgens,DPUs
   become: yes
   vars:
-      bmc_vars: "{{ hostvars[inventory_hostname+'bmc'] }}"
+    bmc_vars: "{{ hostvars[inventory_hostname+'bmc'] }}"
   tasks:
-
     - name: Copy telegraf folder to remote
       ansible.builtin.copy: src=../telegraf.d dest=/root
 
     - name: Remove arista config file
       ansible.builtin.file: state=absent path=/root/telegraf.d/arista.conf
 
-    # TODO: create new telegraf container or use same for Marvell card
-
-    # TODO: see if there is an opportunity to consolidate and code dup removal
-
-    - name: Nvidia | telegraf otel monitoring
+    - name: Nvidia | Additional Nvidia-specific tasks
       when: inventory_hostname == 'bf2'
       block:
         - name: Nvidia | make sure emulation is running for temperature
           ansible.builtin.systemd: state=started name=set_emu_param
         - ansible.builtin.systemd: state=stopped name=mlnx_snap
         - ansible.builtin.systemd: state=started name=spdk_tgt
-        - name: Nvidia | Run telegraf container on Nvidia BF
-          community.docker.docker_container:
-            name: telegraf
-            image: docker.io/library/telegraf:1.31
-            state: started
-            restart: true
-            detach: true
-            network_mode: host
-            restart_policy: always
-            mounts:
-              - type: bind
-                source: /root/telegraf.d/telegraf.conf.bf2
-                target: /etc/telegraf/telegraf.conf
-                read_only: true
-              - type: bind
-                source: /run/emu_param
-                target: /run/emu_param
-                read_only: true
 
-    # TODO: see if there is an opportunity to consolidate and code dup removal
-
-    - name: Intel | telegraf otel monitoring
+    - name: Intel | Set environment and downgrade requests package
       when: inventory_hostname == 'mev'
       environment: "{{ proxy_env | default({}) }}"
       block:
         - name: Intel | Downgrade requests package due to bug https://github.com/ansible-collections/community.docker/issues/868
           ansible.builtin.pip: name=requests<2.32
-        - name: Intel | Run telegraf container on Intel MEV
-          community.docker.docker_container:
-            name: telegraf
-            image: docker.io/library/telegraf:1.31
-            state: started
-            restart: true
-            detach: true
-            network_mode: host
-            restart_policy: always
-            mounts:
-              - type: bind
-                source: /root/telegraf.d/telegraf.conf.mev
-                target: /etc/telegraf/telegraf.conf
-                read_only: true
 
-    - name: Run telegraf container on others
+    - name: Run telegraf container for Nvidia and Intel
+      when: inventory_hostname == 'bf2' or inventory_hostname == 'mev'
+      community.docker.docker_container:
+        name: telegraf
+        image: docker.io/library/telegraf:1.31
+        state: started
+        restart: true
+        detach: true
+        network_mode: host
+        restart_policy: always
+        mounts: >
+          {{
+            [
+              {
+                'type': 'bind',
+                'source': inventory_hostname == 'bf2' and '/root/telegraf.d/telegraf.conf.bf2' or '/root/telegraf.d/telegraf.conf.mev',
+                'target': '/etc/telegraf/telegraf.conf',
+                'read_only': True
+              }
+            ]
+            + (
+              [
+                {
+                  'type': 'bind',
+                  'source': '/run/emu_param',
+                  'target': '/run/emu_param',
+                  'read_only': True
+                }
+              ]
+              if inventory_hostname == 'bf2' else []
+            )
+          }}
+
+    - name: Run telegraf container on other hosts
       when:
         - inventory_hostname != 'mev'
         - inventory_hostname != 'bf2'
