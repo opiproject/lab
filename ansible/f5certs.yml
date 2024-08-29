@@ -26,12 +26,12 @@
       f5networks.f5_modules.bigip_ssl_certificate:
         provider: "{{ provider }}"
         name: "{{ cert_list_name }}"
-        content: "{{ lookup('file', ssl_cert_location ) }}"
+        content: "{{ lookup('file', ssl_cert_location) }}"
       delegate_to: localhost
 
     - name: Upload New SSL key upload
       f5networks.f5_modules.bigip_ssl_key:
         provider: "{{ provider }}"
         name: "{{ cert_list_name }}"
-        content: "{{ lookup('file', ssl_key_location ) }}"
+        content: "{{ lookup('file', ssl_key_location) }}"
       delegate_to: localhost
