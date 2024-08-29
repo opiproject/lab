@@ -1,29 +1,49 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2022 Dell Inc, or its subsidiaries.
+
 - name: Monitoring
   hosts: hostservers,tgens,DPUs
-  become: yes
+  become: true
   vars:
     bmc_vars: "{{ hostvars[inventory_hostname+'bmc'] }}"
   tasks:
     - name: Copy telegraf folder to remote folder
-      ansible.builtin.copy: src=../telegraf.d dest=/root
+      ansible.builtin.copy:
+        src: ../telegraf.d
+        dest: /root
+        mode: "0755"
 
     - name: Remove arista config file
-      ansible.builtin.file: state=absent path=/root/telegraf.d/arista.conf
+      ansible.builtin.file:
+        path: /root/telegraf.d/arista.conf
+        state: absent
 
     - name: Nvidia | Run additional Nvidia specific tasks
       when: inventory_hostname == 'bf2'
       block:
         - name: Nvidia | make sure emulation is running for temperature
-          ansible.builtin.systemd: state=started name=set_emu_param
-        - ansible.builtin.systemd: state=stopped name=mlnx_snap
-        - ansible.builtin.systemd: state=started name=spdk_tgt
+          ansible.builtin.systemd:
+            name: set_emu_param
+            state: started
+
+        - name: Nvidia | Stop mlx_snap service
+          ansible.builtin.systemd:
+            name: mlnx_snap
+            state: stopped
+
+        - name: Nvidia | Start telegraf service
+          ansible.builtin.systemd:
+            name: spdk_tgt
+            state: started
 
     - name: Intel | Set proxy environment and downgrade requests package due to bug
       when: inventory_hostname == 'mev'
       environment: "{{ proxy_env | default({}) }}"
       block:
         - name: Intel | Downgrade requests package due to bug https://github.com/ansible-collections/community.docker/issues/868
-          ansible.builtin.pip: name=requests<2.32
+          ansible.builtin.pip:
+            name: requests
+            version: "<2.32"
 
     - name: Run telegraf container on all hosts
       community.docker.docker_container:
