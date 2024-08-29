@@ -226,15 +226,35 @@
 # from https://www.kernel.org/doc/html/v5.8/networking/device_drivers/pensando/ionic.html
 - name: Pensando DSC installation-update
   hosts: dh1
-  become: yes
+  become: true
   tasks:
-    - ansible.builtin.shell: lspci -d 1dd8:1002
-    - ansible.builtin.shell: lspci | grep Pensando
-    - ansible.builtin.shell: dmesg | grep ionic
-    - ansible.builtin.shell: ls -l  /sys/class/net/*/device
-    - ansible.builtin.shell: ls -l  /sys/class/net/*/device/driver
-    - ansible.builtin.shell: ethtool -i enp25s0np0
-    - ansible.builtin.shell: devlink dev info pci/0000:19:00.0
+    - name: Check for Pensando device in PCI list
+      ansible.builtin.command: lspci -d 1dd8:1002
+      changed_when: false
+
+    - name: Grep for Pensando devices list
+      ansible.builtin.command: lspci | grep Pensando
+      changed_when: false
+
+    - name: Check for Pensando device in kernel messages
+      ansible.builtin.command: dmesg | grep ionic
+      changed_when: false
+
+    - name: Check for Pensando device in network devices1
+      ansible.builtin.command: ls -l  /sys/class/net/*/device
+      changed_when: false
+
+    - name: Check for Pensando device in network devices2
+      ansible.builtin.command: ls -l  /sys/class/net/*/device/driver
+      changed_when: false
+
+    - name: Fetch network device driver details1
+      ansible.builtin.command: ethtool -i enp25s0np0
+      changed_when: false
+
+    - name: Fetch network device driver details2
+      ansible.builtin.command: devlink dev info pci/0000:19:00.0
+      changed_when: false
 
     # TODO: update FW for Pensando DSC
     - name: Update Pensando DSC Firmware
@@ -252,17 +272,25 @@
           when: not pensando_firmware_check.stat.exists
 
         - name: Install Pensando DSC Firmware
-          ansible.builtin.shell: |
-            fw-update --device /dev/ionic0 --fw /path/to/pensando_firmware.bin
+          ansible.builtin.command: fw-update --device /dev/ionic0 --fw /path/to/pensando_firmware.bin
+          changed_when: false
           when: pensando_firmware_check.stat.exists
 
 - name: Marvell CN106 installation-update
   hosts: dh3
-  become: yes
+  become: true
   tasks:
-    - ansible.builtin.shell: lspci | grep Cavium
-    - ansible.builtin.shell: lsusb | grep CP2105
-    - ansible.builtin.shell: ls -l  /dev/ttyUSB*
+    - name: Check for Marvell device in PCI list
+      ansible.builtin.command: lspci | grep Cavium
+      changed_when: false
+
+    - name: Check for Marvell device in USB list
+      ansible.builtin.command: ls -l  /dev/ttyUSB*
+      changed_when: false
+
+    - name: Check for Marvell device in PCI list2
+      ansible.builtin.command: lsusb | grep CP2105
+      changed_when: false
 
     # TODO: update FW for Marvell CN106
     - name: Update Marvell CN106 Firmware
@@ -280,6 +308,6 @@
           when: not marvell_firmware_check.stat.exists
 
         - name: Install Marvell CN106 Firmware
-          ansible.builtin.shell: |
-            fwupdate -a /dev/cn106 -f /path/to/marvell_cn106_firmware.bin
+          ansible.builtin.command: fwupdate -a /dev/cn106 -f /path/to/marvell_cn106_firmware.bin
+          changed_when: false
           when: marvell_firmware_check.stat.exists
