@@ -8,7 +8,50 @@
     - name: Set the system time
       ansible.builtin.command: "date -s '{{ now() }}'"
       changed_when: false
+
     # TODO: Consider automating the OS image flushing process for Host x86 servers (currently done manually).
+- name: Flush OS image and reboot systems to PXE boot (iDRAC and iLO)
+  hosts: hostservers
+  become: true
+  tasks:
+    - name: Set boot to PXE for Dell systems (iDRAC)
+      when:
+        - result.redfish_facts.bios_attribute.entries[0][1].SystemManufacturer is defined
+        - result.redfish_facts.bios_attribute.entries[0][1].SystemManufacturer == "Dell Inc."
+      community.general.redfish_command:
+        category: Systems
+        command: SetOneTimeBoot
+        resource_id: "{{ resource_id }}"
+        baseuri: "{{ ansible_host }}"
+        username: "{{ ansible_user }}"
+        password: "{{ ansible_password }}"
+        bootdevice: "PXE"
+
+    - name: Set boot to PXE for HP systems (iLO)
+      when:
+        - inventory_hostname == 'dh2bmc' or inventory_hostname == 'dh3bmc'
+      community.general.redfish_command:
+        category: Systems
+        command: SetOneTimeBoot
+        resource_id: "{{ resource_id }}"
+        baseuri: "{{ ansible_host }}"
+        username: "{{ ansible_user }}"
+        password: "{{ ansible_password }}"
+        bootdevice: "PXE"
+
+    - name: Reboot systems to initiate PXE boot for OS flush
+      community.general.redfish_command:
+        category: Systems
+        command: PowerReboot
+        resource_id: "{{ resource_id }}"
+        baseuri: "{{ ansible_host }}"
+        username: "{{ ansible_user }}"
+        password: "{{ ansible_password }}"
+
+    - name: Wait for the system to come back online
+      ansible.builtin.wait_for_connection:
+        delay: 60
+        timeout: 600
 
 - name: Intel MEV | Enable Proxy and Port Forwarding
   hosts: mevbmc
