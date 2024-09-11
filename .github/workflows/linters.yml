@@ -12,4 +12,5 @@ jobs:
     uses: opiproject/actions/.github/workflows/linters.yml@main
     with:
       with_golang: false
+      with_docker: false
     secrets: inherit
