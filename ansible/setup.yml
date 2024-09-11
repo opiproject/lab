@@ -10,11 +10,11 @@
       changed_when: false
 
     # TODO: Consider automating the OS image flushing process for Host x86 servers (currently done manually).
-- name: Flush OS image and reboot systems to PXE boot (iDRAC and iLO)
+- name: Initiate network-based OS installer and reboot systems
   hosts: hostservers
   become: true
   tasks:
-    - name: Set boot to PXE for Dell systems (iDRAC)
+    - name: Set one-time boot to PXE for Dell systems (iDRAC)
       when:
         - result.redfish_facts.bios_attribute.entries[0][1].SystemManufacturer is defined
         - result.redfish_facts.bios_attribute.entries[0][1].SystemManufacturer == "Dell Inc."
@@ -27,7 +27,7 @@
         password: "{{ ansible_password }}"
         bootdevice: "PXE"
 
-    - name: Set boot to PXE for HP systems (iLO)
+    - name: Set one-time boot to PXE for HP systems (iLO)
       when:
         - inventory_hostname == 'dh2bmc' or inventory_hostname == 'dh3bmc'
       community.general.redfish_command:
@@ -39,7 +39,7 @@
         password: "{{ ansible_password }}"
         bootdevice: "PXE"
 
-    - name: Reboot systems to initiate PXE boot for OS flush
+    - name: Reboot systems to initiate PXE boot for OS installation
       community.general.redfish_command:
         category: Systems
         command: PowerReboot
@@ -48,10 +48,10 @@
         username: "{{ ansible_user }}"
         password: "{{ ansible_password }}"
 
-    - name: Wait for the system to come back online
+    - name: Wait for the system to come back online after installation
       ansible.builtin.wait_for_connection:
         delay: 60
-        timeout: 600
+        timeout: 1800
 
 - name: Intel MEV | Enable Proxy and Port Forwarding
   hosts: mevbmc
