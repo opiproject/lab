@@ -1,5 +1,5 @@
 #!/usr/bin/bash
-# shellcheck disable=SC2046,SC2034,SC2068
+# shellcheck disable=SC2046,SC2034,SC2068,SC2016
 
 set -euo pipefail
 
