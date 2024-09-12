@@ -72,7 +72,7 @@
         mode: "0755"
 
     - name: Enable and start socat-otel service
-      ansible.builtin.systemd:
+      ansible.builtin.service:
         name: socat-otel
         enabled: true
         state: started
@@ -86,7 +86,7 @@
         backup: true
 
     - name: Enable and start squid service
-      ansible.builtin.systemd:
+      ansible.builtin.service:
         name: squid
         enabled: true
         state: started

@@ -182,7 +182,9 @@
       delegate_to: dh2
       block:
         - name: Check if BlueField PCI device is present
-          ansible.builtin.command: lspci | grep BlueField
+          ansible.builtin.shell: |
+            set -o pipefail
+            lspci | grep BlueField
           changed_when: false
         # TODO: for f in $( dpkg --list | grep doca | awk '{print $2}' ); do echo $f ; apt remove --purge $f -y ; done
         # TODO: sudo apt-get autoremove
@@ -233,19 +235,23 @@
       changed_when: false
 
     - name: Grep for Pensando devices list
-      ansible.builtin.command: lspci | grep Pensando
+      ansible.builtin.shell: |
+        set -o pipefail
+        lspci | grep Pensando
       changed_when: false
 
     - name: Check for Pensando device in kernel messages
-      ansible.builtin.command: dmesg | grep ionic
+      ansible.builtin.shell: |
+        set -o pipefail
+        dmesg | grep ionic
       changed_when: false
 
     - name: Check for Pensando device in network devices1
-      ansible.builtin.command: ls -l  /sys/class/net/*/device
+      ansible.builtin.shell: ls -l  /sys/class/net/*/device
       changed_when: false
 
     - name: Check for Pensando device in network devices2
-      ansible.builtin.command: ls -l  /sys/class/net/*/device/driver
+      ansible.builtin.shell: ls -l  /sys/class/net/*/device/driver
       changed_when: false
 
     - name: Fetch network device driver details1
@@ -257,57 +263,61 @@
       changed_when: false
 
     # TODO: update FW for Pensando DSC
-    - name: Update Pensando DSC Firmware
-      block:
-        - name: Check if firmware image is present on the system
-          ansible.builtin.stat:
-            path: /path/to/pensando_firmware.bin
-          register: pensando_firmware_check
+    # - name: Update Pensando DSC Firmware
+    #   block:
+    #     - name: Check if firmware image is present on the system
+    #       ansible.builtin.stat:
+    #         path: /path/to/pensando_firmware.bin
+    #       register: pensando_firmware_check
 
-        - name: Download Pensando DSC Firmware if not present
-          ansible.builtin.get_url:
-            url: https://firmware.download.link/pensando_firmware.bin
-            dest: /path/to/pensando_firmware.bin
-            mode: "0440"
-          when: not pensando_firmware_check.stat.exists
+    #     - name: Download Pensando DSC Firmware if not present
+    #       ansible.builtin.get_url:
+    #         url: https://firmware.download.link/pensando_firmware.bin
+    #         dest: /path/to/pensando_firmware.bin
+    #         mode: "0440"
+    #       when: not pensando_firmware_check.stat.exists
 
-        - name: Install Pensando DSC Firmware
-          ansible.builtin.command: fw-update --device /dev/ionic0 --fw /path/to/pensando_firmware.bin
-          changed_when: false
-          when: pensando_firmware_check.stat.exists
+    #     - name: Install Pensando DSC Firmware
+    #       ansible.builtin.command: fw-update --device /dev/ionic0 --fw /path/to/pensando_firmware.bin
+    #       changed_when: false
+    #       when: pensando_firmware_check.stat.exists
 
 - name: Marvell CN106 installation-update
   hosts: dh3
   become: true
   tasks:
     - name: Check for Marvell device in PCI list
-      ansible.builtin.command: lspci | grep Cavium
+      ansible.builtin.shell: |
+        set -o pipefail
+        lspci | grep Cavium
       changed_when: false
 
     - name: Check for Marvell device in USB list
-      ansible.builtin.command: ls -l  /dev/ttyUSB*
+      ansible.builtin.shell: ls -l  /dev/ttyUSB*
       changed_when: false
 
     - name: Check for Marvell device in PCI list2
-      ansible.builtin.command: lsusb | grep CP2105
+      ansible.builtin.shell: |
+        set -o pipefail
+        lsusb | grep CP2105
       changed_when: false
 
     # TODO: update FW for Marvell CN106
-    - name: Update Marvell CN106 Firmware
-      block:
-        - name: Check if firmware image is present on the system
-          ansible.builtin.stat:
-            path: /path/to/marvell_cn106_firmware.bin
-          register: marvell_firmware_check
+    # - name: Update Marvell CN106 Firmware
+    #   block:
+    #     - name: Check if firmware image is present on the system
+    #       ansible.builtin.stat:
+    #         path: /path/to/marvell_cn106_firmware.bin
+    #       register: marvell_firmware_check
 
-        - name: Download Marvell CN106 Firmware if not present
-          ansible.builtin.get_url:
-            url: https://firmware.download.link/marvell_cn106_firmware.bin
-            dest: /path/to/marvell_cn106_firmware.bin
-            mode: "0440"
-          when: not marvell_firmware_check.stat.exists
+    #     - name: Download Marvell CN106 Firmware if not present
+    #       ansible.builtin.get_url:
+    #         url: https://firmware.download.link/marvell_cn106_firmware.bin
+    #         dest: /path/to/marvell_cn106_firmware.bin
+    #         mode: "0440"
+    #       when: not marvell_firmware_check.stat.exists
 
-        - name: Install Marvell CN106 Firmware
-          ansible.builtin.command: fwupdate -a /dev/cn106 -f /path/to/marvell_cn106_firmware.bin
-          changed_when: false
-          when: marvell_firmware_check.stat.exists
+    #     - name: Install Marvell CN106 Firmware
+    #       ansible.builtin.command: fwupdate -a /dev/cn106 -f /path/to/marvell_cn106_firmware.bin
+    #       changed_when: false
+    #       when: marvell_firmware_check.stat.exists
