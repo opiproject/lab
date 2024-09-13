@@ -181,10 +181,11 @@
     - name: Nvidia | Update BlueField using BFB image from the Host
       delegate_to: dh2
       block:
+        # lint: disable=risky-shell-pipe
         - name: Check if BlueField PCI device is present
-          ansible.builtin.shell: |
-            set -o pipefail
-            lspci | grep BlueField
+          ansible.builtin.shell:
+            cmd: set -o pipefail && lspci | grep BlueField
+            executable: /bin/bash
           changed_when: false
         # TODO: for f in $( dpkg --list | grep doca | awk '{print $2}' ); do echo $f ; apt remove --purge $f -y ; done
         # TODO: sudo apt-get autoremove
@@ -235,15 +236,15 @@
       changed_when: false
 
     - name: Grep for Pensando devices list
-      ansible.builtin.shell: |
-        set -o pipefail
-        lspci | grep Pensando
+      ansible.builtin.shell:
+        cmd: set -o pipefail && lspci | grep Pensando
+        executable: /bin/bash
       changed_when: false
 
     - name: Check for Pensando device in kernel messages
-      ansible.builtin.shell: |
-        set -o pipefail
-        dmesg | grep ionic
+      ansible.builtin.shell:
+        cmd: set -o pipefail && dmesg | grep ionic
+        executable: /bin/bash
       changed_when: false
 
     - name: Check for Pensando device in network devices1
@@ -287,9 +288,9 @@
   become: true
   tasks:
     - name: Check for Marvell device in PCI list
-      ansible.builtin.shell: |
-        set -o pipefail
-        lspci | grep Cavium
+      ansible.builtin.shell:
+        cmd: set -o pipefail && lspci | grep Cavium
+        executable: /bin/bash
       changed_when: false
 
     - name: Check for Marvell device in USB list
@@ -297,9 +298,9 @@
       changed_when: false
 
     - name: Check for Marvell device in PCI list2
-      ansible.builtin.shell: |
-        set -o pipefail
-        lsusb | grep CP2105
+      ansible.builtin.shell:
+        cmd: set -o pipefail && lsusb | grep CP2105
+        executable: /bin/bash
       changed_when: false
 
     # TODO: update FW for Marvell CN106
