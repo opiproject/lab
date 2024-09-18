@@ -1,5 +1,5 @@
 #!/usr/bin/bash
-# shellcheck disable=SC2046,SC2034,SC2016
+# shellcheck disable=SC2034
 
 set -euo pipefail
 
@@ -9,12 +9,12 @@ declare -a names
 for vendor in nvidia intel marvell amd
 do
     names+=("${vendor^^}_BOOT_IMG_HASH_VAL" "${vendor^^}_CONFIG_B64")
-    export ${vendor^^}_BOOT_IMG_HASH_VAL=$(openssl dgst -sha256 -c  ./images/${vendor,,}-boot-image.img | awk '{print $2}')
-    export ${vendor^^}_CONFIG_B64=$(openssl enc -base64 -A -in      ./config/${vendor,,}-configuration.xml)
+    export ${vendor^^}_BOOT_IMG_HASH_VAL="$(openssl dgst -sha256 -c  ./images/${vendor,,}-boot-image.img | awk '{print $2}')"
+    export ${vendor^^}_CONFIG_B64="$(openssl enc -base64 -A -in      ./config/${vendor,,}-configuration.xml)"
     for item in pre post
     do
         names+=("${vendor^^}_${item^^}_SCRIPT_B64")
-        export ${vendor^^}_${item^^}_SCRIPT_B64=$(openssl enc -base64 -A -in  ./config/${vendor,,}-${item,,}-configuration-script.sh)
+        export ${vendor^^}_${item^^}_SCRIPT_B64="$(openssl enc -base64 -A -in  ./config/${vendor,,}-${item,,}-configuration-script.sh)"
     done
 done
 
@@ -34,6 +34,7 @@ SZTPD_SBI_PORT=$(awk '/SZTPD_SBI_PORT:/{print $2}' ../docker-compose.yml)
 
 # generate template
 export "${names[@]}"
+# shellcheck disable=SC2016
 envsubst "$(printf '${%s} ' "${names[@]}")" < template.json > generated_config.json
 
 # check what changed
