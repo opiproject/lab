@@ -1,5 +1,5 @@
 #!/usr/bin/bash
-# shellcheck disable=SC2046,SC2034,SC2068,SC2016
+# shellcheck disable=SC2046,SC2034,SC2016
 
 set -euo pipefail
 
@@ -34,7 +34,7 @@ SZTPD_SBI_PORT=$(awk '/SZTPD_SBI_PORT:/{print $2}' ../docker-compose.yml)
 
 # generate template
 export "${names[@]}"
-envsubst "$(printf '${%s} ' ${names[@]})" < template.json > generated_config.json
+envsubst "$(printf '${%s} ' "${names[@]}")" < template.json > generated_config.json
 
 # check what changed
 diff template.json generated_config.json || true
