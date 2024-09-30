@@ -1,65 +1,149 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2022 Dell Inc, or its subsidiaries.
 ---
-
-- name:
+- name: Sync all clocks
   hosts: all
   gather_facts: false
   tasks:
-    - name: Sync all clocks
-      ansible.builtin.shell: "date -s '{{ now() }}'"
+    - name: Set the system time
+      ansible.builtin.command: "date -s '{{ now() }}'"
+      changed_when: false
 
-
-    # TODO: consider flushing OS image (we use ubuntu currently) on the Host x86 servers, since we do it manually will now
-
+    # TODO: Consider automating the OS image flushing process for Host x86 servers (currently done manually).
 
 - name: Intel MEV | Enable Proxy and Port Forwarding
   hosts: mevbmc
-  become: yes
+  become: true
   gather_facts: false
   tasks:
-    - ansible.builtin.package: name=socat,squid state=present
-    - ansible.builtin.copy: src=../hardware/dh4/fs/etc/systemd/system/socat-otel.service dest=/etc/systemd/system/socat-otel.service
-    - ansible.builtin.service: name=socat-otel enabled=yes state=started daemon_reload=yes
-    - ansible.builtin.shell: sed -i 's/http_access deny all/http_access allow all/g' /etc/squid/squid.conf
-    - ansible.builtin.service: name=squid enabled=yes state=started
+    - name: Ensure socat and squid are installed
+      ansible.builtin.package:
+        name:
+          - socat
+          - squid
+        state: present
 
-- name: Install docker and other packages
+    - name: Copy socat-otel service file
+      ansible.builtin.copy:
+        src: ../hardware/dh4/fs/etc/systemd/system/socat-otel.service
+        dest: /etc/systemd/system/socat-otel.service
+        mode: "0755"
+
+    - name: Enable and start socat-otel service
+      ansible.builtin.service:
+        name: socat-otel
+        enabled: true
+        state: started
+        daemon_reload: true
+
+    - name: Update squid configuration to allow all access
+      ansible.builtin.lineinfile:
+        path: /etc/squid/squid.conf
+        regexp: "^http_access deny all$"
+        line: "http_access allow all"
+        backup: true
+
+    - name: Enable and start squid service
+      ansible.builtin.service:
+        name: squid
+        enabled: true
+        state: started
+
+- name: Install Docker and other packages
   hosts: hostservers,tgens,DPUs,Management
-  become: yes
+  become: true
   environment: "{{ proxy_env | default({}) }}"
   tasks:
-    - ansible.builtin.package: state=present name=python3-pip,sshpass,git
-    - when: ansible_os_family == 'Debian'
-      block:
-        - ansible.builtin.get_url: url=https://download.docker.com/linux/ubuntu/gpg dest=/etc/apt/keyrings/docker.asc mode='0644' force=true
-        - ansible.builtin.shell: dpkg --print-architecture
-          register: deb_architecture
-        - ansible.builtin.apt_repository: state=present repo="deb [arch={{ deb_architecture.stdout}} signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
-    - ansible.builtin.package: state=absent  name=docker.io,docker-doc,docker-compose,docker-compose-v2,podman-docker,containerd,runc
-    - ansible.builtin.package: state=present name=docker-ce,docker-ce-cli,containerd.io,docker-buildx-plugin,docker-compose-plugin
-    - ansible.builtin.systemd: state=started name=docker
+    - name: Ensure required packages are installed
+      ansible.builtin.package:
+        state: present
+        name:
+          - python3-pip
+          - sshpass
+          - git
 
-- name:
+    - name: Add Docker GPG key and repository for Debian-based systems
+      when: ansible_os_family == 'Debian'
+      block:
+        - name: Download Docker GPG key
+          ansible.builtin.get_url:
+            url: https://download.docker.com/linux/ubuntu/gpg
+            dest: /etc/apt/keyrings/docker.asc
+            mode: "0644"
+            force: true
+
+        - name: Get architecture
+          ansible.builtin.command: dpkg --print-architecture
+          register: deb_architecture
+          changed_when: false
+
+        - name: Add Docker repository
+          ansible.builtin.apt_repository:
+            state: present
+            repo: >
+              deb [arch={{ deb_architecture.stdout }} signed-by=/etc/apt/keyrings/docker.asc]
+              https://download.docker.com/linux/ubuntu
+              {{ ansible_distribution_release }} stable
+
+    - name: Remove conflicting Docker packages
+      ansible.builtin.package:
+        state: absent
+        name:
+          - docker.io
+          - docker-doc
+          - docker-compose
+          - docker-compose-v2
+          - podman-docker
+          - containerd
+          - runc
+
+    - name: Install Docker and related packages
+      ansible.builtin.package:
+        state: present
+        name:
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+          - docker-buildx-plugin
+          - docker-compose-plugin
+
+    - name: Ensure Docker service is started
+      ansible.builtin.systemd:
+        state: started
+        name: docker
+
+- name: Run Monitoring OTEL, Prometheus, Grafana
   hosts: Management
-  become: yes
+  become: true
   tasks:
-    - name: Run Monitoring OTEL, Prometheus, Grafana
+    - name: Start Docker Compose project
       community.docker.docker_compose_v2:
         project_src: /root/opi-poc/lab
       register: output
 
 - name: Secure Zero Touch Provisioning
   hosts: DPUs
-  become: yes
+  become: true
   tasks:
-    # TODO: enable this
-    - name: Nvidia | Fix dhcp client config and then run sztp agent container
+    # TODO: Enable this when ready
+    - name: Nvidia | Fix DHCP client config and run SZTP agent container
       when: inventory_hostname == 'bf123'
       block:
-        - ansible.builtin.lineinfile: backup=true path=/etc/dhcp/dhclient.conf insertbefore='^option(.*)code(.*)$' line='option sztp-redirect-urls code 143  = text;'
-        - ansible.builtin.lineinfile: backup=true path=/etc/dhcp/dhclient.conf regexp='^(request .*)' line='\g<1> sztp-redirect-urls,'
-        - name: Nvidia | Run sztp agent container on Nvidia BF
+        - name: Update dhclient configuration
+          ansible.builtin.lineinfile:
+            backup: true
+            path: /etc/dhcp/dhclient.conf
+            insertbefore: "^option(.*)code(.*)$"
+            line: "option sztp-redirect-urls code 143 = text;"
+
+        - name: Add sztp-redirect-urls to DHCP request
+          ansible.builtin.lineinfile:
+            backup: true
+            path: /etc/dhcp/dhclient.conf
+            regexp: "^(request .*)"
+            line: '\g<1> sztp-redirect-urls,'
+
+        - name: Run SZTP agent container on Nvidia BF
           community.docker.docker_container:
             name: sztp
             image: ghcr.io/opiproject/opi-sztp-client:main
@@ -73,4 +157,7 @@
                 source: /var/lib/NetworkManager/dhclient-aa93b667-6aac-3804-91e9-4958e07fdb2f-oob_net0.lease
                 target: /var/lib/dhclient/dhclient.leases
                 read_only: true
-            command: /opi-sztp-agent daemon --bootstrap-trust-anchor-cert /mnt/opi.pem --device-end-entity-cert /mnt/opi_cert.pem --device-private-key /mnt/opi_private_key.pem
+            command: >
+              /opi-sztp-agent daemon --bootstrap-trust-anchor-cert /mnt/opi.pem
+              --device-end-entity-cert /mnt/opi_cert.pem
+              --device-private-key /mnt/opi_private_key.pem

@@ -1,24 +1,23 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2022 Dell Inc, or its subsidiaries.
 ---
-
-- name:
+- name: Get the switches configuration
   hosts: switches
   gather_facts: false
   tasks:
-    - name: run show version on remote devices
-      #become: yes
+    - name: Run show version on remote devices
+      # become: true
       arista.eos.eos_command:
         commands:
           - show version
           - show interfaces
-          #- show running-config
+          # - show running-config
 
     # TODO: send lab/hardware/A100G/arista.config to the switch
     # TODO: send lab/hardware/ToR/arista.config to the switch
 
-    #- name: load config file onto an Arista switch
-    #  become: yes
+    # - name: load config file onto an Arista switch
+    #  become: true
     #  arista.eos.eos_config:
     #    backup: true
     #    src: ../hardware/{{ inventory_hostname }}/arista.config

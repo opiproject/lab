@@ -11,27 +11,27 @@
     ssl_key_location: "/etc/letsencrypt/live/{{domain_name}}/privkey.pem"
 
   tasks:
-  - name: Setup provider
-    ansible.builtin.set_fact:
-     provider:
-      server: "{{ ansible_host }}"
-      user: "{{ ansible_user }}"
-      password: "{{ ansible_password }}"
-      server_port: "{{ server_port }}"
-      no_f5_teem: yes
-      validate_certs: "no"
+    - name: Setup provider
+      ansible.builtin.set_fact:
+        provider:
+          server: "{{ ansible_host }}"
+          user: "{{ ansible_user }}"
+          password: "{{ ansible_password }}"
+          server_port: "{{ server_port }}"
+          no_f5_teem: true
+          validate_certs: "no"
 
-#SSL Upload and Modification of VIP to use New Certificate
-  - name: Upload New SSL cert upload
-    f5networks.f5_modules.bigip_ssl_certificate:
-      provider: "{{ provider }}"
-      name: "{{ cert_list_name }}"
-      content: "{{ lookup('file', ssl_cert_location ) }}"
-    delegate_to: localhost
+    # SSL Upload and Modification of VIP to use New Certificate
+    - name: Upload New SSL cert upload
+      f5networks.f5_modules.bigip_ssl_certificate:
+        provider: "{{ provider }}"
+        name: "{{ cert_list_name }}"
+        content: "{{ lookup('file', ssl_cert_location) }}"
+      delegate_to: localhost
 
-  - name: Upload New SSL key upload
-    f5networks.f5_modules.bigip_ssl_key:
-      provider: "{{ provider }}"
-      name: "{{ cert_list_name }}"
-      content: "{{ lookup('file', ssl_key_location ) }}"
-    delegate_to: localhost
+    - name: Upload New SSL key upload
+      f5networks.f5_modules.bigip_ssl_key:
+        provider: "{{ provider }}"
+        name: "{{ cert_list_name }}"
+        content: "{{ lookup('file', ssl_key_location) }}"
+      delegate_to: localhost
