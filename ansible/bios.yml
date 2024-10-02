@@ -66,24 +66,9 @@
         password: "{{ ansible_password }}"
       register: bios_config_job
 
-    - name: Reboot iDRAC systems to apply new BIOS settings
+    - name: Reboot all systems to apply new BIOS settings
       when:
-        - result.redfish_facts.bios_attribute.entries[0][1].SystemManufacturer is defined
-        - result.redfish_facts.bios_attribute.entries[0][1].SystemManufacturer == "Dell Inc."
-        - bios_config_job.changed
-      community.general.redfish_command:
-        category: Systems
-        command: PowerReboot
-        resource_id: "{{ resource_id }}"
-        baseuri: "{{ ansible_host }}"
-        username: "{{ ansible_user }}"
-        password: "{{ ansible_password }}"
-
-    # TODO: Merge two reboot tasks into one. find identifier for iLO in redfish bios attributes
-    - name: Reboot iLO systems to apply new BIOS settings
-      when:
-        - bios_attribute.changed
-        - inventory_hostname == 'dh2bmc' or inventory_hostname == 'dh3bmc'
+        - bios_config_job.changed or bios_attribute.changed
       community.general.redfish_command:
         category: Systems
         command: PowerReboot
