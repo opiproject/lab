@@ -1,20 +1,23 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2022 Dell Inc, or its subsidiaries.
 ---
-
 - name: Monitoring
   # Management server runs it via compose, see below. So skip it here
   hosts: hostservers,tgens,DPUs
-  become: yes
+  become: true
   vars:
-      bmc_vars: "{{ hostvars[inventory_hostname+'bmc'] }}"
+    bmc_vars: "{{ hostvars[inventory_hostname+'bmc'] }}"
   tasks:
-
     - name: Copy telegraf folder to remote
-      ansible.builtin.copy: src=../telegraf.d dest=/root
+      ansible.builtin.copy:
+        src: ../telegraf.d
+        dest: /root
+        mode: "0755"
 
     - name: Remove arista config file
-      ansible.builtin.file: state=absent path=/root/telegraf.d/arista.conf
+      ansible.builtin.file:
+        state: absent
+        path: /root/telegraf.d/arista.conf
 
     # TODO: create new telegraf container or use same for Marvell card
 
@@ -24,9 +27,20 @@
       when: inventory_hostname == 'bf2'
       block:
         - name: Nvidia | make sure emulation is running for temperature
-          ansible.builtin.systemd: state=started name=set_emu_param
-        - ansible.builtin.systemd: state=stopped name=mlnx_snap
-        - ansible.builtin.systemd: state=started name=spdk_tgt
+          ansible.builtin.systemd:
+            state: started
+            name: set_emu_param
+
+        - name: Nvidia | Stop mlnx_snap service
+          ansible.builtin.systemd:
+            state: stopped
+            name: mlnx_snap
+
+        - name: Nvidia | Start spdk_tgt service
+          ansible.builtin.systemd:
+            state: started
+            name: spdk_tgt
+
         - name: Nvidia | Run telegraf container on Nvidia BF
           community.docker.docker_container:
             name: telegraf
@@ -53,7 +67,9 @@
       environment: "{{ proxy_env | default({}) }}"
       block:
         - name: Intel | Downgrade requests package due to bug https://github.com/ansible-collections/community.docker/issues/868
-          ansible.builtin.pip: name=requests<2.32
+          ansible.builtin.pip:
+            name: requests<2.32
+
         - name: Intel | Run telegraf container on Intel MEV
           community.docker.docker_container:
             name: telegraf
