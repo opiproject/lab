@@ -1,51 +1,78 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2022 Dell Inc, or its subsidiaries.
+---
 
 - name: Monitoring
+  # Management server runs it via compose, see below. So skip it here
   hosts: hostservers,tgens,DPUs
-  become: true
+  become: yes
   vars:
-    bmc_vars: "{{ hostvars[inventory_hostname+'bmc'] }}"
+      bmc_vars: "{{ hostvars[inventory_hostname+'bmc'] }}"
   tasks:
-    - name: Copy telegraf folder to remote folder
-      ansible.builtin.copy:
-        src: ../telegraf.d
-        dest: /root
-        mode: "0755"
+
+    - name: Copy telegraf folder to remote
+      ansible.builtin.copy: src=../telegraf.d dest=/root
 
     - name: Remove arista config file
-      ansible.builtin.file:
-        path: /root/telegraf.d/arista.conf
-        state: absent
+      ansible.builtin.file: state=absent path=/root/telegraf.d/arista.conf
 
-    - name: Nvidia | Run additional Nvidia specific tasks
+    # TODO: create new telegraf container or use same for Marvell card
+
+    # TODO: see if there is an opportunity to consolidate and code dup removal
+
+    - name: Nvidia | telegraf otel monitoring
       when: inventory_hostname == 'bf2'
       block:
         - name: Nvidia | make sure emulation is running for temperature
-          ansible.builtin.systemd:
-            name: set_emu_param
+          ansible.builtin.systemd: state=started name=set_emu_param
+        - ansible.builtin.systemd: state=stopped name=mlnx_snap
+        - ansible.builtin.systemd: state=started name=spdk_tgt
+        - name: Nvidia | Run telegraf container on Nvidia BF
+          community.docker.docker_container:
+            name: telegraf
+            image: docker.io/library/telegraf:1.31
             state: started
+            restart: true
+            detach: true
+            network_mode: host
+            restart_policy: always
+            mounts:
+              - type: bind
+                source: /root/telegraf.d/telegraf.conf.bf2
+                target: /etc/telegraf/telegraf.conf
+                read_only: true
+              - type: bind
+                source: /run/emu_param
+                target: /run/emu_param
+                read_only: true
 
-        - name: Nvidia | Stop mlx_snap service
-          ansible.builtin.systemd:
-            name: mlnx_snap
-            state: stopped
+    # TODO: see if there is an opportunity to consolidate and code dup removal
 
-        - name: Nvidia | Start telegraf service
-          ansible.builtin.systemd:
-            name: spdk_tgt
-            state: started
-
-    - name: Intel | Set proxy environment and downgrade requests package due to bug
+    - name: Intel | telegraf otel monitoring
       when: inventory_hostname == 'mev'
       environment: "{{ proxy_env | default({}) }}"
       block:
         - name: Intel | Downgrade requests package due to bug https://github.com/ansible-collections/community.docker/issues/868
-          ansible.builtin.pip:
-            name: requests
-            version: "<2.32"
+          ansible.builtin.pip: name=requests<2.32
+        - name: Intel | Run telegraf container on Intel MEV
+          community.docker.docker_container:
+            name: telegraf
+            image: docker.io/library/telegraf:1.31
+            state: started
+            restart: true
+            detach: true
+            network_mode: host
+            restart_policy: always
+            mounts:
+              - type: bind
+                source: /root/telegraf.d/telegraf.conf.mev
+                target: /etc/telegraf/telegraf.conf
+                read_only: true
 
-    - name: Run telegraf container on all hosts
+    - name: Run telegraf container on others
+      when:
+        - inventory_hostname != 'mev'
+        - inventory_hostname != 'bf2'
       community.docker.docker_container:
         name: telegraf
         image: docker.io/library/telegraf:1.31
@@ -54,37 +81,11 @@
         detach: true
         network_mode: host
         restart_policy: always
-        mounts: >
-          {{
-            [
-              {
-                'type': 'bind',
-                'source': inventory_hostname in ['bf2', 'mev'] and '/root/telegraf.d/telegraf.conf.inventory_hostname' or
-                          '/root/telegraf.d',
-                'target': inventory_hostname in ['bf2', 'mev'] and '/etc/telegraf/telegraf.conf' or
-                          '/etc/telegraf/telegraf.d',
-                'read_only': True
-              }
-            ]
-            + (
-              [
-                {
-                  'type': 'bind',
-                  'source': '/run/emu_param',
-                  'target': '/run/emu_param',
-                  'read_only': True
-                }
-              ]
-              if inventory_hostname == 'bf2' else []
-            )
-          }}
-
-    - name: Set telegraf container parameters on dh1, dh2, dh3, dh4
-      when:
-        - inventory_hostname != 'mev'
-        - inventory_hostname != 'bf2'
-      community.docker.docker_container:
-        name: telegraf
+        mounts:
+          - type: bind
+            source: /root/telegraf.d
+            target: /etc/telegraf/telegraf.d
+            read_only: true
         env:
           REDFISH_HOST: "{{ bmc_vars.ansible_host }}"
           REDFISH_USER: "{{ bmc_vars.ansible_user }}"
