@@ -69,10 +69,48 @@
                 target: /etc/telegraf/telegraf.conf
                 read_only: true
 
+    - name: MARVELL | telegraf otel monitoring
+      when: inventory_hostname == 'mrv'
+      block:        
+        - name: MARVELL | Run telegraf container on  MRV
+          community.docker.docker_container:
+            name: telegraf
+            image: docker.io/library/telegraf:1.31
+            state: started
+            restart: true
+            detach: true
+            network_mode: host
+            restart_policy: always
+            mounts:
+              - type: bind
+                source: /root/telegraf.d/telegraf.conf.mrv
+                target: /etc/telegraf/telegraf.conf
+                read_only: true
+
+    - name: AMD | telegraf otel monitoring
+      when: inventory_hostname == 'amd'
+      block:        
+        - name: AMD | Run telegraf container on Pensando 
+          community.docker.docker_container:
+            name: telegraf
+            image: docker.io/library/telegraf:1.31
+            state: started
+            restart: true
+            detach: true
+            network_mode: host
+            restart_policy: always
+            mounts:
+              - type: bind
+                source: /root/telegraf.d/telegraf.conf.amd
+                target: /etc/telegraf/telegraf.conf
+                read_only: true
+
     - name: Run telegraf container on others
       when:
         - inventory_hostname != 'mev'
         - inventory_hostname != 'bf2'
+        - inventory_hostname != 'mrv'
+        - inventory_hostname != 'amd'
       community.docker.docker_container:
         name: telegraf
         image: docker.io/library/telegraf:1.31
