@@ -45,6 +45,15 @@
             name: requests
             version: "<2.32"
 
+    - name: Define telegraf environment variables (only if not mev or bf2)
+      when: inventory_hostname not in ['mev', 'bf2']
+      ansible.builtin.set_fact:
+        telegraf_env:
+          REDFISH_HOST: "{{ bmc_vars.ansible_host }}"
+          REDFISH_USER: "{{ bmc_vars.ansible_user }}"
+          REDFISH_PASSWORD: "{{ bmc_vars.ansible_password }}"
+          REDFISH_SYSTEM_ID: "{{ bmc_vars.resource_id }}"
+
     - name: Run telegraf container on all hosts
       community.docker.docker_container:
         name: telegraf
@@ -59,14 +68,19 @@
             [
               {
                 'type': 'bind',
-                'source': inventory_hostname in ['bf2', 'mev'] and '/root/telegraf.d/telegraf.conf.inventory_hostname' or
-                          '/root/telegraf.d',
-                'target': inventory_hostname in ['bf2', 'mev'] and '/etc/telegraf/telegraf.conf' or
-                          '/etc/telegraf/telegraf.d',
+                'source': (
+                  '/root/telegraf.d/telegraf.conf.' + inventory_hostname
+                  if inventory_hostname in ['bf2', 'mev']
+                  else '/root/telegraf.d'
+                ),
+                'target': (
+                  '/etc/telegraf/telegraf.conf'
+                  if inventory_hostname in ['bf2', 'mev']
+                  else '/etc/telegraf/telegraf.d'
+                ),
                 'read_only': True
               }
-            ]
-            + (
+            ] + (
               [
                 {
                   'type': 'bind',
@@ -74,19 +88,10 @@
                   'target': '/run/emu_param',
                   'read_only': True
                 }
-              ]
-              if inventory_hostname == 'bf2' else []
+              ] if inventory_hostname == 'bf2' else []
             )
           }}
-
-    - name: Set telegraf container parameters on dh1, dh2, dh3, dh4
-      when:
-        - inventory_hostname != 'mev'
-        - inventory_hostname != 'bf2'
-      community.docker.docker_container:
-        name: telegraf
-        env:
-          REDFISH_HOST: "{{ bmc_vars.ansible_host }}"
-          REDFISH_USER: "{{ bmc_vars.ansible_user }}"
-          REDFISH_PASSWORD: "{{ bmc_vars.ansible_password }}"
-          REDFISH_SYSTEM_ID: "{{ bmc_vars.resource_id }}"
+        env: >
+          {{
+            telegraf_env if inventory_hostname not in ['mev', 'bf2'] else {}
+          }}
