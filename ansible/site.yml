@@ -1,10 +1,18 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2022 Dell Inc, or its subsidiaries.
 ---
-
 # file: site.yml
-- import_playbook: bios.yml
-- import_playbook: setup.yml
-- import_playbook: switches.yml
-- import_playbook: monitoring.yml
-- import_playbook: firmware.yml
+- name: Import BIOS Playbook
+  import_playbook: bios.yml
+
+- name: Import Setup Playbook
+  import_playbook: setup.yml
+
+- name: Import Switches Playbook
+  import_playbook: switches.yml
+
+- name: Import Monitoring Playbook
+  import_playbook: monitoring.yml
+
+- name: Import Firmware Playbook
+  import_playbook: firmware.yml

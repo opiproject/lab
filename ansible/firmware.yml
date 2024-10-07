@@ -1,40 +1,68 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2022 Dell Inc, or its subsidiaries.
----
 
 - name: Intel | Upgrade Intel Mev IMC and ACC FWs
   hosts: mev
-  become: yes
+  become: true
   vars:
-      imc_version: 1.4.0.8469
-      imc_local_file: /root/intel-ipu-pldm-image-{{ imc_version }}.tar.gz
-      imc_remote_file: /work/intel-ipu-pldm-image-{{ imc_version }}/intel-ipu-pldm-{{ imc_version }}.bin
-      acc_version: "{{ imc_version }}"
-      acc_local_file: /root/intel-ipu-acc-eval-image-{{ acc_version }}.tar.gz
-      acc_remote_file: /work/intel-ipu-acc-eval-image-{{ acc_version }}/ACC/OS/acc-os-kernel.bin
-      ansible_remote_tmp: /tmp
+    imc_version: 1.4.0.8469
+    imc_local_file: /root/intel-ipu-pldm-image-{{ imc_version }}.tar.gz
+    imc_remote_file: /work/intel-ipu-pldm-image-{{ imc_version }}/intel-ipu-pldm-{{ imc_version }}.bin
+    acc_version: "{{ imc_version }}"
+    acc_local_file: /root/intel-ipu-acc-eval-image-{{ acc_version }}.tar.gz
+    acc_remote_file: /work/intel-ipu-acc-eval-image-{{ acc_version }}/ACC/OS/acc-os-kernel.bin
+    ansible_remote_tmp: /tmp
   tasks:
-
     - name: Fetch Intel Mev ACC running version
       block:
-        - ansible.builtin.shell: cat /etc/issue
-        - ansible.builtin.shell: cat /etc/issue.net
+        - name: Retrieve /etc/issue
+          ansible.builtin.command: cat /etc/issue
+          changed_when: false
+
+        - name: Retrieve /etc/issue.net
+          ansible.builtin.command: cat /etc/issue.net
           register: result
-        - ansible.builtin.set_fact: acc_run_version={{ result.stdout | trim }}
-        - ansible.builtin.debug: var=acc_run_version
-        - ansible.builtin.fail: msg="Could not find ACC string in the running {{ acc_run_version }}"
+          changed_when: false
+
+        - name: Set ACC running version
+          ansible.builtin.set_fact:
+            acc_run_version: "{{ result.stdout | trim }}"
+        - name: Debug ACC running version
+          ansible.builtin.debug:
+            var: acc_run_version
+
+        - name: Fail if ACC string not found
+          ansible.builtin.fail:
+            msg: "Could not find ACC string in the running {{ acc_run_version }}"
           when: not '"ACC" in acc_run_version'
 
     - name: Fetch Intel Mev IMC running version
       delegate_to: mevbmc
       block:
-        - ansible.builtin.shell: cat /etc/issue
-        - ansible.builtin.shell: cat /etc/issue.net
+        - name: Retrieve /etc/issue
+          ansible.builtin.command: cat /etc/issue
+          changed_when: false
+
+        - name: Retrieve /etc/issue.net
+          ansible.builtin.command: cat /etc/issue.net
           register: result
-        - ansible.builtin.set_fact: imc_run_version={{ result.stdout | trim }}
-        - ansible.builtin.debug: var=imc_run_version
-        - ansible.builtin.shell: /usr/bin/ipu-update -i
-        - ansible.builtin.fail: msg="Could not find IMC string in the running {{ imc_run_version }}"
+          changed_when: false
+
+        - name: Set IMC running version
+          ansible.builtin.set_fact:
+            imc_run_version: "{{ result.stdout | trim }}"
+
+        - name: Debug IMC running version
+          ansible.builtin.debug:
+            var: imc_run_version
+
+        - name: Update IMC using ipu-update
+          ansible.builtin.command: /usr/bin/ipu-update -i
+          changed_when: false
+
+        - name: Fail if IMC string not found
+          ansible.builtin.fail:
+            msg: "Could not find IMC string in the running {{ imc_run_version }}"
           when: not '"IMC" in imc_run_version'
 
     - name: Upgrade Intel Mev IMC FW to {{ imc_version }}
@@ -42,25 +70,30 @@
       delegate_to: mevbmc
       block:
         - name: Check if firmware image exists remotely {{ imc_remote_file }}
-          ansible.builtin.stat: path={{ imc_remote_file }}
+          ansible.builtin.stat:
+            path: "{{ imc_remote_file }}"
           register: imc_remote_file_check
 
         # FW file doesn't exist, copy and unpack it
 
-        - name: Copy and Extract {{ imc_local_file }} into remote /work folder
+        - name: Copy and Extract the version into remote /work folder {{ imc_local_file }}
           when: not imc_remote_file_check.stat.exists
           block:
             - name: Check if firmware image exists locally {{ imc_local_file }}
               delegate_to: localhost
-              ansible.builtin.stat: path={{ imc_local_file }}
+              ansible.builtin.stat:
+                path: "{{ imc_local_file }}"
               register: imc_local_file_check
 
-            - name: Copy and Unpack {{ imc_local_file }} into remote /work folder
+            - name: Copy and Unpack into remote /work folder {{ imc_local_file }}
+              ansible.builtin.unarchive:
+                src: "{{ imc_local_file }}"
+                dest: /work
               when: imc_local_file_check.stat.exists
-              ansible.builtin.unarchive: src={{ imc_local_file }} dest=/work
 
-            - name: Check again if firmware image exists remotely {{ imc_remote_file }} after copy and unpack
-              ansible.builtin.stat: path={{ imc_remote_file }}
+            - name: Check again if firmware image exists remotely after copy and unpack {{ imc_remote_file }}
+              ansible.builtin.stat:
+                path: "{{ imc_remote_file }}"
               register: imc_remote_file_check
 
         # FW file exists, use it to start upgrade
@@ -68,10 +101,17 @@
         - name: Start upgrade Intel Mev IMC FW using existing {{ imc_remote_file }}
           when: imc_remote_file_check.stat.exists
           block:
-            - ansible.builtin.shell: /usr/bin/ipu-update -i {{ imc_remote_file }}
+            - name: Execute ipu-update with IMC firmware
+              ansible.builtin.command: /usr/bin/ipu-update -i "{{ imc_remote_file }}"
+              changed_when: false
             # TODO: remove echo below
-            - ansible.builtin.shell: echo /usr/bin/ipu-update -u {{  imc_remote_file }}
-            - ansible.builtin.shell: echo reboot
+            - name: Show output of Execute ipu-update with IMC firmware
+              ansible.builtin.command: echo /usr/bin/ipu-update -u "{{  imc_remote_file }}"
+              changed_when: false
+
+            - name: Reboot device after upgrade (simulate)
+              ansible.builtin.command: echo reboot
+              changed_when: false
 
     # TODO: now update ACC using /usr/bin/imc-scripts/acc_os_partition_provision.sh
 
@@ -80,25 +120,30 @@
       delegate_to: mevbmc
       block:
         - name: Check if firmware image exists remotely {{ acc_remote_file }}
-          ansible.builtin.stat: path={{ acc_remote_file }}
+          ansible.builtin.stat:
+            path: "{{ acc_remote_file }}"
           register: acc_remote_file_check
 
         # FW file doesn't exist, copy and unpack it
 
-        - name: Copy and Extract {{ acc_local_file }} into remote /work folder
+        - name: Copy and Extract into remote /work folder {{ acc_local_file }}
           when: not acc_remote_file_check.stat.exists
           block:
             - name: Check if firmware image exists locally {{ acc_local_file }}
               delegate_to: localhost
-              ansible.builtin.stat: path={{ acc_local_file }}
+              ansible.builtin.stat:
+                path: "{{ acc_local_file }}"
               register: acc_local_file_check
 
-            - name: Copy and Unpack {{ acc_local_file }} into remote /work folder
+            - name: Copy and Unpack into remote /work folder {{ acc_local_file }}
               when: acc_local_file_check.stat.exists
-              ansible.builtin.unarchive: src={{ acc_local_file }} dest=/work
+              ansible.builtin.unarchive:
+                src: "{{ acc_local_file }}"
+                dest: /work
 
-            - name: Check again if firmware image exists remotely {{ acc_remote_file }} after copy and unpack
-              ansible.builtin.stat: path={{ acc_remote_file }}
+            - name: Check again if firmware image exists remotely after copy and unpack {{ acc_remote_file }}
+              ansible.builtin.stat:
+                path: "{{ acc_remote_file }}"
               register: acc_remote_file_check
 
         # FW file exists, use it to start upgrade
@@ -107,73 +152,137 @@
           when: acc_remote_file_check.stat.exists
           block:
             # TODO: remove echo below
-            - ansible.builtin.shell: ls /usr/bin/imc-scripts/acc_os_partition_provision.sh {{ acc_remote_file }}
+            - name: List the files in the below directory
+              ansible.builtin.command: ls /usr/bin/imc-scripts/acc_os_partition_provision.sh {{ acc_remote_file }}
+              changed_when: false
 
-- name:
+- name: Nvidia | Upgrade Nvidia BF2 FWs
   hosts: bf2
-  become: yes
+  become: true
   vars:
-      bfb_local_file: /root/bf-bundle-2.7.0-33_24.04_ubuntu-22.04_prod.bfb
-      bfb_url: https://content.mellanox.com/BlueField/BFBs/Ubuntu22.04/{{ bfb_local_file | basename }}
+    bfb_local_file: /root/bf-bundle-2.7.0-33_24.04_ubuntu-22.04_prod.bfb
+    bfb_url: https://content.mellanox.com/BlueField/BFBs/Ubuntu22.04/{{ bfb_local_file | basename }}
   tasks:
     - name: Nvidia | Fetch BlueField runnikng version
       block:
-        - ansible.builtin.shell: cat /etc/mlnx-release
+        - name: Fetch Nvidia BlueField running version
+          ansible.builtin.command: cat /etc/mlnx-release
           register: result
-        - ansible.builtin.set_fact: bf_version={{ result.stdout | trim }}
-        - ansible.builtin.debug: var=bf_version
+          changed_when: false
+
+        - name: Extract Version from the result variable
+          ansible.builtin.set_fact:
+            bf_version: "{{ result.stdout | trim }}"
+
+        - name: Display BlueField running version
+          ansible.builtin.debug:
+            var: bf_version
 
     - name: Nvidia | Update BlueField using BFB image from the Host
       delegate_to: dh2
       block:
-        - ansible.builtin.shell: lspci | grep BlueField
+        # lint: disable=risky-shell-pipe
+        - name: Check if BlueField PCI device is present
+          ansible.builtin.shell:
+            cmd: set -o pipefail && lspci | grep BlueField
+            executable: /bin/bash
+          changed_when: false
         # TODO: for f in $( dpkg --list | grep doca | awk '{print $2}' ); do echo $f ; apt remove --purge $f -y ; done
         # TODO: sudo apt-get autoremove
         # TODO: wget https://developer.nvidia.com/networking/secure/doca-sdk/doca_2.7/doca-host_2.7.0-204000-24.04-ubuntu2404_amd64.deb
         # TODO: sudo dpkg -i doca-host-repo-ubuntu<version>_amd64.deb
         # TODO: sudo apt-get update
         # TODO: sudo apt install -y doca-runtime doca-sdk
-        - ansible.builtin.service: name=rshim enabled=yes state=started
-        - ansible.builtin.shell: cat /dev/rshim0/misc
-        - ansible.builtin.shell: ifconfig tmfifo_net0 192.168.100.1/30 up
+        - name: Start rshim service
+          ansible.builtin.service:
+            name: rshim
+            enabled: true
+            state: started
+
+        - name: Show the rshim settings
+          ansible.builtin.command: cat /dev/rshim0/misc
+          changed_when: false
+
+        - name: Configure network for BlueField device
+          ansible.builtin.command: ifconfig tmfifo_net0 192.168.100.1/30 up
+          changed_when: false
 
         - name: Check if firmware image exists locally {{ bfb_local_file }}
-          ansible.builtin.stat: path={{ bfb_local_file }}
+          ansible.builtin.stat:
+            path: "{{ bfb_local_file }}"
           register: bfb_local_file_check
 
         - name: Download firmware image {{ bfb_url }}
-          ansible.builtin.get_url: url={{ bfb_url }} dest={{ bfb_local_file }} mode='0440'
+          ansible.builtin.get_url:
+            url: "{{ bfb_url }}"
+            dest: "{{ bfb_local_file }}"
+            mode: "0440"
           when: not bfb_local_file_check.stat.exists
 
         # TODO: handle ubuntu bfb cfg password
-
         # TODO: ansible.builtin.shell: "bfb-install --bfb {{ local_bfb }} --config /tmp/bf.cfg --rshim {{ rshim.dev }}"
-
         - name: Flush BFB image and reboot BF card
-          ansible.builtin.shell: cat {{ bfb_local_file }} > /dev/rshim0/boot
+          ansible.builtin.command: cat {{ bfb_local_file }} > /dev/rshim0/boot
           when: not hostvars.bf2.bf_version in bfb_local_file
+          changed_when: false
 
 # from https://www.kernel.org/doc/html/v5.8/networking/device_drivers/pensando/ionic.html
 - name: Pensando DSC installation-update
   hosts: dh1
-  become: yes
+  become: true
   tasks:
-    - ansible.builtin.shell: lspci -d 1dd8:1002
-    - ansible.builtin.shell: lspci | grep Pensando
-    - ansible.builtin.shell: dmesg | grep ionic
-    - ansible.builtin.shell: ls -l  /sys/class/net/*/device
-    - ansible.builtin.shell: ls -l  /sys/class/net/*/device/driver
-    - ansible.builtin.shell: ethtool -i enp25s0np0
-    - ansible.builtin.shell: devlink dev info pci/0000:19:00.0
+    - name: Check for Pensando device in PCI list
+      ansible.builtin.command: lspci -d 1dd8:1002
+      changed_when: false
+
+    - name: Grep for Pensando devices list
+      ansible.builtin.shell:
+        cmd: set -o pipefail && lspci | grep Pensando
+        executable: /bin/bash
+      changed_when: false
+
+    - name: Check for Pensando device in kernel messages
+      ansible.builtin.shell:
+        cmd: set -o pipefail && dmesg | grep ionic
+        executable: /bin/bash
+      changed_when: false
+
+    - name: Check for Pensando device in network devices1
+      ansible.builtin.shell: ls -l  /sys/class/net/*/device
+      changed_when: false
+
+    - name: Check for Pensando device in network devices2
+      ansible.builtin.shell: ls -l  /sys/class/net/*/device/driver
+      changed_when: false
+
+    - name: Fetch network device driver details1
+      ansible.builtin.command: ethtool -i enp25s0np0
+      changed_when: false
+
+    - name: Fetch network device driver details2
+      ansible.builtin.command: devlink dev info pci/0000:19:00.0
+      changed_when: false
 
     # TODO: update FW for Pensando DSC
 
 - name: Marvell CN106 installation-update
   hosts: dh3
-  become: yes
+  become: true
   tasks:
-    - ansible.builtin.shell: lspci | grep Cavium
-    - ansible.builtin.shell: lsusb | grep CP2105
-    - ansible.builtin.shell: ls -l  /dev/ttyUSB*
+    - name: Check for Marvell device in PCI list
+      ansible.builtin.shell:
+        cmd: set -o pipefail && lspci | grep Cavium
+        executable: /bin/bash
+      changed_when: false
+
+    - name: Check for Marvell device in USB list
+      ansible.builtin.shell: ls -l  /dev/ttyUSB*
+      changed_when: false
+
+    - name: Check for Marvell device in PCI list2
+      ansible.builtin.shell:
+        cmd: set -o pipefail && lsusb | grep CP2105
+        executable: /bin/bash
+      changed_when: false
 
     # TODO: update FW for Marvell CN106
