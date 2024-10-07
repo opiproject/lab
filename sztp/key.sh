@@ -1,5 +1,4 @@
 #!/usr/bin/bash
-# shellcheck disable=SC2129
 
 set -euo pipefail
 
@@ -9,9 +8,11 @@ trap 'rm -rf -- "$MYTMPDIR"' EXIT
 curl -kL https://watsen.net/support/sztpd-simulator-0.0.11.tgz | tar -zxvf - -C "${MYTMPDIR}"/
 pushd "${MYTMPDIR}"/sztpd-simulator/pki
 # SBI Port certificates
-echo "DNS.2 = bootstrap" >> sztpd1/sbi/end-entity/openssl.cnf
-echo "DNS.3 = web" >> sztpd1/sbi/end-entity/openssl.cnf
-echo "DNS.4 = redirecter" >> sztpd1/sbi/end-entity/openssl.cnf
+{
+    echo "DNS.2 = bootstrap"
+    echo "DNS.3 = web"
+    echo "DNS.4 = redirecter"
+} >> sztpd1/sbi/end-entity/openssl.cnf
 make -C sztpd1/sbi pki
 cat sztpd1/sbi/end-entity/my_cert.pem sztpd1/sbi/intermediate2/my_cert.pem > "${MYTMPDIR}"/sztpd-simulator/cert_chain.pem
 openssl crl2pkcs7 -nocrl -certfile "${MYTMPDIR}"/sztpd-simulator/cert_chain.pem -outform DER -out "${MYTMPDIR}"/sztpd-simulator/cert_chain.cms
