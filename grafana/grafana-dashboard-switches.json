@@ -82,7 +82,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -198,7 +199,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -314,7 +316,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -430,7 +433,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -1283,7 +1287,7 @@
     "list": [
       {
         "current": {
-          "selected": false,
+          "selected": true,
           "text": "172.22.0.5",
           "value": "172.22.0.5"
         },
@@ -1291,7 +1295,7 @@
           "type": "prometheus",
           "uid": "PBFA97CFB590B2093"
         },
-        "definition": "label_values({source=~\"172.22.1.250|172.22.0.5\"},source)",
+        "definition": "label_values(interfaces_counters_in_broadcast_pkts,source)",
         "hide": 0,
         "includeAll": false,
         "label": "source",
@@ -1300,7 +1304,7 @@
         "options": [],
         "query": {
           "qryType": 1,
-          "query": "label_values({source=~\"172.22.1.250|172.22.0.5\"},source)",
+          "query": "label_values(interfaces_counters_in_broadcast_pkts,source)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 1,
@@ -1311,7 +1315,7 @@
       },
       {
         "current": {
-          "selected": false,
+          "selected": true,
           "text": "Ethernet1",
           "value": "Ethernet1"
         },
@@ -1346,6 +1350,6 @@
   "timezone": "",
   "title": "ARISTA Switch  Metrics",
   "uid": "de09c77e-6492-499a-9695-8f8abcba6423",
-  "version": 34,
+  "version": 35,
   "weekStart": ""
 }
