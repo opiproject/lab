@@ -60,6 +60,16 @@
             name: requests
             version: "<2.32"
 
+        - name: Intel | Set cron job to get imc temperature every 5 minutes
+          ansible.builtin.cron:
+            name: "mev imc temperature"
+            minute: "*/5"
+            job: "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=3 root@192.168.0.1 iset-cli get-temperature > /run/mev_imc_temperature.json"
+
+        - name: Intel | Add additional mount for mev
+          ansible.builtin.set_fact:
+            telegraf_mounts: "{{ telegraf_mounts + [{'type': 'bind', 'source': '/run/mev_imc_temperature.json', 'target': '/run/mev_imc_temperature.json', 'read_only': true}] }}"
+
     - name: Print the list of mounts for each host
       ansible.builtin.debug:
         var: telegraf_mounts

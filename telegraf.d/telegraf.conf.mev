@@ -10,10 +10,10 @@
 [[inputs.nstat]]
   # no configuration
 
-#[[inputs.exec]]
-#  commands = ["ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=3 root@192.168.0.1 iset-cli get-temperature"]
-#  name_override = "temp"
-#  data_format = "json"
+[[inputs.file]]
+  files = ["/run/mev_imc_temperature.json"]
+  name_override = "temp"
+  data_format = "json"
 
 [[outputs.file]]
   files = ["stdout"]
