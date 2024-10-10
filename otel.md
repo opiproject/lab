@@ -100,7 +100,7 @@ and make sure emulation service is running:
 systemctl start set_emu_param
 ```
 
-For `Intel MEV` cards the temperature is on the ICC chip, no easy access to it, see #72:
+For `Intel MEV` cards the temperature is on the ICC chip, no easy access to it, see [#72](https://github.com/opiproject/lab/pull/72):
 
 ```ini
 [[inputs.exec]]
