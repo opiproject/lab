@@ -3,9 +3,9 @@ name: Ansible
 on:
   workflow_dispatch:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   lint:
@@ -13,8 +13,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: ansible/ansible-lint@v24.5.0
-        with:
-          working_directory: ./ansible
 
+      # Install/Update Ansible and Ansible-lint
+      - name: Install Ansible
+        run: |
+          python3 -m pip install ansible ansible-lint
+
+      # Set Ansible Collection Path
+      - name: Set Ansible Collection Path
+        run: |
+          echo "ANSIBLE_COLLECTION_PATHS=$(ansible-galaxy collection list | grep -Eo '/.*')" >> $GITHUB_ENV
+
+      # Run ansible-lint with FQCN resolution
+      - name: Run ansible-lint
+        env:
+          ANSIBLE_COLLECTION_PATHS: ${{ env.ANSIBLE_COLLECTION_PATHS }}
+        run: ansible-lint ./ansible
 # TODO: add build, test, ut, docs, ...
