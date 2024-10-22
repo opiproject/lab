@@ -17,5 +17,5 @@ jobs:
         with:
           working_directory: ./ansible
           setup_python: "true"
-          requirements_file: "requirements.yml"
+          requirements_file: "./ansible/collections/requirements.yml"
 # TODO: add build, test, ut, docs, ...
