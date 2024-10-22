@@ -16,5 +16,6 @@ jobs:
       - uses: ansible/ansible-lint@v24.5.0
         with:
           working_directory: ./ansible
+          requirements_file: ./collections/requirements.yml
 
 # TODO: add build, test, ut, docs, ...
