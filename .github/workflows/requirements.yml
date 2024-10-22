@@ -1,0 +1,7 @@
+---
+# requirements.yml
+collections:
+  - arista.eos
+  - community.general
+  - f5networks.f5_modules
+  - community.docker
