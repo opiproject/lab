@@ -13,16 +13,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      # Install Ansible collections
-      - name: Install Ansible Collections
-        run: ansible-galaxy collection install -r ./ansible/collections/requirements.yml
-
-      - name: List contents of ansible/collections
-        run: ls ./ansible/collections
-
       - uses: ansible/ansible-lint@main
         with:
           working_directory: ./ansible
           setup_python: "true"
-          # requirements_file: "./ansible/collections/requirements.yml"
+          requirements_file: "/ansible/collections/requirements.yml"
 # TODO: add build, test, ut, docs, ...
