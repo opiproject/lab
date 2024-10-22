@@ -18,7 +18,7 @@ jobs:
         run: ansible-galaxy collection install -r ./ansible/collections/requirements.yml
 
       - name: List contents of ansible/collections
-        run: ls -l ./ansible/collections
+        run: ls ./ansible/collections
 
       - uses: ansible/ansible-lint@main
         with:
