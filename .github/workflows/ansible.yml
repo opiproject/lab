@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: ansible/ansible-lint@v24.5.0
+      - uses: ansible/ansible-lint@v24.9.2
         with:
           working_directory: ./ansible
           requirements_file: ./collections/requirements.yml
