@@ -8,10 +8,10 @@ dh4 ansible_host=172.22.1.4     ansible_connection=ssh        ansible_user=root
 dh9 ansible_host=172.22.1.9     ansible_connection=ssh        ansible_user=root
 
 [hostbmcs]
-dh1bmc ansible_host=172.22.2.1  ansible_connection=local      ansible_user=root          resource_id=System.Embedded.1 bios_attributes="{'AcPwrRcvry': 'On', 'AcPwrRcvryDelay': 'Immediate', 'AcPwrRcvryUserDelay': 120}"
-dh2bmc ansible_host=172.22.2.2  ansible_connection=local      ansible_user=Administrator resource_id=1 bios_attributes="{'AutoPowerOn': 'AlwaysPowerOn','PowerOnDelay': 'NoDelay'}"
+dh1bmc ansible_host=172.22.2.1  ansible_connection=local      ansible_user=root          resource_id=System.Embedded.1 bios_attributes="{'AcPwrRcvry': 'On', 'AcPwrRcvryDelay': 'Immediate', 'AcPwrRcvryUserDelay': 120, 'LogicalProc': 'Enabled', 'ProcVirtualization': 'Enabled'}"
+dh2bmc ansible_host=172.22.2.2  ansible_connection=local      ansible_user=Administrator resource_id=1 bios_attributes="{'AutoPowerOn': 'AlwaysPowerOn','PowerOnDelay': 'NoDelay','ProcHyperthreading': 'Enabled','ProcVirtualization': 'Enabled'}"
 dh3bmc ansible_host=172.22.2.3  ansible_connection=local      ansible_user=Administrator resource_id=1 bios_attributes="{'PowerOnDelay': 'NoDelay'}"
-dh4bmc ansible_host=172.22.2.4  ansible_connection=local      ansible_user=root          resource_id=System.Embedded.1 bios_attributes="{'AcPwrRcvry': 'On', 'AcPwrRcvryDelay': 'Immediate', 'AcPwrRcvryUserDelay': 120}"
+dh4bmc ansible_host=172.22.2.4  ansible_connection=local      ansible_user=root          resource_id=System.Embedded.1 bios_attributes="{'AcPwrRcvry': 'On', 'AcPwrRcvryDelay': 'Immediate', 'AcPwrRcvryUserDelay': 120, 'LogicalProc': 'Enabled', 'ProcVirtualization': 'Enabled'}"
 dh9bmc ansible_host=172.22.2.9  ansible_connection=local      ansible_user=root
 
 [DPUs]
