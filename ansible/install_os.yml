@@ -1,0 +1,80 @@
+# SPDX-License-Identifier: Apache-2.0
+---
+- name: Run OS installation on servers
+  hosts: dh1bmc, dh4bmc
+  gather_facts: true
+  vars:
+    ansible_python_interpreter: "/root/.local/share/pipx/venvs/omsdk/bin/python"
+    validate_certs: false
+    osd_service_url: "/redfish/v1/Systems/System.Embedded.1/Oem/Dell/DellOSDeploymentService"
+
+  tasks:
+    - name: Get ISO image attach status
+      block:
+        - name: Get ISO attach status
+          ansible.builtin.uri:
+            url: "https://{{ ansible_host }}{{ osd_service_url }}/Actions/DellOSDeploymentService.GetAttachStatus"
+            user: "{{ ansible_user }}"
+            password: "{{ ansible_password }}"
+            method: POST
+            headers:
+              Accept: "application/json"
+              Content-Type: "application/json"
+              OData-Version: "4.0"
+            body: "{}"
+            status_code: 200
+            validate_certs: false
+            force_basic_auth: true
+          register: attach_status
+          delegate_to: localhost
+
+        - name: Set ISO attach status as a fact variable
+          ansible.builtin.set_fact:
+            idrac_iso_attach_status: "{{ idrac_iso_attach_status | default({}) | combine({item.key: item.value}) }}"
+          with_dict:
+            drivers_attach_status: "{{ attach_status.json.DriversAttachStatus }}"
+            iso_attach_status: "{{ attach_status.json.ISOAttachStatus }}"
+
+    - name: Detatch ISO image if attached
+      when:
+        - idrac_iso_attach_status
+        - idrac_iso_attach_status.iso_attach_status == "Attached" or idrac_iso_attach_status.drivers_attach_status == "Attached"
+      block:
+        - name: Detach ISO image if attached
+          ansible.builtin.uri:
+            url: "https://{{ ansible_host }}{{ osd_service_url }}/Actions/DellOSDeploymentService.DetachISOImage"
+            user: "{{ ansible_user }}"
+            password: "{{ ansible_password }}"
+            method: POST
+            headers:
+              Accept: "application/json"
+              Content-Type: "application/json"
+              OData-Version: "4.0"
+            body: "{}"
+            status_code: 200
+            validate_certs: false
+            force_basic_auth: true
+          register: detach_status
+          delegate_to: localhost
+
+        - name: Print a message
+          ansible.builtin.debug:
+            msg: "Successfuly detached the ISO image"
+
+    - name: Install Ubuntu OS
+      ansible.builtin.import_role:
+        name: dellemc.openmanage.idrac_os_deployment
+      vars:
+        hostname: "{{ ansible_host }}"
+        username: root
+        password: "{{ ansible_password }}"
+        os_name: RHEL
+        os_version: 9
+        # currently only RHEL is supported, we are working to add support for UBUNTU
+        # Here is the issue we have opened for the feature request: https://github.com/dell/dellemc-openmanage-ansible-modules/issues/780
+        source:
+          protocol: http
+          hostname: "{{ hostvars['mgmt']['ansible_host'] }}"
+          iso_path: ""
+          iso_name: ubuntu-22.04-autoinstall.iso
+          is_custom_iso: true
