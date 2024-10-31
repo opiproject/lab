@@ -10,6 +10,8 @@ ansible-playbook -i inventory site.yml
 
 ## Manual
 
+For more details on iDRAC Virtual media installation see [here](idrac_os_installation_steps.md)
+
 * Install Ubuntu[^1] 22.04 x64 on the server. ([ubuntu-22.04.1-live-server-amd64.iso](https://releases.ubuntu.com/22.04/))
   * select all default options (unless otherwise noted bellow)
   * on disk setup: disable LVM (optional)
