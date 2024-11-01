@@ -4,7 +4,7 @@ This outlines the detailed steps to install an Operating System(OS) on a server 
 
 ## Prerequisites
 
-1. **iDRAC Login Credentials**: Ensure you have access to iDRAC9, incase you do not have the credentials, ask in the [OPI Slack group](https://join.slack.com/t/opi-project/shared_invite/zt-1ctqtrgkz-WJZrcVPp3P1ACZWjpZP2KQ)
+1. **iDRAC Login Credentials**: Ensure you have access to iDRAC9, incase you do not have the credentials, ask in the [OPI Slack group](https://join.slack.com/t/opi-project/shared_invite/zt-1ctqtrgkz-WJZrcVPp3P1ACZWjpZP2KQ).
 2. **OS ISO File**: The Operating System ISO image should be downloaded and accessible in your local file system.
 3. **VPN Access**: Confirm you have a VPN connection to ensure, you can connect to the server's iDRAC interface.
 4. **Supported Browsers**: Use the latest version of a supported web browser for the best experience (e.g., Chrome).
@@ -36,10 +36,9 @@ This outlines the detailed steps to install an Operating System(OS) on a server 
 1. In the Virtual Console window, select **Virtual Media** from the top menu bar.
 2. Choose **Connect Virtual Media** to enable virtual media features.
 3. Click **Map CD/DVD** and select the Operating System ISO file from your local system and map the device.
+4. Under the Virtual Media Statistics, you will be able to find the Read/Write status, wait until the entire ISO file is read completely, i.e., ~1 hour (until there is no change in the file size).
 
 ![Step 3.1 - Mount OS ISO](./images/os-install/dell/ConnectVirtualMedia.png)
-
-4. Under the Virtual Media Statistics, you will be able to find the Read/Write status, wait until the entire ISO file is read completely i.e, ~1 hour (until there is no change in the file size).
 
 ![Step 3.2 - Wait Until OS ISO File is loaded](./images/os-install/dell/VirtualMediaStatistics.png)
 
@@ -53,7 +52,7 @@ This outlines the detailed steps to install an Operating System(OS) on a server 
 ### Step 5: Reboot the Server
 
 1. In the Virtual Console window, select **Power** from the top menu bar.
-2. Select **Reset System (warm reboot)**
+2. Select **Reset System (warm reboot)**.
 3. Confirm the reboot by clicking **OK**.
 
 ![Step 5 - Reboot the Server](./images/os-install/dell/Reboot.png)
@@ -67,21 +66,21 @@ This outlines the detailed steps to install an Operating System(OS) on a server 
 
 ### Step 7: Follow the OS Installation Steps
 
-1. Follow the on-screen prompts to proceed with the OS installation
+1. Follow the on-screen prompts to proceed with the OS installation:
 
-   - select all default options (unless otherwise noted bellow)
-   - on disk setup: disable LVM
-   - on network setup: select `DHCP` for network settings
-   - on profile setup: put name, servername, username, password all as `opi` for example purposes
-   - Donot install any other packagessoftwares like Docker or Database
-   - on ssh setup: enable `install OpenSSH server`
+   - select all default options (unless otherwise noted below).
+   - on disk setup: disable LVM.
+   - on network setup: select `DHCP` for network settings.
+   - on profile setup: use `opi` as the name, servername, username, and password for example purposes.
+   - Donot install additional packages or software like Docker or databases.
+   - on SSH setup: enable `install OpenSSH server`.
 
-   The above steps are also detailed [here](https://github.com/opiproject/lab/blob/main/server-setup.md).
-
-![Step 7 - OS Installation Steps](./images/os-install/dell/Installation.png)
+   Detailed steps are also available [here](https://github.com/opiproject/lab/blob/main/server-setup.md).
 
 2. Once the OS is installed, remember to **disconnect** the virtual media by selecting **Virtual Media** > **Disconnect Virtual Media**.
-3. Rebbot the System
+3. Reboot the System.
+
+![Step 7 - OS Installation Steps](./images/os-install/dell/Installation.png)
 
 ## Troubleshooting Tips
 
@@ -90,5 +89,5 @@ This outlines the detailed steps to install an Operating System(OS) on a server 
   - Your network connection is stable.
   - The iDRAC firmware is up to date.
 - If the issue still persists, do the following steps:
-  - Clear your browser cache
-  - Restart iDRAC console
+  - Clear your browser cache.
+  - Restart iDRAC console.
