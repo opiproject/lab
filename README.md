@@ -35,12 +35,12 @@ We manage all passwords in <https://opi-team.1password.com>
 
 - [Goals and Requirments](goals-and-requirements.md)
 - Setup
-  - [Cables/Fibers/transceivers](./cables.md)
-  - [LAB IPs allocation](./ips.md) and [Inventory](./ansible/inventory)
-  - [Open Telemetry Observability](./otel.md)
-  - [Server Software Setup](server-setup.md)
-  - [Bill of Materials](bom.md)
-  - [Physical Testbed Setup](physical-testbed.md)
+  - [Cables/Fibers/transceivers](./Documentation/cables.md)
+  - [LAB IPs allocation](./Documentation/ips.md) and [Inventory](./ansible/inventory)
+  - [Open Telemetry Observability](./Documentation/otel.md)
+  - [Server Software Setup](./Documentation/server-setup.md)
+  - [Bill of Materials](./Documentation/bom.md)
+  - [Physical Testbed Setup](./Documentation/physical-testbed.md)
     - [ToR - Arista DCS-7280TR-48C6-R](./hardware/ToR/README.md)
     - [TS - Serial Consoles - Avocent ACS8000](./hardware/TS/README.md)
     - [KVM - KVM Switch - Avocent MPU8032DAC](./hardware/KVM/README.md)
@@ -52,7 +52,7 @@ We manage all passwords in <https://opi-team.1password.com>
     - [DH4 - DPU Host 4 - Dell R760](./hardware/dh4/README.md)
     - [A100G - 100G Switch - Arista DCS-7280CR](./hardware/A100G/README.md)
     - [TGEN1 - Traffic Generator 1 - Supermicro](./hardware/tgen1/README.md)
-- [Running the Test Cases](running-the-tests.md)
+- [Running the Test Cases](./Documentation/running-the-tests.md)
 
 ## Rack diagram
 
