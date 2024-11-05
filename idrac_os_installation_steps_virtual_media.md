@@ -1,6 +1,6 @@
 # OS Installation using iDRAC9 Web Interface
 
-This outlines the detailed steps to install an Operating System(OS) on a server using Dell’s iDRAC9 web interface.
+This outlines the detailed steps to install an Operating System(OS) on a server using Dell’s iDRAC9 web interface using the Virtual Media (file on your local machine).
 
 ## Prerequisites
 
