@@ -10,8 +10,9 @@ ansible-playbook -i inventory site.yml
 
 ## Manual
 
-For more details on iDRAC OS Installation using Virtual media installation see [here](idrac_os_installation_steps_virtual_media.md)
-For more details on iDRAC OS Installation using Virtual media installation see [here](idrac_os_installation_steps_network.md)
+For more details on iDRAC OS Installation using Virtual media see [here](idrac_os_installation_steps_virtual_media.md)
+
+For more details on iDRAC OS Installation using Remote File Share see [here](idrac_os_installation_steps_network.md)
 
 * Install Ubuntu[^1] 22.04 x64 on the server. ([ubuntu-22.04.1-live-server-amd64.iso](https://releases.ubuntu.com/22.04/))
   * select all default options (unless otherwise noted bellow)
