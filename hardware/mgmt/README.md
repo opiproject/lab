@@ -31,19 +31,19 @@ Follow GitHub [instructions](https://github.com/opiproject/opi-poc/settings/acti
 
 ## Ansible
 
-- Run `docker compose up -d semaphore` or `docker-compose up -d semaphore` from [here](../../otel).
+- Run `docker compose up -d semaphore` or `docker-compose up -d semaphore` from [here](../../Documentation/otel).
 - This will start [Ansible Semaphore](https://docs.semui.co).
 - Access it via <http://172.22.0.1:4000/>
 
 ## Portainer
 
-- Run `docker compose up -d portainer` or `docker-compose up -d portainer` from [here](../../otel).
+- Run `docker compose up -d portainer` or `docker-compose up -d portainer` from [here](../../Documentation/otel).
 - This will start [Portainer Community Edition](https://www.portainer.io/).
 - Access it via <http://172.22.0.1:9000/>
 
 ## Monitoring & Telemetry
 
-Run `docker compose up -d` or `docker-compose up -d` from [here](../../otel)
+Run `docker compose up -d` or `docker-compose up -d` from [here](../../Documentation/otel)
 
 1. [OTEL Gateway Collector](https://opentelemetry.io/docs/collector/deployment/gateway/) to aggregate telemetry from all DPUs and IPUs.
 2. [Prometheus](https://prometheus.io/) Monitoring system & time series database
@@ -57,7 +57,7 @@ Acccess it via:
 
 ## Paswordless
 
-for all servers, dpu and ipus from [here](../../ips.md) run:
+for all servers, dpu and ipus from [here](../../Documentation/ips.md) run:
 
 ```bash
  ssh-copy-id root@172.22.X.X
