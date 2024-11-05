@@ -167,6 +167,16 @@ services:
         httpd-foreground
         '
 
+  # Web server running on port 80, to host ISO files for OS installations by Ansible and iDRAC/iLO.
+  web-http:
+    image: docker.io/library/httpd:2.4.57-alpine3.17
+    volumes:
+      - ./ansible/iso_files:/usr/local/apache2/htdocs
+    ports:
+      - 80:80
+    networks:
+      - opi
+
   jaeger:
     image: jaegertracing/all-in-one:1.53.0
     ports:
