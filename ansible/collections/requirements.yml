@@ -4,3 +4,4 @@ collections:
   - community.general
   - arista.eos
   - f5networks.f5_modules
+  - dellemc.openmanage
