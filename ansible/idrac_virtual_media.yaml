@@ -5,7 +5,7 @@
   # From: https://developer.dell.com/apis/9008/versions/1.0/docs/Tutorials/iDRAC%20Modules/Deploy-operating-systems-on-PowerEdge-servers-using-Virtual-Media.md
   hosts: dh1bmc
   become: true
-  gather_facts: False
+  gather_facts: false
   vars:
     retries_count: 60
     interval: 60
@@ -20,6 +20,6 @@
       idrac_ip: "{{ inventory_hostname }}"
       idrac_user: "{{ user }}"
       idrac_password: "{{ password }}"
-      validate_certs: False
+      validate_certs: false
       idrac_attributes:
         VirtualMedia.1.Attached: "Attached"
