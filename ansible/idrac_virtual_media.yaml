@@ -2,6 +2,7 @@
 # Copyright (c) 2022 Dell Inc, or its subsidiaries.
 ---
 - name: OS deployment using Virtual Media
+  # From: https://developer.dell.com/apis/9008/versions/1.0/docs/Tutorials/iDRAC%20Modules/Deploy-operating-systems-on-PowerEdge-servers-using-Virtual-Media.md
   hosts: dh1bmc
   become: true
   gather_facts: False
