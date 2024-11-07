@@ -10,13 +10,10 @@
     retries_count: 60
     interval: 60
 
-  collections:
-    - dellemc.openmanage
-
   tasks:
 
   - name: Set iDRAC virtual media attach attribute to attached.
-    idrac_attributes:
+    dellemc.openmanage.idrac_attributes:
       idrac_ip: "{{ inventory_hostname }}"
       idrac_user: "{{ user }}"
       idrac_password: "{{ password }}"
