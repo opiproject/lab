@@ -1,0 +1,24 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2022 Dell Inc, or its subsidiaries.
+---
+- name: OS deployment using Virtual Media
+  hosts: dh1bmc
+  become: true
+  gather_facts: False
+  vars:
+    retries_count: 60
+    interval: 60
+
+  collections:
+    - dellemc.openmanage
+
+  tasks:
+
+  - name: Set iDRAC virtual media attach attribute to attached.
+    idrac_attributes:
+      idrac_ip: "{{ inventory_hostname }}"
+      idrac_user: "{{ user }}"
+      idrac_password: "{{ password }}"
+      validate_certs: False
+      idrac_attributes:
+        VirtualMedia.1.Attached: "Attached"
