@@ -12,11 +12,11 @@
 
   tasks:
 
-  - name: Set iDRAC virtual media attach attribute to attached.
-    dellemc.openmanage.idrac_attributes:
-      idrac_ip: "{{ inventory_hostname }}"
-      idrac_user: "{{ user }}"
-      idrac_password: "{{ password }}"
-      validate_certs: false
-      idrac_attributes:
-        VirtualMedia.1.Attached: "Attached"
+    - name: Set iDRAC virtual media attach attribute to attached.
+      dellemc.openmanage.idrac_attributes:
+        idrac_ip: "{{ inventory_hostname }}"
+        idrac_user: "{{ user }}"
+        idrac_password: "{{ password }}"
+        validate_certs: false
+        idrac_attributes:
+          VirtualMedia.1.Attached: "Attached"
