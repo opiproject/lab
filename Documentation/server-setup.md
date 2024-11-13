@@ -2,7 +2,7 @@
 
 ## Automation
 
-Then run the [playbook](./ansible) to automate all the lab steps:
+Then run the [playbook](../ansible) to automate all the lab steps:
 
 ```bash
 ansible-playbook -i inventory site.yml
