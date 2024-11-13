@@ -23,7 +23,7 @@ This outlines the detailed steps to install an Operating System(OS) on a server 
 2. Open a web browser and enter the iDRAC IP address in the address bar. For example: `https://<iDRAC_IP>`.
 3. Log in using the iDRAC credentials.
 
-![Step 1 - Access iDRAC9](./images/os-install/dell/Login.png)
+![Step 1 - Access iDRAC9](../images/os-install/dell/Login.png)
 
 ### Step 2: Connect the Remote File Sharing to iDRAC
 
@@ -33,27 +33,27 @@ This outlines the detailed steps to install an Operating System(OS) on a server 
 4. Once you have successfully filled out the parameters, click on connect and you will be able to see if iDRAC is able to connect or not.
 5. Incase iDRAC is not able to access the ISO file, it shows an error to enter the correct details.
 
-![Step 2.1 - Configuration / Virtual Media](./images/os-install/dell/VirtualMediaConsole.png)
+![Step 2.1 - Configuration / Virtual Media](../images/os-install/dell/VirtualMediaConsole.png)
 
-![Step 2.2 - Remote File Share](./images/os-install/dell/RemoteShare.png)
+![Step 2.2 - Remote File Share](../images/os-install/dell/RemoteShare.png)
 
-![Step 2.3 - Remote File Share Success](./images/os-install/dell/RemoteSuccess.png)
+![Step 2.3 - Remote File Share Success](../images/os-install/dell/RemoteSuccess.png)
 
-![Step 2.4 - Remote File Share Error](./images/os-install/dell/RemoteError.png)
+![Step 2.4 - Remote File Share Error](../images/os-install/dell/RemoteError.png)
 
 ### Step 3: Launch the Virtual Console
 
 1. From the iDRAC dashboard, navigate and launch the **Virtual Console** from the bottom right of the iDRAC dashboard and ensure you have the browser popups turned on.
 2. This will open a new window with the server's user interface, and a couple of controls.
 
-![Step 3 - Launch Virtual Console](./images/os-install/dell/Console.png)
+![Step 3 - Launch Virtual Console](../images/os-install/dell/Console.png)
 
 ### Step 4: Configure Boot Settings
 
 1. In the Virtual Console window, select **Boot** from the top menu bar.
 2. Under the **Boot Controls**, set the virtual CD/DVD drive as the primary boot option. This ensures that the server boots from the mounted OS ISO.
 
-![Step 4 - Configure Boot Settings](./images/os-install/dell/BootOrder.png)
+![Step 4 - Configure Boot Settings](../images/os-install/dell/BootOrder.png)
 
 ### Step 5: Reboot the Server
 
@@ -61,14 +61,14 @@ This outlines the detailed steps to install an Operating System(OS) on a server 
 2. Select **Reset System (warm reboot)**.
 3. Confirm the reboot by clicking **OK**.
 
-![Step 5 - Reboot the Server](./images/os-install/dell/Reboot.png)
+![Step 5 - Reboot the Server](../images/os-install/dell/Reboot.png)
 
 ### Step 6: Boot into the OS Installer
 
 1. During the server boot, monitor the Virtual Console window.
 2. Once the server starts, it should boot into the mounted OS ISO and display the OS installation menu.
 
-![Step 6 - Boot into OS Installer](./images/os-install/dell/OSBoot.png)
+![Step 6 - Boot into OS Installer](../images/os-install/dell/OSBoot.png)
 
 ### Step 7: Follow the OS Installation Steps
 
@@ -86,4 +86,4 @@ This outlines the detailed steps to install an Operating System(OS) on a server 
 2. Once the OS is installed, remember to **disconnect** the network file share by going into the **Virtual Media console** as mentioned in Step 2 and under **Remote File Share**, click **Disconnect**.
 3. Reboot the System.
 
-![Step 7 - OS Installation Steps](./images/os-install/dell/Installation.png)
+![Step 7 - OS Installation Steps](../images/os-install/dell/Installation.png)

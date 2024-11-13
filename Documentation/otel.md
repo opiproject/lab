@@ -14,7 +14,7 @@ For example, Nvidia is using [Nvidia Doca Telemetry Service](https://docs.nvidia
 
 ### Configuration
 
-Create `telegraf.conf` file, see example [here](./telegraf.d/telegraf.conf.bf2)
+Create `telegraf.conf` file, see example [here](../telegraf.d/telegraf.conf.bf2)
 
 - change `172.22.0.1` in `outputs.opentelemetry` to the correct management server name/ip
 - change `192.168.240.1` and credentails to the internal DPU/IPU AMC/BMC for redfish collection
