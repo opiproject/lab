@@ -12,6 +12,8 @@
 
   tasks:
 
+    # TODO: look into and take https://github.com/dell/dellemc-openmanage-ansible-modules/tree/collections/roles/idrac_os_deployment
+
     - name: Set iDRAC virtual media attach attribute to attached.
       dellemc.openmanage.idrac_attributes:
         idrac_ip: "{{ inventory_hostname }}"
