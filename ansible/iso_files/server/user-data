@@ -1,0 +1,41 @@
+autoinstall:
+version: 1
+early-commands:
+    - ["cat", "/autoinstall.yaml"]
+refresh-installer:
+    update: yes
+apt:
+    preserve_sources_list: false
+    mirror-selection:
+    primary:
+        - country-mirror
+        - uri: "http://archive.ubuntu.com/ubuntu"
+        arches: [i386, amd64]
+        - uri: "http://ports.ubuntu.com/ubuntu-ports"
+        arches: [s390x, arm64, armhf, powerpc, ppc64el, riscv64]
+    fallback: abort
+    geoip: true
+    sources:
+    git-ppa:
+        source: ppa:git-core/ppa
+identity:
+    hostname: opi
+    password: "hashedpassword"
+    realname: opi
+    username: opi
+keyboard:
+    layout: us
+    toggle: ""
+    variant: ""
+locale: en_US
+ssh:
+    allow-pw: true
+    authorized-keys: []
+    install-server: true
+storage:
+    layout:
+    name: lvm
+    match:
+        size: largest
+late-commands:
+    - 'echo ''APT::Install-Recommends "false";'' >/target/etc/apt/apt.conf.d/02InstallRecommends'
