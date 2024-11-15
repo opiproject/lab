@@ -20,18 +20,22 @@
   tag_keys = ["name"]
   json_query = "result.bdevs"
 
+# CPU Input Plugin
 [[inputs.cpu]]
   percpu = true
   totalcpu = true
   collect_cpu_time = false
   report_active = false
 
+# Mem Input Plugin
 [[inputs.mem]]
   # no configuration
 
+# Nstat Input Plugin
 [[inputs.nstat]]
   # no configuration
 
+# For temperature 
 [[inputs.file]]
   files = ["/run/emu_param/bluefield_temp"]
   name_override = "temp"
@@ -40,8 +44,27 @@
   data_type = "integer"
   file_tag = "sensor"
 
+# Infiniband Input Plugin
 [[inputs.infiniband]]
   # no configuration
+
+# Diskio Input Plugin
+[[inputs.diskio]]
+
+# Disk Input Plugin
+[[inputs.disk]]
+
+# Swap Input Plugin
+[[inputs.swap]]
+
+# System Input Plugin
+[[inputs.system]]
+
+# Net Input Plugin
+[[inputs.net]]
+
+# Netstat Input Plugin
+[[inputs.netstat]]
 
 [[outputs.file]]
   files = ["stdout"]
