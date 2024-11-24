@@ -10,6 +10,22 @@
 [[inputs.nstat]]
   # no configuration
 
+[[inputs.diskio]]
+
+[[inputs.disk]]
+
+[[inputs.netstat]]
+
+[[inputs.docker]]
+
+[[inputs.swap]]
+
+[[inputs.system]]
+
+[[inputs.net]]
+
+[[inputs.kernel]]
+
 [[inputs.file]]
   files = ["/run/mev_imc_temperature.json"]
   name_override = "temp"
