@@ -1,0 +1,41 @@
+- name: Run OS installation on selected servers
+  hosts: hostbmcs
+  gather_facts: false
+  vars:
+    ansible_python_interpreter: "/root/.local/share/pipx/venvs/omsdk/bin/python"
+    idrac_osd_command_allowable_values:
+      - "BootToNetworkISO"
+      - "GetAttachStatus"
+      - "DetachISOImage"
+    idrac_osd_command_default: "GetAttachStatus"
+    get_attach_status_code:
+      drivers_attach_status:
+        "0": "NotAttached"
+        "1": "Attached"
+      iso_attach_status:
+        "0": "NotAttached"
+        "1": "Attached"
+    idrac_https_port: 443
+    expose_duration: 1080
+    command: "{{ idrac_osd_command_default }}"
+    validate_certs: false
+    force_basic_auth: true
+    idrac_user: "root"
+    ansible_password: "{{ ansible_password }}"
+    ip_address: "172.22.0.1"
+    ubuntu_iso: ubuntu-22.04-autoinstall.iso
+
+  tasks:
+    - name: Fail if no target servers are provided
+      ansible.builtin.fail:
+        msg: "No target servers specified."
+      when: target_servers | length == 0
+
+    - name: Skip non-target servers
+      ansible.builtin.debug:
+        msg: "Skipping {{ inventory_hostname }} as it is not in target servers."
+      when: inventory_hostname not in target_servers
+
+    - name: Include Dell OS installation tasks
+      ansible.builtin.include_tasks: dell_os_install.yml
+      when: inventory_hostname in ['dh1bmc', 'dh4bmc'] and inventory_hostname in target_servers
