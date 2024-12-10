@@ -69,12 +69,23 @@
               -o ConnectTimeout=3 root@192.168.0.1 iset-cli get-temperature
               > /run/mev_imc_temperature.json
 
+        - name: Intel | Set Docker socket has appropriate permissions
+          ansible.builtin.file:
+            path: /var/run/docker.sock
+            mode: '0666'      
+
         - name: Intel | Add additional mount for mev
           ansible.builtin.set_fact:
-            telegraf_mounts: "{{ telegraf_mounts + [{'type': 'bind',
-              'source': '/run/mev_imc_temperature.json',
-              'target': '/run/mev_imc_temperature.json',
-              'read_only': true}] }}"
+            telegraf_mounts: "{{ telegraf_mounts + [
+              {'type': 'bind',
+               'source': '/run/mev_imc_temperature.json',
+               'target': '/run/mev_imc_temperature.json',
+               'read_only': true},
+              {'type': 'bind',
+               'source': '/var/run/docker.sock',
+               'target': '/var/run/docker.sock',
+               'read_only': false}
+             ] }}"
 
     - name: Print the list of mounts for each host
       ansible.builtin.debug:
