@@ -66,6 +66,18 @@
 # Netstat Input Plugin
 [[inputs.netstat]]
 
+# Kernel Input Plugin
+[[inputs.kernel]]
+
+# Internal Input Plugin
+[[inputs.internal]]
+
+# Docker Input Plugin
+[[inputs.docker]]
+
+# Processes Input Plugin
+[[inputs.processes]]
+
 [[outputs.file]]
   files = ["stdout"]
   data_format = "influx"
