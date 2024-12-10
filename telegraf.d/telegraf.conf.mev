@@ -10,22 +10,37 @@
 [[inputs.nstat]]
   # no configuration
 
+# Diskio Input Plugin
 [[inputs.diskio]]
 
+# Disk Input Plugin
 [[inputs.disk]]
 
-[[inputs.netstat]]
-
-[[inputs.docker]]
-
+# Swap Input Plugin
 [[inputs.swap]]
 
+# System Input Plugin
 [[inputs.system]]
 
+# Net Input Plugin
 [[inputs.net]]
 
+# Netstat Input Plugin
+[[inputs.netstat]]
+
+# Kernel Input Plugin
 [[inputs.kernel]]
 
+# Internal Input Plugin
+[[inputs.internal]]
+
+# Processes Input Plugin
+[[inputs.processes]]
+
+# Docker Input Plugin
+[[inputs.docker]]
+
+# For temperature
 [[inputs.file]]
   files = ["/run/mev_imc_temperature.json"]
   name_override = "temp"
