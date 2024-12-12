@@ -2,10 +2,28 @@
 
 ## Automation
 
-Then run the [playbook](../ansible) to automate all the lab steps:
+Then run the [playbook](../ansible/site.yml) to automate all the lab steps:
 
 ```bash
 ansible-playbook -i inventory site.yml
+```
+
+### Automated OS Installation for Dell iDRAC Systems
+
+For completely automating the installation using an Ubuntu auto install ISO image see [here](auto_install_ubuntu_iso.md).
+
+The Ansible playbook [install_os.yml](../ansible/install_os.yml) will help automate the installation of an Operating System on Dell servers using iDRAC, [dellemc.openmanage](https://github.com/dell/dellemc-openmanage-ansible-modules) library and the autoinstall Ubuntu iso that we have created. This script currently supports the dell machines only.
+
+Currently, the `idrac_os_deployment` ansible role natively supports installation of `RHEL` and `ESXI` Operating Systems or using a `Custom ISO`. We are using the custom iso option, to install `Ubuntu Jammy 22.04` OS on our systems.
+
+Fore more details on the dellemc.openmanage idrac_os_deployment ansible role that was used in the playbook, refer the documentation [here](https://github.com/dell/dellemc-openmanage-ansible-modules/tree/collections/roles/idrac_os_deployment).
+
+Progress on native `UBUNTU` support to the `idrac_os_deployment` ansible role can be tracked [here](https://github.com/dell/dellemc-openmanage-ansible-modules/pull/784).
+
+To run the playbook:
+
+```bash
+ansible-playbook -i inventory install_os.yml
 ```
 
 ## Manual
@@ -13,6 +31,8 @@ ansible-playbook -i inventory site.yml
 For more details on iDRAC OS Installation using Virtual media see [here](idrac_os_installation_steps_virtual_media.md).
 
 For more details on iDRAC OS Installation using Remote File Share see [here](idrac_os_installation_steps_network.md).
+
+### Manual OS Installation for Dell iDRAC Systems
 
 * Install Ubuntu[^1] 22.04 x64 on the server. ([ubuntu-22.04.1-live-server-amd64.iso](https://releases.ubuntu.com/22.04/))
   * select all default options (unless otherwise noted bellow)
