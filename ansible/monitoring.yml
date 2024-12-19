@@ -50,21 +50,19 @@
         - name: Nvidia | Set Docker socket has appropriate permissions
           ansible.builtin.file:
             path: /var/run/docker.sock
-            mode: '0666'     
+            mode: '0666'
 
         - name: Nvidia | Add additional mount for bf2
           ansible.builtin.set_fact:
-            telegraf_mounts: "{{ telegraf_mounts + [
-              {'type': 'bind',
-               'source': '/run/emu_param', 
-               'target': '/run/emu_param', 
+            telegraf_mounts: "{{ telegraf_mounts + [{'type': 'bind',
+               'source': '/run/emu_param',
+               'target': '/run/emu_param',
                'read_only': true},
               {'type': 'bind',
                'source': '/var/run/docker.sock',
                'target': '/var/run/docker.sock',
-               'read_only': false}
-             ] }}"  
-            
+               'read_only': true}] }}"
+
     - name: Intel | telegraf otel monitoring
       when: inventory_hostname == 'mev'
       environment: "{{ proxy_env | default({}) }}"
