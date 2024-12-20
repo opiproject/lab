@@ -8,23 +8,20 @@ Then run the [playbook](../ansible/site.yml) to automate all the lab steps:
 ansible-playbook -i inventory site.yml
 ```
 
-### Automated OS Installation for Dell iDRAC Systems
+### Automated OS Installation
 
-For completely automating the installation using an Ubuntu auto install ISO image see [here](auto_install_ubuntu_iso.md).
+Run this [playbook](../ansible/install_os.yml) to automate OS installation on servers.
 
-The Ansible playbook [install_os.yml](../ansible/install_os.yml) will help automate the installation of an Operating System on Dell servers using iDRAC, [dellemc.openmanage](https://github.com/dell/dellemc-openmanage-ansible-modules) library and the autoinstall Ubuntu iso that we have created. This script currently supports the dell machines only.
-
-Currently, the `idrac_os_deployment` ansible role natively supports installation of `RHEL` and `ESXI` Operating Systems or using a `Custom ISO`. We are using the custom iso option, to install `Ubuntu Jammy 22.04` OS on our systems.
-
-Fore more details on the dellemc.openmanage idrac_os_deployment ansible role that was used in the playbook, refer the documentation [here](https://github.com/dell/dellemc-openmanage-ansible-modules/tree/collections/roles/idrac_os_deployment).
-
-Progress on native `UBUNTU` support to the `idrac_os_deployment` ansible role can be tracked [here](https://github.com/dell/dellemc-openmanage-ansible-modules/pull/784).
-
-To run the playbook:
+_Note: This script currently supports only **DELL** servers via iDRAC using [dellemc.openmanage](https://github.com/dell/dellemc-openmanage-ansible-modules). HPE support is coming..._
 
 ```bash
 ansible-playbook -i inventory install_os.yml
 ```
+
+We have 2 installation options:
+
+- `Official ISO` - only for `RHEL` and `ESXI`, while `UBUNTU` is still a pull request dell/dellemc-openmanage-ansible-modules#784.
+- `Custom ISO` - first prepare and ISO manually as explained here [here](auto_install_ubuntu_iso.md) and then call same [playbook](../ansible/install_os.yml)
 
 ## Manual
 
