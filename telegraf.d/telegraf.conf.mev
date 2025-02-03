@@ -7,6 +7,13 @@
 [[inputs.mem]]
   # no configuration
 
+# Interrupts Input Plugin
+[[inputs.interrupts]]
+
+# Ethtool Input Plugin
+[[inputs.ethtool]]
+  interface_include = ["enp0s1f0d2"]
+
 [[inputs.nstat]]
   # no configuration
 
