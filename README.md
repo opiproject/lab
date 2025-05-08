@@ -50,6 +50,8 @@ We manage all passwords in <https://opi-team.1password.com>
     - [DH2 - DPU Host 2 - HPE DL360](./hardware/dh2/README.md)
     - [DH3 - DPU Host 3 - HP RL300](./hardware/dh3/README.md)
     - [DH4 - DPU Host 4 - Dell R760](./hardware/dh4/README.md)
+    - [DH5 - DPU Host 5 - Dell R760](./hardware/dh5/README.md)
+    - [DH9 - DPU Host 9 - Dell R760](./hardware/dh9/README.md)
     - [A100G - 100G Switch - Arista DCS-7280CR](./hardware/A100G/README.md)
     - [TGEN1 - Traffic Generator 1 - Supermicro](./hardware/tgen1/README.md)
 - [Running the Test Cases](./Documentation/running-the-tests.md)
