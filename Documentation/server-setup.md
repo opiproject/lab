@@ -20,8 +20,8 @@ ansible-playbook -i inventory install_os.yml
 
 We have 2 installation options:
 
-- `Official ISO` - only for `RHEL` and `ESXI`, while `UBUNTU` is still a pull request dell/dellemc-openmanage-ansible-modules#784.
-- `Custom ISO` - first prepare and ISO manually as explained here [here](auto_install_ubuntu_iso.md) and then call same [playbook](../ansible/install_os.yml)
+* `Official ISO` - only for `RHEL` and `ESXI`, while `UBUNTU` is still a pull request dell/dellemc-openmanage-ansible-modules#784.
+* `Custom ISO` - first prepare and ISO manually as explained here [here](auto_install_ubuntu_iso.md) and then call same [playbook](../ansible/install_os.yml)
 
 ## Manual
 
