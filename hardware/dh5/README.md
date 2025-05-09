@@ -2,7 +2,7 @@
 
 Dell R760ax
 
-# DPU
+## DPU
 
 Nvidia Blue Filed 3
 
