@@ -5,6 +5,7 @@ dh1 ansible_host=172.22.1.1     ansible_connection=ssh        ansible_user=root
 dh2 ansible_host=172.22.1.2     ansible_connection=ssh        ansible_user=root
 dh3 ansible_host=172.22.1.3     ansible_connection=ssh        ansible_user=root
 dh4 ansible_host=172.22.1.4     ansible_connection=ssh        ansible_user=root
+dh5 ansible_host=172.22.1.5     ansible_connection=ssh        ansible_user=root
 dh9 ansible_host=172.22.1.9     ansible_connection=ssh        ansible_user=root
 
 [hostbmcs]
@@ -19,11 +20,13 @@ amd ansible_host=172.22.3.1     ansible_connection=ssh        ansible_user=root
 bf2 ansible_host=172.22.3.2     ansible_connection=ssh        ansible_user=root
 mrv ansible_host=172.22.3.3     ansible_connection=ssh        ansible_user=root
 mev ansible_host=192.168.0.2    ansible_connection=ssh        ansible_user=root ansible_ssh_common_args='-J root@172.22.4.4' proxy_env="{'http_proxy': 'http://192.168.0.1:3128', 'https_proxy': 'http://192.168.0.1:3128'}"
+bf3 ansible_host=172.22.3.5     ansible_connection=ssh        ansible_user=root
 
 [dpubmcs]
 bf2bmc ansible_host=172.22.4.2  ansible_connection=local      ansible_user=root
 mrvbmc ansible_host=172.22.4.3  ansible_connection=local      ansible_user=root
 mevbmc ansible_host=172.22.4.4  ansible_connection=ssh        ansible_user=root
+bf3bmc ansible_host=172.22.4.5  ansible_connection=local      ansible_user=root
 
 [tgens]
 tgen1 ansible_host=172.22.1.100 ansible_connection=ssh        ansible_user=root
