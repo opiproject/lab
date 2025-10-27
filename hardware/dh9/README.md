@@ -13,3 +13,8 @@ Run telegraf container:
 ```bash
 sudo docker run -d --restart=always --network=host -v ./telegraf.d/telegraf.conf:/etc/telegraf/telegraf.conf docker.io/library/telegraf:1.31
 ```
+
+
+## MegaRaid management
+
+http://172.22.1.9:2463/
