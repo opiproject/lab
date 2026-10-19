@@ -1,0 +1,8 @@
+# OPI lab: DH4 second onboard port (Et30) must not DHCP on the lab /16;
+# dual-homing on the same subnet causes ARP flux / asymmetric routing.
+network:
+  version: 2
+  ethernets:
+    eno12409np1:
+      dhcp4: false
+      dhcp6: false
