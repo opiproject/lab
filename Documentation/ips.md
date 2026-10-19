@@ -29,7 +29,7 @@ Last verified 2026-10-19.
 | 172.22.0.5             |      | ToR, Arista DCS-7280TR-48C6-R                 | tor          |                                                         |
 | 172.22.0.10            |      | Network PDU                                   | npdu         |                                                         |
 | 172.22.0.20            |      | KVM                                           | kvm          |                                                         |
-| 172.22.0.30            |      | TS, Vertiv Avocent ACS8000                    | ts           |                                                         |
+| 172.22.4.104           |      | TS, Vertiv Avocent ACS8032, see note 5        | ts           | <https://172.22.4.104/>                                 |
 | 172.22.0.227           |      | F5 BIG-IP-01 (F5A), internal                  | (static)     |                                                         |
 | 172.22.0.228           |      | F5 BIG-IP-02 (F5B), internal                  | (static)     |                                                         |
 | 172.22.0.229           |      | F5 BIG-IP floating, internal                  | (static)     |                                                         |
@@ -74,5 +74,6 @@ Notes:
 2. ACC reached through the IMC at 192.168.0.2 (`mev` in the ansible inventory).
 3. BF3 Arm and BMC share one RJ45.
 4. Moved from DH4; not yet verified.
+5. TS is static at 172.22.4.104, not its dhcpd address 172.22.0.30; consoles in [hardware/TS](../hardware/TS/README.md).
 
 F5 management: 192.168.0.227 (F5A) and 192.168.0.228 (F5B), reached from mgmt.
