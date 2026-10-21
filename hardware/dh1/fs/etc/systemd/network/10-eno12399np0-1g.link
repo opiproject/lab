@@ -1,0 +1,10 @@
+# FS SFP-GB-GE-T 1000BASE-T module: bnxt fw 38.x will not link with autoneg on
+[Match]
+MACAddress=04:32:01:18:ac:60
+[Link]
+NamePolicy=keep kernel database onboard slot path
+AlternativeNamesPolicy=database onboard slot path
+MACAddressPolicy=persistent
+AutoNegotiation=no
+BitsPerSecond=1G
+Duplex=full
