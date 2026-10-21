@@ -31,7 +31,7 @@ For more details on iDRAC OS Installation using Remote File Share see [iDRAC rem
 
 ### Manual OS Installation for Dell iDRAC Systems
 
-* Install Ubuntu[^1] 22.04 x64 on the server. ([ubuntu-22.04.1-live-server-amd64.iso](https://releases.ubuntu.com/22.04/))
+* Install Ubuntu[^1] 26.04 x64 on the server. ([ubuntu-26.04.1-live-server-amd64.iso](https://releases.ubuntu.com/26.04/))
   * select all default options (unless otherwise noted bellow)
   * on disk setup: disable LVM (optional)
   * on profile setup: put name, servername, username, password all as `opi` for example purposes
