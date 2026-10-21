@@ -5,7 +5,7 @@
   hosts: mev
   become: true
   vars:
-    imc_version: 1.4.0.8469
+    imc_version: 2.2.0.12025
     imc_local_file: /root/intel-ipu-pldm-image-{{ imc_version }}.tar.gz
     imc_remote_file: /work/intel-ipu-pldm-image-{{ imc_version }}/intel-ipu-pldm-{{ imc_version }}.bin
     acc_version: "{{ imc_version }}"
