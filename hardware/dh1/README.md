@@ -29,6 +29,27 @@ As of 2026-10-21.
 link it with autonegotiation on, so [10-eno12399np0-1g.link](fs/etc/systemd/network/10-eno12399np0-1g.link) forces 1G full duplex.
 Copy it to `/etc/systemd/network/` and reboot (or `udevadm trigger`).
 
+## Known issue: megaraid_sas on kernel 6.17 and later (CVE-2026-90008)
+
+On kernel 6.17 and later, `megasas_make_prp_nvme()` overruns its 4 KiB PRP chain frame when a request is
+larger than about 2 MiB. The block layer has allowed requests up to 4 MiB since 6.17. On dh1, the NVMe
+virtual disk behind the PERC H755N (`sda`) then oopses ("unable to handle page fault"), and the root
+disk wedges a few minutes later.
+
+dh1 stays on the 7.0 kernel line, with the request size capped at 1 MiB:
+
+| File                                             | Purpose                                                |
+| ------------------------------------------------ | ------------------------------------------------------ |
+| `/etc/udev/rules.d/60-megasas-max-sectors.rules` | sets `max_sectors_kb=1024` on megaraid_sas disks       |
+| `/etc/initramfs-tools/hooks/megasas-max-sectors` | copies the rule into the initramfs, before root mounts |
+
+The cap can't be installed from an affected kernel, because the disk wedges first. Install it from a kernel
+older than 6.17 (6.8.0-147 is still installed on dh1), then rebuild the 7.0 initramfs.
+
+Check after every kernel update: `lsinitramfs /boot/initrd.img-$(uname -r) | grep megasas` and
+`cat /sys/block/sda/queue/max_sectors_kb` (1024). Remove both files and run `update-initramfs -u -k all`
+once an installed kernel carries the upstream fix.
+
 ## BIOS settings
 
 - change power to always on
