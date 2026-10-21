@@ -6,13 +6,15 @@ ACS8032 32-port unit, internal modem, dual AC power supply
 ## HW spec
 
 - Model: ACS8032 with internal modem and dual power supply
-- Firmware: 2.30.2.6525+920+41+18 (Jul 9 2025 - 20:45:03)
+- Firmware: 2.32.6.6701+924+41+18 (Sep 8 2026 - 17:41:01), updated 2026-10-20 (was 2.30.2.6525)
+- Bootcode: 1.19
+- Power supply 2 reports `off`: check the cord, or confirm it is single-fed on purpose
 
 ## Management
 
-- 1G ethernet management port, ToR Et3, 172.22.4.104 (static; dhcpd reserves 172.22.0.30)
+- 1G ethernet management port, ToR Et3, 172.22.0.30 from the Kea reservation `ts` (it was static at 172.22.4.104 until 2026-10-20)
 - Security profile "Secure": SSH and HTTPS only, no telnet, no ping
-- Serial port N: `ssh -p $((8000+N)) admin@172.22.4.104`, hot key `^Z`
+- Serial port N: `ssh -p $((8000+N)) admin@172.22.0.30`, hot key `^Z`
 
 ## Docs
 

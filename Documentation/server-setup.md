@@ -131,18 +131,20 @@ yamllint /etc/netplan/00-installer-config.yaml
 
 ## DHCP Server
 
+Kea replaced isc-dhcp-server on 2026-10-20 (isc-dhcp-server is end of life).
+
 ```Shell
-apt-get install -y isc-dhcp-server
-systemctl enable isc-dhcp-server
-systemctl start isc-dhcp-server
+apt-get install -y kea-dhcp4-server
+systemctl disable --now isc-dhcp-server
 
-git clone https://github.com/opiproject/opi-poc.git
-cp ./opi-poc/lab/hardware/mgmt/fs/etc/dhcp/dhcpd.conf /etc/dhcp/dhcpd.conf
+git clone https://github.com/opiproject/lab.git
+cp ./lab/hardware/mgmt/fs/etc/kea/kea-dhcp4.conf /etc/kea/kea-dhcp4.conf
+kea-dhcp4 -t /etc/kea/kea-dhcp4.conf
 
-systemctl restart isc-dhcp-server
+systemctl enable --now kea-dhcp4-server
 ```
 
-to see new devices use `cat /var/lib/dhcp/dhcpd.leases`
+to see new devices use `cat /var/lib/kea/kea-leases4.csv`
 
 ## Others
 
