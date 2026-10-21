@@ -2,6 +2,33 @@
 
 Dell PowerEdge R650
 
+## Firmware and OS
+
+As of 2026-10-21.
+
+| Component                            | Version                                     |
+| ------------------------------------ | ------------------------------------------- |
+| OS                                   | Ubuntu 26.04.1 LTS, kernel 7.0.0-38-generic |
+| BIOS                                 | 1.23.1 (09/17/2026)                         |
+| iDRAC 9 and Lifecycle Controller     | 7.30.30.54                                  |
+| System CPLD                          | 1.0.9                                       |
+| PERC H755N Front                     | 52.38.0-6897                                |
+| BOSS-S2                              | 2.5.13.4009                                 |
+| Backplane 1                          | 7.16                                        |
+| Broadcom Adv. Dual 25Gb Ethernet     | 38.11.70.00                                 |
+| Pensando DSC2-100 100G 2p QSFP56 DPU | 1.46.0.31 (iDRAC), 1.46.0-E-28 (ionic)      |
+| Power supplies                       | 00.17.30                                    |
+| TPM                                  | 7.2.2.0                                     |
+| iDRAC Service Module                 | 5.1.0.0                                     |
+| Dell OS Driver Pack                  | 23.07.03                                    |
+| Dell 64-bit uEFI Diagnostics         | 4303A02                                     |
+
+## Link speed
+
+`eno12399np0` reaches the ToR through an FS 1000BASE-T copper SFP. Broadcom firmware 38.x / 238.1.x will not
+link it with autonegotiation on, so [10-eno12399np0-1g.link](fs/etc/systemd/network/10-eno12399np0-1g.link) forces 1G full duplex.
+Copy it to `/etc/systemd/network/` and reboot (or `udevadm trigger`).
+
 ## BIOS settings
 
 - change power to always on

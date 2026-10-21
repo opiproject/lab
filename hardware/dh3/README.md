@@ -2,6 +2,31 @@
 
 HP RL300
 
+## Firmware and OS
+
+As of 2026-10-21.
+
+| Component                             | Version                                     |
+| ------------------------------------- | ------------------------------------------- |
+| OS                                    | Ubuntu 26.04.1 LTS, kernel 7.0.0-38-generic |
+| System ROM                            | R11 v1.60 (03/07/2024)                      |
+| iLO 6                                 | 1.79 (Sep 23 2026)                          |
+| Ampere System Control Processor (SCP) | 02.10 (02/01/2024)                          |
+| Intelligent Platform Abstraction Data | 9.4.0 Build 13                              |
+| System Programmable Logic Device      | 0x13 (secondary 0x09)                       |
+| Power supplies                        | 2.00                                        |
+| 8 SFF NVMe UBM4 backplane             | 1.28                                        |
+| TPM                                   | 1.512                                       |
+| ConnectX-6 Lx                         | 26.49.1014 (MT_0000000575)                  |
+| NVMe VO001920KYDMT                    | HPK6                                        |
+| DOCA (doca-ofed)                      | 3.5.0-082000                                |
+| OFED / mft / rshim                    | 26.07-0.7.7 / 4.37.0-154 / 2.8.5-1          |
+| Docker                                | 29.9.1                                      |
+| Marvell CN106 Linux                   | Buildroot 2022.08.2, kernel 5.15.72         |
+| Marvell CN106 SDK                     | 12.24.03                                    |
+| Marvell CN106 U-Boot                  | 2023.01-12.24.03                            |
+| Marvell CN106 MCU                     | 1.6.0                                       |
+
 ## BIOS settings
 
 - change power to always on
@@ -70,22 +95,21 @@ crw-rw---- 1 root dialout 188, 0 May 30 14:26 /dev/ttyUSB0
 crw-rw---- 1 root dialout 188, 1 May 28 02:14 /dev/ttyUSB1
 ```
 
-CPU version
+CN106 Linux version, on the Linux console (`/dev/ttyUSB0`)
 
 ```bash
 root@dh3:~# minicom -D /dev/ttyUSB0
 
-root@ubuntu-server:~# head -n 2 /etc/os-release
-NAME="Ubuntu"
-VERSION="20.04 LTS (Focal Fossa)"
+# cat /etc/os-release
+# uname -r
 ```
 
-IMC version
+MCU version, on the MCU's Zephyr shell (`/dev/ttyUSB1`)
 
 ```bash
-root@dh3:~# minicom -D /dev/ttyUSB0
+root@dh3:~# minicom -D /dev/ttyUSB1
 
 uart:~$ version
-Version 1.05
-Built at 2023-09-27T15:19:47 Wednesday local time against board cn103_pcie_crb
 ```
+
+The current values are in the table at the top.
