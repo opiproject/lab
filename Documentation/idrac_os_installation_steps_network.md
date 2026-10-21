@@ -5,7 +5,7 @@ This outlines the detailed steps to install an Operating System(OS) on a server 
 ## Prerequisites
 
 1. **iDRAC Login Credentials**: Ensure you have access to iDRAC9, incase you do not have the credentials, ask in the [OPI Slack group](https://join.slack.com/t/opi-project/shared_invite/zt-1ctqtrgkz-WJZrcVPp3P1ACZWjpZP2KQ).
-2. **OS ISO File**: The Operating System ISO image should be available on the Network or a Remote File System and be accessible to the iDRAC system. The current Ubuntu ISO we are using is available at: `http://172.22.0.1/ubuntu-22.04.5-live-server-amd64.iso`. See [Hosting Files on a Webserver](hosting_files_on_webserver.md) for how the ISO file is hosted on the web server.
+2. **OS ISO File**: The Operating System ISO image should be available on the Network or a Remote File System and be accessible to the iDRAC system. The current Ubuntu ISO is served from mgmt at `http://172.22.0.1/ubuntu-26.04-autoinstall.iso` while an install runs (built with [Ubuntu Autoinstall ISO Guide](auto_install_ubuntu_iso.md)). See [Hosting Files on a Webserver](hosting_files_on_webserver.md) for how to start the web server.
 3. **VPN Access**: Confirm you have a VPN connection to ensure, you can connect to the server's iDRAC interface.
 4. **Supported Browsers**: Use the latest version of a supported web browser for the best experience (e.g., Chrome).
 

@@ -76,5 +76,5 @@
           protocol: http
           hostname: "{{ hostvars['mgmt']['ansible_host'] }}"
           iso_path: ""
-          iso_name: ubuntu-22.04-autoinstall.iso
+          iso_name: ubuntu-26.04-autoinstall.iso
           is_custom_iso: true
