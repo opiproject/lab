@@ -97,13 +97,13 @@ mkdir server
 touch server/meta-data
 ```
 
-You can find the sample **meta-data** file [here](../ansible/iso_files/server/meta-data)
+You can find the sample [meta-data file](../ansible/iso_files/server/meta-data)
 
 ### Step 7: Create a user-data file in the server directory
 
 This file will contain the auto-install user configuration. You can add your own settings here.
 
-You can refer to the Ubuntu Autoinstall documentation for more details. You can find the sample **user-data** file [here](../ansible/iso_files/server/user-data).
+You can refer to the Ubuntu Autoinstall documentation for more details. You can find the sample [user-data file](../ansible/iso_files/server/user-data).
 
 Under the Identity section, we need to provide a hashed password, which can be done using the following commands
 

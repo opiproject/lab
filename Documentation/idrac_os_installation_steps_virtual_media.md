@@ -75,7 +75,7 @@ This outlines the detailed steps to install an Operating System(OS) on a server 
    - Donot install additional packages or software like Docker or databases.
    - on SSH setup: enable `install OpenSSH server`.
 
-   Detailed steps are also available [here](https://github.com/opiproject/lab/blob/main/server-setup.md).
+   Detailed steps are also available in [Server Setup](server-setup.md).
 
 2. Once the OS is installed, remember to **disconnect** the virtual media by selecting **Virtual Media** > **Disconnect Virtual Media**.
 3. Reboot the System.
