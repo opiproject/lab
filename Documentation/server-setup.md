@@ -21,13 +21,13 @@ ansible-playbook -i inventory install_os.yml
 We have 2 installation options:
 
 * `Official ISO` - only for `RHEL` and `ESXI`, while `UBUNTU` is still a pull request dell/dellemc-openmanage-ansible-modules#784.
-* `Custom ISO` - first prepare and ISO manually as explained here [here](auto_install_ubuntu_iso.md) and then call same [playbook](../ansible/install_os.yml)
+* `Custom ISO` - first prepare an ISO manually as explained in [Ubuntu Autoinstall ISO](auto_install_ubuntu_iso.md) and then call same [playbook](../ansible/install_os.yml)
 
 ## Manual
 
-For more details on iDRAC OS Installation using Virtual media see [here](idrac_os_installation_steps_virtual_media.md).
+For more details on iDRAC OS Installation using Virtual media see [iDRAC virtual media install](idrac_os_installation_steps_virtual_media.md).
 
-For more details on iDRAC OS Installation using Remote File Share see [here](idrac_os_installation_steps_network.md).
+For more details on iDRAC OS Installation using Remote File Share see [iDRAC remote file share install](idrac_os_installation_steps_network.md).
 
 ### Manual OS Installation for Dell iDRAC Systems
 
