@@ -1,41 +1,39 @@
+#cloud-config
 autoinstall:
-version: 1
-early-commands:
+  version: 1
+  early-commands:
     - ["cat", "/autoinstall.yaml"]
-refresh-installer:
-    update: yes
-apt:
+  refresh-installer:
+    update: true
+  apt:
     preserve_sources_list: false
     mirror-selection:
-    primary:
+      primary:
         - country-mirror
         - uri: "http://archive.ubuntu.com/ubuntu"
-        arches: [i386, amd64]
+          arches: [i386, amd64]
         - uri: "http://ports.ubuntu.com/ubuntu-ports"
-        arches: [s390x, arm64, armhf, powerpc, ppc64el, riscv64]
+          arches: [s390x, arm64, armhf, powerpc, ppc64el, riscv64]
     fallback: abort
     geoip: true
-    sources:
-    git-ppa:
-        source: ppa:git-core/ppa
-identity:
+  identity:
     hostname: opi
     password: "hashedpassword"
     realname: opi
     username: opi
-keyboard:
+  keyboard:
     layout: us
     toggle: ""
     variant: ""
-locale: en_US
-ssh:
+  locale: en_US.UTF-8
+  ssh:
     allow-pw: true
     authorized-keys: []
     install-server: true
-storage:
+  storage:
     layout:
-    name: lvm
-    match:
+      name: lvm
+      match:
         size: largest
-late-commands:
+  late-commands:
     - 'echo ''APT::Install-Recommends "false";'' >/target/etc/apt/apt.conf.d/02InstallRecommends'

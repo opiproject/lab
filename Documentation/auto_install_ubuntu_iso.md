@@ -1,6 +1,6 @@
 # Ubuntu Autoinstall ISO Guide
 
-This guide explains how to create a custom autoinstall ISO for Ubuntu live server with pre-configured installation options.
+This guide explains how to create a custom autoinstall ISO for Ubuntu 26.04 live server with pre-configured installation options.
 
 ## Reference Documentation
 
@@ -10,23 +10,23 @@ This guide explains how to create a custom autoinstall ISO for Ubuntu live serve
 
 Install the following packages:
 
-- **7z**: For unpacking the source ISO, including partition images.
+- **7z**: For unpacking the source ISO, including partition images. On Ubuntu 22.04 and older the package is `p7zip-full`.
 
   ```bash
-    sudo apt install p7zip
-    ```
+  sudo apt install 7zip
+  ```
 
-- **wget**: To download the latest daily build of the Ubuntu 22.04 server ISO.
+- **wget**: To download the Ubuntu 26.04 server ISO.
 
   ```bash
-    sudo apt install wget
-    ```
+  sudo apt install wget
+  ```
 
 - **xorriso**: For building the autoinstall custom ISO.
 
   ```bash
-    sudo apt install xorriso
-    ```
+  sudo apt install xorriso
+  ```
 
 ## Step-by-Step Guide
 
@@ -35,7 +35,7 @@ Install the following packages:
 ```bash
 cd ~/lab/ansible/iso_files
 mkdir source-files
-wget https://releases.ubuntu.com/jammy/ubuntu-22.04.5-live-server-amd64.iso
+wget https://releases.ubuntu.com/26.04/ubuntu-26.04.1-live-server-amd64.iso
 ```
 
 ### Step 2: Extract the ISO contents
@@ -43,7 +43,7 @@ wget https://releases.ubuntu.com/jammy/ubuntu-22.04.5-live-server-amd64.iso
 Use 7z to unpack the ISO. It will extract MBR and EFI partition images automatically.
 
 ```bash
-7z -y x ubuntu-22.04.5-live-server-amd64.iso -osource-files
+7z -y x ubuntu-26.04.1-live-server-amd64.iso -osource-files
 ```
 
 ### Step 3: Move the [BOOT] directory for easier access
@@ -53,6 +53,8 @@ cd source-files
 mv '[BOOT]' ../BOOT
 cd ..
 ```
+
+`BOOT` now holds `1-Boot-NoEmul.img` (the BIOS boot image) and `2-Boot-NoEmul.img` (the EFI partition), which Step 8 needs.
 
 ### Step 4: Edit the ISO grub.cfg File
 
@@ -76,56 +78,50 @@ initrd  /casper/initrd
 ```bash
 menuentry "Autoinstall Ubuntu Server" {
 set gfxpayload=keep
-linux   /casper/vmlinuz quiet autoinstall ds=nocloud\;s=http://ip-address/path-to-server-folder/  ---
+linux   /casper/vmlinuz quiet autoinstall ds=nocloud\;s=http://172.22.0.1/server/  ---
 initrd  /casper/initrd
 }
 ```
 
-Where the **server** folder contains the **user-data** and the **meta-data** files.
+Where the **server** folder contains the **user-data** and the **meta-data** files, and `172.22.0.1` is mgmt (see [Hosting Files on a Webserver](hosting_files_on_webserver.md)). Keep the trailing `/` in the URL.
 
-### Step 5: Create a directory for auto-install configuration files
+### Step 5: Prepare the auto-install configuration files
 
-This directory will hold the user-data and meta-data files required to build the auto-install iso
+The **server** directory in `~/lab/ansible/iso_files` already holds the sample files:
 
-```bash
-mkdir server
-```
+- [meta-data](../ansible/iso_files/server/meta-data): cloud-init requires it to exist, and it sets the hostname for the instance.
+- [user-data](../ansible/iso_files/server/user-data): the autoinstall configuration (user, locale, SSH, disk layout). Add your own settings here, see the Ubuntu Autoinstall documentation.
 
-### Step 6: Create a meta-data file (cloud-init requires its presence) under the server directory
+The file must start with `#cloud-config`, and every setting must be nested under the `autoinstall:` key.
 
-```bash
-touch server/meta-data
-```
+### Step 6: Set the password
 
-You can find the sample [meta-data file](../ansible/iso_files/server/meta-data)
-
-### Step 7: Create a user-data file in the server directory
-
-This file will contain the auto-install user configuration. You can add your own settings here.
-
-You can refer to the Ubuntu Autoinstall documentation for more details. You can find the sample [user-data file](../ansible/iso_files/server/user-data).
-
-Under the Identity section, we need to provide a hashed password, which can be done using the following commands
+Under the identity section, the **user-data** file needs a hashed password. Generate it and write it into the file:
 
 ```bash
-openssl passwd -6
+HASH=$(openssl passwd -6)
+sed -i "s|password: \".*\"|password: \"$HASH\"|" ~/lab/ansible/iso_files/server/user-data
 ```
 
-This will prompt you to enter a password, which will be hashed and displayed. You can then update the **user-data**** file with the latest password using the below command
+`openssl` prompts for the password twice. Do not commit the edited **user-data** file.
+
+### Step 7: Place the server directory
+
+If the server configuration files need to be local to the ISO, then copy the **server** folder into the **source-files** directory:
 
 ```bash
-sed -i 's/password: ".*"/password: "<<Password_from_above_openssl_command>>"/' ~/lab/ansible/iso_files/server/user-data
+cp -r server source-files/
 ```
 
-**Note:** If the server configuration files need to be local to the ISO, then keep the **server** folder under the **source-files** directory. Else keep the **server** folder in the accessible remote server.
+Else, copy the **server** folder to the remote web server.
 
-### Step 8: Generate the Custom Ubuntu 22.04 Autoinstall ISO
+### Step 8: Generate the Custom Ubuntu 26.04 Autoinstall ISO
 
 Make sure this is the directory structure before you run the below commands
 
 ```plaintext
 iso_files
-├── ubuntu-22.04.5-live-server-amd64.iso
+├── ubuntu-26.04.1-live-server-amd64.iso
 ├── BOOT
 ├── source-files
 │   ├── server
@@ -143,14 +139,14 @@ iso_files
 │   └── boot.catalog
 ```
 
-To generate the custom Ubuntu 22.04 autoinstall ISO, you can use the following command
+To generate the custom Ubuntu 26.04 autoinstall ISO, you can use the following command
 
 ```bash
 cd source-files
 
 xorriso -as mkisofs -r \
--V 'Ubuntu 22.04 LTS AUTO (EFIBIOS)' \
--o ../ubuntu-22.04-autoinstall.iso \
+-V 'Ubuntu 26.04 LTS AUTO (EFIBIOS)' \
+-o ../ubuntu-26.04-autoinstall.iso \
 --grub2-mbr ../BOOT/1-Boot-NoEmul.img \
 -partition_offset 16 \
 --mbr-force-bootable \
@@ -166,12 +162,12 @@ xorriso -as mkisofs -r \
 .
 ```
 
-This will create a new autoinstall iso with the name: **ubuntu-22.04-autoinstall.iso**, that can be used for installation.
+This will create a new autoinstall iso with the name: **ubuntu-26.04-autoinstall.iso**, that can be used for installation.
 
 ### Subsequent Autoinstall ISO updates
 
 For updates to the Autoinstall ISO:
 
-If the server configuration files are local to the ISO, then update the configuration files (**user-data** and **meta-data** files) in Step 6 and Step 7, then run **xorriso** command in Step 8 to create an updated ISO.
+If the server configuration files are local to the ISO, then update the configuration files (**user-data** and **meta-data** files) in Step 5 and Step 6, copy them again in Step 7, then run **xorriso** command in Step 8 to create an updated ISO.
 
 Else, if the server configuration files are stored on a remote server. All you need to do is just make the modifications to the **user-data** and the **meta-data** file in the remote server and re-install the OS using the same ISO. It will automatically pick the latest updates.
