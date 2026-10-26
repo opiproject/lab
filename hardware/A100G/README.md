@@ -10,7 +10,7 @@ Arista 7280R, 48x100GbE QSFP and 8x40GbE QSFP+ switch, front to rear air, 2 x AC
 
 - Part number: Arista DCS-7280CR-48-F
 - Hardware version: 11.01
-- Software image version: 4.32.0F
+- Software image version: 4.33.10M (upgraded from 4.32.0F on 2026-10-21)
 
 ```bash
 A100G>show version
@@ -20,16 +20,16 @@ Serial number: JPE16491339
 Hardware MAC address: 444c.a897.b5cf
 System MAC address: 444c.a897.b5cf
 
-Software image version: 4.32.0F
+Software image version: 4.33.10M
 Architecture: i686
-Internal build version: 4.32.0F-36401836.4320F
-Internal build ID: 6217eea5-c8bc-4ca0-a5d9-7f4c1d4f8e78
+Internal build version: 4.33.10M-49734529.43310M
+Internal build ID: 1a76e4a2-92b6-419a-bed1-5f7563e77561
 Image format version: 3.0
 Image optimization: Sand-4GB
 
-Uptime: 1 week, 5 days, 2 hours and 55 minutes
-Total memory: 16253824 kB
-Free memory: 13076216 kB
+Uptime: 11 hours and 17 minutes
+Total memory: 16253760 kB
+Free memory: 12935596 kB
 ```
 
 ## Management

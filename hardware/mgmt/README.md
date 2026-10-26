@@ -1,7 +1,5 @@
 # Management server
 
-as of now this is merged with dh1 until new server arives
-
 ## Roles
 
 - DHCP server for the lab
@@ -11,19 +9,54 @@ as of now this is merged with dh1 until new server arives
 - network gateway between private network 172.22 and the internet
 - Other containers and vms for remaining services
 
+## Firmware and OS
+
+As of 2026-10-21.
+
+| Component                 | Version                                     |
+| ------------------------- | ------------------------------------------- |
+| OS                        | Ubuntu 26.04.1 LTS, kernel 7.0.0-38-generic |
+| BIOS                      | F48 (R35_F48, 09/03/2026)                   |
+| BMC                       | 13.06.29                                    |
+| Intel E810-CQDA2 OCP3 NVM | 5.10 (0x80022600), FW 1.4113.0              |
+| Intel I210 NVM            | 3.30 (0x8000079c)                           |
+| Kea DHCPv4                | 3.0.3                                       |
+
 ## BIOS settings
 
 - change power to always on
 
+## Network interface names
+
+The NIC names are pinned to their MAC addresses with `/etc/systemd/network/10-pin-<name>.link` files (also copied into
+the initramfs), so a BIOS or kernel update that renumbers PCI buses cannot rename them. `enp195s0` carries the public IP
+and the NAT, and `enp1s0f0np0` serves the lab DHCP.
+
+## Containers
+
+As of 2026-10-20 mgmt has no Docker or Podman installed, only LXC. The `docker compose` steps below are from the earlier
+setup.
+
 ## DHCP server
 
-run bare metal or via docker:
+Kea `kea-dhcp4-server` 3.0.3, bare metal, since 2026-10-20. isc-dhcp-server is disabled.
+
+- Config: [kea-dhcp4.conf](fs/etc/kea/kea-dhcp4.conf). It listens on the lab NIC `enp1s0f0np0` only, with one reservation per
+  device in [ips.md](../../Documentation/ips.md) and a pool of 172.22.222.1-254 for unknown devices.
+- SZTP option 143 is sent with the `flex_option` hook.
+- Check the config before a restart: `kea-dhcp4 -t /etc/kea/kea-dhcp4.conf`.
+- Leases: `/var/lib/kea/kea-leases4.csv`.
+
+## NAT and firewall
+
+`nftables.service` is disabled on purpose, because [nftables.conf](fs/etc/nftables.conf) starts with a flush that would drop
+the NAT rules. mgmt masquerades the lab traffic out of `enp195s0`:
 
 ```bash
-sudo docker run --rm -it --network=host --privileged --restart always -v "$(PWD)"/fs/etc/dhcp/dhcpd.conf:/etc/dhcp/dhcpd.conf docker.io/networkboot/dhcpd:1.3.0
+iptables -t nat -A POSTROUTING -o enp195s0 -j MASQUERADE
 ```
 
-or [compose](https://github.com/opiproject/sztp/blob/0addb57154332e7ecdebe4ba18b2633278857ef5/docker-compose.yml#L51-L68)
+fail2ban guards sshd, see [opilab.local](fs/etc/fail2ban/jail.d/opilab.local).
 
 ## GitHub self hosted runners
 

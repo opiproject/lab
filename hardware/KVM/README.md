@@ -5,7 +5,7 @@ KVM switches provide remote management to access and control servers.
 ## HW spec
 
 - Part Number: MPU8032DAC-35-B4-3E
-- Version: 2.12.4.26064
+- Version: 2.14.0.26173 (boot 2.4.25905), as of 2026-10-20
 - KVM dongle: MPUIQ-VMCHS
 
 ## Management

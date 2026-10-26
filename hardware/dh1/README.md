@@ -2,6 +2,54 @@
 
 Dell PowerEdge R650
 
+## Firmware and OS
+
+As of 2026-10-21.
+
+| Component                            | Version                                     |
+| ------------------------------------ | ------------------------------------------- |
+| OS                                   | Ubuntu 26.04.1 LTS, kernel 7.0.0-38-generic |
+| BIOS                                 | 1.23.1 (09/17/2026)                         |
+| iDRAC 9 and Lifecycle Controller     | 7.30.30.54                                  |
+| System CPLD                          | 1.0.9                                       |
+| PERC H755N Front                     | 52.38.0-6897                                |
+| BOSS-S2                              | 2.5.13.4009                                 |
+| Backplane 1                          | 7.16                                        |
+| Broadcom Adv. Dual 25Gb Ethernet     | 38.11.70.00                                 |
+| Pensando DSC2-100 100G 2p QSFP56 DPU | 1.46.0.31 (iDRAC), 1.46.0-E-28 (ionic)      |
+| Power supplies                       | 00.17.30                                    |
+| TPM                                  | 7.2.2.0                                     |
+| iDRAC Service Module                 | 5.1.0.0                                     |
+| Dell OS Driver Pack                  | 23.07.03                                    |
+| Dell 64-bit uEFI Diagnostics         | 4303A02                                     |
+
+## Link speed
+
+`eno12399np0` reaches the ToR through an FS 1000BASE-T copper SFP. Broadcom firmware 38.x / 238.1.x will not
+link it with autonegotiation on, so [10-eno12399np0-1g.link](fs/etc/systemd/network/10-eno12399np0-1g.link) forces 1G full duplex.
+Copy it to `/etc/systemd/network/` and reboot (or `udevadm trigger`).
+
+## Known issue: megaraid_sas on kernel 6.17 and later (CVE-2026-90008)
+
+On kernel 6.17 and later, `megasas_make_prp_nvme()` overruns its 4 KiB PRP chain frame when a request is
+larger than about 2 MiB. The block layer has allowed requests up to 4 MiB since 6.17. On dh1, the NVMe
+virtual disk behind the PERC H755N (`sda`) then oopses ("unable to handle page fault"), and the root
+disk wedges a few minutes later.
+
+dh1 stays on the 7.0 kernel line, with the request size capped at 1 MiB:
+
+| File                                             | Purpose                                                |
+| ------------------------------------------------ | ------------------------------------------------------ |
+| `/etc/udev/rules.d/60-megasas-max-sectors.rules` | sets `max_sectors_kb=1024` on megaraid_sas disks       |
+| `/etc/initramfs-tools/hooks/megasas-max-sectors` | copies the rule into the initramfs, before root mounts |
+
+The cap can't be installed from an affected kernel, because the disk wedges first. Install it from a kernel
+older than 6.17 (6.8.0-147 is still installed on dh1), then rebuild the 7.0 initramfs.
+
+Check after every kernel update: `lsinitramfs /boot/initrd.img-$(uname -r) | grep megasas` and
+`cat /sys/block/sda/queue/max_sectors_kb` (1024). Remove both files and run `update-initramfs -u -k all`
+once an installed kernel carries the upstream fix.
+
 ## BIOS settings
 
 - change power to always on

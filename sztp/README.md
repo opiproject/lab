@@ -25,12 +25,23 @@ root@mgmt:~# grep SZTPD_SBI_PORT ~/lab/docker-compose.yml
       SZTPD_SBI_PORT: 8080
 ```
 
-Add SZTP options to your DHCP server [config](./hardware/mgmt/fs/etc/dhcp/dhcpd.conf), [for example](https://github.com/opiproject/lab/blob/519485bc141ae8dfcf10e9fb5b844e0fda76c915/hardware/mgmt/fs/etc/dhcp/dhcpd.conf#L14-L15):
+Add SZTP option 143 to the Kea DHCP server [config](../hardware/mgmt/fs/etc/kea/kea-dhcp4.conf) with the `flex_option` hook,
+then check the config with `kea-dhcp4 -t /etc/kea/kea-dhcp4.conf` and restart `kea-dhcp4-server`:
 
-```bash
-$ grep sztp /etc/dhcp/dhcpd.conf
-option sztp-redirect-urls code 143  = text;
-option sztp-redirect-urls "https://bootstrap:8080/restconf/operations/ietf-sztp-bootstrap-server:get-bootstrapping-data";
+```json
+"hooks-libraries": [
+  {
+    "library": "/usr/lib/x86_64-linux-gnu/kea/hooks/libdhcp_flex_option.so",
+    "parameters": {
+      "options": [
+        {
+          "code": 143,
+          "add": "'https://bootstrap:8080/restconf/operations/ietf-sztp-bootstrap-server:get-bootstrapping-data'"
+        }
+      ]
+    }
+  }
+]
 ```
 
 Generate keys, certificates and server configuration file from template:

@@ -1,0 +1,12 @@
+# OCP3 BCM57414 fw 238.1.x (SPP 2026.09) won't link the FS 1000BASE-T copper SFP with autoneg on (ToR Et11 is 1G).
+# Same fix as dh1, 2026-10-20. NamePolicy lines copied from 99-default.link so the name stays ens10f0np0.
+[Match]
+MACAddress=00:62:0b:a2:59:8e
+
+[Link]
+NamePolicy=keep kernel database onboard slot path
+AlternativeNamesPolicy=database onboard slot path
+MACAddressPolicy=persistent
+AutoNegotiation=no
+BitsPerSecond=1G
+Duplex=full

@@ -31,7 +31,7 @@ For more details on iDRAC OS Installation using Remote File Share see [iDRAC rem
 
 ### Manual OS Installation for Dell iDRAC Systems
 
-* Install Ubuntu[^1] 22.04 x64 on the server. ([ubuntu-22.04.1-live-server-amd64.iso](https://releases.ubuntu.com/22.04/))
+* Install Ubuntu[^1] 26.04 x64 on the server. ([ubuntu-26.04.1-live-server-amd64.iso](https://releases.ubuntu.com/26.04/))
   * select all default options (unless otherwise noted bellow)
   * on disk setup: disable LVM (optional)
   * on profile setup: put name, servername, username, password all as `opi` for example purposes
@@ -131,18 +131,20 @@ yamllint /etc/netplan/00-installer-config.yaml
 
 ## DHCP Server
 
+Kea replaced isc-dhcp-server on 2026-10-20 (isc-dhcp-server is end of life).
+
 ```Shell
-apt-get install -y isc-dhcp-server
-systemctl enable isc-dhcp-server
-systemctl start isc-dhcp-server
+apt-get install -y kea-dhcp4-server
+systemctl disable --now isc-dhcp-server
 
-git clone https://github.com/opiproject/opi-poc.git
-cp ./opi-poc/lab/hardware/mgmt/fs/etc/dhcp/dhcpd.conf /etc/dhcp/dhcpd.conf
+git clone https://github.com/opiproject/lab.git
+cp ./lab/hardware/mgmt/fs/etc/kea/kea-dhcp4.conf /etc/kea/kea-dhcp4.conf
+kea-dhcp4 -t /etc/kea/kea-dhcp4.conf
 
-systemctl restart isc-dhcp-server
+systemctl enable --now kea-dhcp4-server
 ```
 
-to see new devices use `cat /var/lib/dhcp/dhcpd.leases`
+to see new devices use `cat /var/lib/kea/kea-leases4.csv`
 
 ## Others
 

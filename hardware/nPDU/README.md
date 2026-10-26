@@ -9,7 +9,7 @@ Upgradeable Switched Outlet Level Monitored rPDUs provide reliable power distrib
 
 - Part Number: VP7N3001
 - Model Number: MNU3EGB1-24CF18-3TL6A0A10-S
-- Version: 5.10.8
+- Version: 6.3.0, as of 2026-10-20
 
 ## Management
 
