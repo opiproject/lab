@@ -1,0 +1,7 @@
+# DH4 port 2 (Et30): no DHCP, a second lab /16 address causes ARP flux
+network:
+  version: 2
+  ethernets:
+    eno12409np1:
+      dhcp4: false
+      dhcp6: false

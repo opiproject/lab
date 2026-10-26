@@ -1,4 +1,4 @@
-# from https://github.com/opiproject/opi-poc/blob/main/lab/ips.md
+# keep in sync with ../Documentation/ips.md and ../hardware/mgmt/fs/etc/dhcp/dhcpd.conf
 
 [hostservers]
 dh1 ansible_host=172.22.1.1     ansible_connection=ssh        ansible_user=root
@@ -18,15 +18,23 @@ dh9bmc ansible_host=172.22.2.9  ansible_connection=local      ansible_user=root
 [DPUs]
 amd ansible_host=172.22.3.1     ansible_connection=ssh        ansible_user=root
 bf2 ansible_host=172.22.3.2     ansible_connection=ssh        ansible_user=root
+# CN106 in DH3: no OOB link, console only
 mrv ansible_host=172.22.3.3     ansible_connection=ssh        ansible_user=root
+# DH4 Intel E2100; name mev kept for telegraf and Grafana
 mev ansible_host=192.168.0.2    ansible_connection=ssh        ansible_user=root ansible_ssh_common_args='-J root@172.22.4.4' proxy_env="{'http_proxy': 'http://192.168.0.1:3128', 'https_proxy': 'http://192.168.0.1:3128'}"
 bf3 ansible_host=172.22.3.5     ansible_connection=ssh        ansible_user=root
+# DH9 Mount Evans, credentials unknown
+#dh9dpu ansible_host=172.22.3.9 ansible_connection=ssh        ansible_user=root
 
 [dpubmcs]
 bf2bmc ansible_host=172.22.4.2  ansible_connection=local      ansible_user=root
+# CN106 MCU (Zephyr shell, no ssh)
 mrvbmc ansible_host=172.22.4.3  ansible_connection=local      ansible_user=root
+# E2100 IMC in DH4
 mevbmc ansible_host=172.22.4.4  ansible_connection=ssh        ansible_user=root
 bf3bmc ansible_host=172.22.4.5  ansible_connection=local      ansible_user=root
+# DH9 Mount Evans BMC, credentials unknown
+#dh9dpubmc ansible_host=172.22.4.9 ansible_connection=local   ansible_user=root
 
 [tgens]
 tgen1 ansible_host=172.22.1.100 ansible_connection=ssh        ansible_user=root
