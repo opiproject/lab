@@ -1,72 +1,52 @@
-# Hosting Files on a Webserver using Docker
+# Hosting Files on a Webserver
 
-This document details the steps required to spin up an HTTP/HTTPS webserver using Docker. It also covers how to host files on the web server.
+This document details how to serve the install ISO and the autoinstall files from mgmt (`172.22.0.1`) over HTTP,
+so that the iDRAC, iLO and BMC virtual media and the Ubuntu installer can fetch them.
 
-## Prerequisites
+mgmt does not run a permanent web server. Start one for the install and stop it afterwards. mgmt also has a
+public IP, so bind the server to the lab address `172.22.0.1` only.
 
-- Docker is installed on the server.
+The server is the `httpd` applet of busybox (package `busybox-static`, installed on mgmt). It supports HTTP range
+requests, which the BMC virtual media needs to read the ISO. `python3 -m http.server` does not support them, so
+use it only for the small **user-data** and **meta-data** files.
 
 ## Steps
 
 1. **Download the ISO file to the server**
 
-    Download the ISO file of the operating system you want to use for the web server from a trusted source to the server. In this example, we download the Ubuntu 22.04 Server ISO file using `wget` and move it to the required directory.
+    Download the ISO file from a trusted source to mgmt. In this example, we download the Ubuntu 26.04 Server ISO
+    file using `wget`. For the autoinstall ISO, see [Ubuntu Autoinstall ISO Guide](auto_install_ubuntu_iso.md) and
+    copy the generated ISO and the **server** folder into the same directory.
 
     ```sh
-    mkdir -p ~/ansible/iso_files
-    cd ~/ansible/iso_files
-    wget https://releases.ubuntu.com/22.04/ubuntu-22.04.5-live-server-amd64.iso
+    mkdir -p /root/iso_files
+    cd /root/iso_files
+    wget https://releases.ubuntu.com/26.04/ubuntu-26.04.1-live-server-amd64.iso
     ```
 
-2. **Create a Docker Compose Definition**
-
-    Create a `docker-compose.yml` file with the following content:
-
-    ```yaml
-    version: '3.8'
-    services:
-      web-http:
-        image: docker.io/library/httpd:2.4.57-alpine3.17
-        volumes:
-          - ./ansible/iso_files:/usr/local/apache2/htdocs
-        ports:
-          - 80:80
-        networks:
-          - opi
-    networks:
-      opi:
-    ```
-
-    This maps the `./ansible/iso_files/` directory to the webserver's `apache2/htdocs` directory. This setup allows you to add new files to the web server without needing to restart the container.
-
-3. **Start the Docker Compose Service**
-
-    Navigate to the working directory and start the service:
+2. **Start the web server**
 
     ```sh
-    docker-compose up -d
+    busybox httpd -f -vv -p 172.22.0.1:80 -h /root/iso_files
     ```
 
-4. **Access the ISO File**
+    `-f` keeps it in the foreground and `-vv` logs every request, so run it in `tmux` or a second SSH session.
+    New files in `/root/iso_files` are served without a restart. During a remote autoinstall, `404` for
+    `vendor-data` and `network-config` is normal: the installer asks for them, but only `user-data` and
+    `meta-data` are needed.
 
-    Open your web browser and navigate to `http://<webserver-ip-address>/<path-to-iso-file>`. For example, you can access it at: `http://172.22.0.1/ubuntu-22.04.5-live-server-amd64.iso` to access the hosted ISO file.
+3. **Access the ISO File**
 
-5. **Stopping/Removing the Webserver**
-
-    Check the list of containers running to find the container_id of the webserver:
+    Files are served at `http://172.22.0.1/<path-to-file>`, for example
+    `http://172.22.0.1/ubuntu-26.04.1-live-server-amd64.iso`. To check it from mgmt:
 
     ```sh
-    docker ps -a
+    curl -sI http://172.22.0.1/ubuntu-26.04.1-live-server-amd64.iso
+    curl -s -o /dev/null -w '%{http_code}\n' -r 0-9 http://172.22.0.1/ubuntu-26.04.1-live-server-amd64.iso
     ```
 
-    Then To stop the webserver, run:
+    The second command must print `206` (range requests work).
 
-    ```sh
-    docker stop <container_id_or_name>
-    ```
+4. **Stopping the Webserver**
 
-    To remove the container, run:
-
-    ```sh
-    docker rm <container_id_or_name>
-    ```
+    Press `Ctrl+C` in the session that runs `busybox httpd`.
